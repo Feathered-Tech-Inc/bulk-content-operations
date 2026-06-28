@@ -2,10 +2,6 @@
 
 Bulk-publish or bulk-unpublish Contentful entries for a selected `spaceId` / `environmentId` / `tagId`.
 
-> Migration note: this project was previously named `contentful-publish` and is now `Bulk Content Operations`.
->
-> CLI migration note: legacy `--target` is no longer supported. Use explicit `--space` + `--environment`.
-
 This repo includes:
 - a CLI workflow (`pnpm run publish ...`)
 - a Tauri desktop app for non-technical users (`pnpm run tauri:dev`)
@@ -54,8 +50,6 @@ pnpm run publish -- --space example-space-id --environment example-env --tag exa
 # Large parallel run
 pnpm run publish -- --space example-space-id --environment example-env --tag example-tag --limit 90000 --concurrency 5
 ```
-
-If your previous workflow used `--target`, map each target to explicit `spaceId` + `environmentId` and pass those values directly.
 
 ## Desktop app (Tauri)
 
