@@ -1,0 +1,31 @@
+{
+  "name": "@feathered-tech/bulk-content-operations",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "publish": "tsx src/publish-cli.ts",
+    "build:worker": "node scripts/build-worker.mjs",
+    "prepare:runtime": "node scripts/ensure-node-runtime.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test src/*.test.ts",
+    "tauri:dev": "pnpm run build:worker && pnpm run prepare:runtime && tauri dev",
+    "tauri:build": "pnpm run build:worker && pnpm run prepare:runtime && tauri build",
+    "release:macos": "node scripts/release-tauri-macos.mjs"
+  },
+  "dependencies": {
+    "contentful-management": "^12.8.0",
+    "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.11.3",
+    "@types/node": "^22.15.29",
+    "esbuild": "^0.27.0",
+    "tar": "^7.5.2",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@11.9.0+sha512.bd682d5d03fe525ef7c9fd6780c6884d1e756ac4c9c9fe00c538782824310dcf90e3ddc4f53835f06dfaebd5085e41855e0bcbb3b60de2ac5bbab89e5036f03b"
+}

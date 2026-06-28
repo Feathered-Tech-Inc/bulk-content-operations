@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+.output/
+.cache/
+src-tauri/target/
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# IDE / local tooling
+.idea/
+.junie/
+.opencode/
+
+# OS junk
+.DS_Store
+
+# Logs
+*.log
+pnpm-debug.log*
+
+# Binaries
+src-tauri/resources/node/node
