@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+echo "Switching to dev branch and pulling latest changes..."
+git checkout dev
+git pull origin dev
+
 # Default to patch, allow --minor or --major
 BUMP_TYPE="patch"
 for arg in "$@"; do
@@ -30,4 +34,14 @@ echo "Pushing branch to GitHub..."
 git push -u origin "$BRANCH_NAME"
 
 echo "✅ Version bumped to v$NEW_VERSION, committed, and pushed!"
-echo "➡️  Next step: Go to GitHub and open PRs to merge $BRANCH_NAME into main and dev."
+
+# 5. Create a PR to merge the new release branch into main and dev
+if command -v gh &> /dev/null; then
+  echo "GitHub CLI found. Creating Pull Requests..."
+  gh pr create --base main --head "$BRANCH_NAME" --title "chore: release v$NEW_VERSION" --body "Automated release PR for v$NEW_VERSION targeting main."
+  gh pr create --base dev --head "$BRANCH_NAME" --title "chore: sync release v$NEW_VERSION to dev" --body "Automated release PR for v$NEW_VERSION syncing back to dev."
+  echo "✅ Pull Requests created successfully!"
+else
+  echo "⚠️ GitHub CLI (gh) not found. Skipping automated PR creation."
+  echo "➡️ Next step: Go to GitHub and open PRs to merge $BRANCH_NAME into main and dev."
+fi
