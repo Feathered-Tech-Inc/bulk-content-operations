@@ -31,29 +31,24 @@ We use a Pull Request-based release flow to ensure main branch protection and sy
 
 ### 1. Bump version and create release branch
 
-From an up-to-date `dev` branch, run the bump script. This updates all version files (`package.json`, `tauri.conf.json`, `Cargo.toml`), commits them, and pushes a new `release/vX.X.X` branch.
+Run the bump script. This automatically switches to the `dev` branch, pulls the latest changes, updates all version files (`package.json`, `tauri.conf.json`, `Cargo.toml`), commits them, and pushes a new `release/vX.X.X` branch.
 
 ```bash
-git checkout dev
-git pull origin dev
-
 # Defaults to patch. Use --minor or --major as needed.
 ./bump-version.sh
 ```
 
 ### 2. Merge Pull Requests
 
-Go to GitHub and open Pull Requests from your new `release/vX.X.X` branch into **both** `main` and `dev`.
-Wait for CI checks to pass, then merge them.
+If you have the GitHub CLI (`gh`) installed, the pull requests to `main` and `dev` will be created automatically by the script. Otherwise, go to GitHub and open Pull Requests from your new `release/vX.X.X` branch into **both** `main` and `dev` manually.
+
+Wait for CI checks to pass, then merge both pull requests.
 
 ### 3. Tag and build artifacts
 
-Once merged, switch to `main`, pull the latest changes, and run the build script. This will officially tag the release, push the tag, and generate the signed/notarized `.dmg` along with the release notes.
+Once merged, run the build script. This will automatically switch to `main`, pull the latest changes, officially tag the release, push the tag, and generate the signed/notarized `.dmg` along with the release notes.
 
 ```bash
-git checkout main
-git pull origin main
-
 ./build-release.sh
 ```
 
@@ -111,7 +106,9 @@ git pull origin main
 
 ## Distribution + traceability
 
-For each public release, publish the following to the GitHub Releases page:
+If you have the GitHub CLI (`gh`) installed, `build-release.sh` will automatically create a GitHub Release, attach the `.dmg` file, and set the release notes.
+
+Otherwise, for each public release, you will need to manually publish the following to the GitHub Releases page:
 
 - The generated `.dmg` file
 - The contents of `release-notes.md` (which automatically includes the SHA256 checksum, version, commit SHA, build date, and releaser info).
