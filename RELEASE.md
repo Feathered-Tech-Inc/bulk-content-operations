@@ -25,22 +25,39 @@ Standard process for producing a **signed + notarized macOS DMG** for public OSS
 
 ---
 
-## Standard release commands
+## Release Workflow
 
-1. **Build + sign + notarize + staple**
-   ```bash
-   APPLE_SIGNING_IDENTITY="Developer ID Application: <Org/Name> (<TEAM_ID>)" NOTARY_PROFILE="your-notary-profile" pnpm run release:macos
-   ```
+We use a Pull Request-based release flow to ensure main branch protection and synchronized versioning.
 
-2. **(Optional) Build/sign only, skip notarization**
-   ```bash
-   APPLE_SIGNING_IDENTITY="Developer ID Application: <Org/Name> (<TEAM_ID>)" SKIP_NOTARIZE=1 pnpm run release:macos
-   ```
+### 1. Bump version and create release branch
 
-3. **(Optional) use explicit notary profile**
-   ```bash
-   APPLE_SIGNING_IDENTITY="Developer ID Application: <Org/Name> (<TEAM_ID>)" NOTARY_PROFILE="your-notary-profile" pnpm run release:macos
-   ```
+From an up-to-date `dev` branch, run the bump script. This updates all version files (`package.json`, `tauri.conf.json`, `Cargo.toml`), commits them, and pushes a new `release/vX.X.X` branch.
+
+```bash
+git checkout dev
+git pull origin dev
+
+# Defaults to patch. Use --minor or --major as needed.
+./bump-version.sh
+```
+
+### 2. Merge Pull Requests
+
+Go to GitHub and open Pull Requests from your new `release/vX.X.X` branch into **both** `main` and `dev`.
+Wait for CI checks to pass, then merge them.
+
+### 3. Tag and build artifacts
+
+Once merged, switch to `main`, pull the latest changes, and run the build script. This will officially tag the release, push the tag, and generate the signed/notarized `.dmg` along with the release notes.
+
+```bash
+git checkout main
+git pull origin main
+
+./build-release.sh
+```
+
+*(Note: Ensure your `APPLE_SIGNING_IDENTITY` and `NOTARY_PROFILE` are properly configured inside `build-release.sh` or exported in your environment).*
 
 ---
 
@@ -50,6 +67,8 @@ Standard process for producing a **signed + notarized macOS DMG** for public OSS
     - `src-tauri/target/release/bundle/macos/Bulk Content Operations.app`
 - DMG:
     - `src-tauri/target/release/bundle/dmg/Bulk Content Operations_*.dmg`
+- Release Notes (auto-generated):
+    - `src-tauri/target/release/bundle/release-notes.md`
 
 ---
 
@@ -92,18 +111,10 @@ Standard process for producing a **signed + notarized macOS DMG** for public OSS
 
 ## Distribution + traceability
 
-For each public release, publish:
+For each public release, publish the following to the GitHub Releases page:
 
-- DMG file
-- SHA256 checksum
-- Version + commit SHA
-- Build date/time
-- Maintainer/releaser name (or CI workflow reference)
-
-Example checksum command:
-```bash
-shasum -a 256 "src-tauri/target/release/bundle/dmg/Bulk Content Operations_*.dmg"
-```
+- The generated `.dmg` file
+- The contents of `release-notes.md` (which automatically includes the SHA256 checksum, version, commit SHA, build date, and releaser info).
 
 ---
 

@@ -29,4 +29,4 @@ pnpm-debug.log*
 src-tauri/resources/node/node
 
 # Local scripts
-release.sh
+build-release.sh
