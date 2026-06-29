@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# This is a local release script. It is ignored by git.
+# Copy it to release.sh and fill in your own values before running.
+
+APPLE_SIGNING_IDENTITY="Developer ID Application: Monsters Inc. (12ABC3D4EF)"
+NOTARY_PROFILE="MIKE_WAZOWSKI_NOTARY_PROFILE"
+
+BUMP_TYPE="patch"
+for arg in "$@"; do
+  if [ "$arg" == "--minor" ]; then
+    BUMP_TYPE="minor"
+  fi
+done
+
+echo "Starting release process (bump: $BUMP_TYPE)..."
+pnpm version $BUMP_TYPE
+APPLE_SIGNING_IDENTITY="$APPLE_SIGNING_IDENTITY" NOTARY_PROFILE="$NOTARY_PROFILE" pnpm run release:macos

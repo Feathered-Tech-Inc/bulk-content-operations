@@ -27,3 +27,6 @@ pnpm-debug.log*
 
 # Binaries
 src-tauri/resources/node/node
+
+# Local scripts
+release.sh

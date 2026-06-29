@@ -29,17 +29,17 @@ Standard process for producing a **signed + notarized macOS DMG** for public OSS
 
 1. **Build + sign + notarize + staple**
    ```bash
-   NOTARY_PROFILE="your-notary-profile" pnpm run release:macos
+   APPLE_SIGNING_IDENTITY="Developer ID Application: <Org/Name> (<TEAM_ID>)" NOTARY_PROFILE="your-notary-profile" pnpm run release:macos
    ```
 
 2. **(Optional) Build/sign only, skip notarization**
    ```bash
-   SKIP_NOTARIZE=1 pnpm run release:macos
+   APPLE_SIGNING_IDENTITY="Developer ID Application: <Org/Name> (<TEAM_ID>)" SKIP_NOTARIZE=1 pnpm run release:macos
    ```
 
 3. **(Optional) use explicit notary profile**
    ```bash
-   NOTARY_PROFILE="your-notary-profile" pnpm run release:macos
+   APPLE_SIGNING_IDENTITY="Developer ID Application: <Org/Name> (<TEAM_ID>)" NOTARY_PROFILE="your-notary-profile" pnpm run release:macos
    ```
 
 ---
