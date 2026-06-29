@@ -1,8 +1,8 @@
 [package]
-name = "app"
+name = "bulk-content-operations"
 version = "1.0.2"
-description = "A Tauri App"
-authors = ["you"]
+description = "Bulk Content Operations"
+authors = ["Feathered Tech Inc."]
 license = ""
 repository = ""
 edition = "2021"

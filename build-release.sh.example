@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+echo "Switching to main branch and pulling latest changes..."
+git checkout main
+git pull origin main
+
 # Fill in your own values
 APPLE_SIGNING_IDENTITY="Developer ID Application: Monsters Inc. (123ABCDE456)"
 NOTARY_PROFILE="MIKE_WAZOWSKI_NOTARY_PROFILE"
@@ -14,4 +18,15 @@ git push origin "$TAG_NAME"
 echo "Starting macOS release build for $TAG_NAME..."
 APPLE_SIGNING_IDENTITY="$APPLE_SIGNING_IDENTITY" NOTARY_PROFILE="$NOTARY_PROFILE" pnpm run release:macos
 
-echo "✅ Build complete. You can now upload the DMG and release notes to GitHub!"
+echo "✅ Build complete."
+
+if command -v gh &> /dev/null; then
+  echo "GitHub CLI found. Creating GitHub Release..."
+  gh release create "$TAG_NAME" src-tauri/target/release/bundle/dmg/*.dmg \
+    --title "Release $TAG_NAME" \
+    --notes-file "src-tauri/target/release/bundle/release-notes.md"
+  echo "✅ GitHub Release created successfully!"
+else
+  echo "⚠️ GitHub CLI (gh) not found. Skipping automated release creation."
+  echo "➡️ Next step: Go to GitHub and upload the DMG and release notes manually!"
+fi
