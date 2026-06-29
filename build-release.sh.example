@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Fill in your own values
+APPLE_SIGNING_IDENTITY="Developer ID Application: Monsters Inc. (123ABCDE456)"
+NOTARY_PROFILE="MIKE_WAZOWSKI_NOTARY_PROFILE"
+
+NEW_VERSION=$(node -p "require('./package.json').version")
+TAG_NAME="v$NEW_VERSION"
+
+echo "Creating and pushing tag $TAG_NAME..."
+git tag "$TAG_NAME"
+git push origin "$TAG_NAME"
+
+echo "Starting macOS release build for $TAG_NAME..."
+APPLE_SIGNING_IDENTITY="$APPLE_SIGNING_IDENTITY" NOTARY_PROFILE="$NOTARY_PROFILE" pnpm run release:macos
+
+echo "✅ Build complete. You can now upload the DMG and release notes to GitHub!"
