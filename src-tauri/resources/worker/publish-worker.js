@@ -34187,13 +34187,6 @@ async function runPublishJob(params, hooks) {
     "info",
     `Scope: space ${config.spaceId}, environment ${config.environmentId}`
   );
-  if (config.legacyTargetUsed) {
-    emitLog(
-      hooks,
-      "info",
-      `Warning: --target (${config.target}) is deprecated and ignored. Explicit spaceId/environmentId were used.`
-    );
-  }
   emitLog(hooks, "info", `Action: ${config.action}`);
   const { publishableEntries, scannedCount, fullyScanned } = await collectTaggedEntries(
     client,

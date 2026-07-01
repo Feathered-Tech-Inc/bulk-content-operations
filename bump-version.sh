@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [ -n "$(git status --porcelain)" ]; then
+  echo "❌ Error: Working tree is not clean."
+  echo "Please commit or stash your changes before bumping the version."
+  exit 1
+fi
+
 echo "Switching to dev branch and pulling latest changes..."
 git checkout dev
 git pull origin dev
