@@ -1,6 +1,6 @@
 {
   "name": "@feathered-tech/bulk-content-operations",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "scripts": {
     "publish": "tsx src/publish-cli.ts",
