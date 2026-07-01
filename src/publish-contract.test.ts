@@ -36,12 +36,11 @@ test('parseArgs parses explicit generic scope and token', () => {
   });
 });
 
-test('parseArgs rejects legacy target flag', () => {
+test('parseArgs rejects unknown arguments', () => {
   assert.throws(
     () =>
       parseArgs([
-        '--target',
-        'legacy-target',
+        '--unknown-flag',
         '--tag',
         'campaign-tag',
         '--limit',
@@ -51,7 +50,7 @@ test('parseArgs rejects legacy target flag', () => {
         '--environment',
         'demo-env',
       ]),
-    /--target is no longer supported/,
+    /Unknown argument: --unknown-flag/,
   );
 });
 
