@@ -737,20 +737,6 @@ function logEntry(entry: EntryProps, verbose: boolean, hooks?: PublishJobHooks):
   );
 }
 
-export function formatTargetChoices(): string {
-  return 'No bundled legacy targets are available. Use --space and --environment.';
-}
-
-export function parseTarget(value: string): PublishTargetId {
-  const trimmed = value.trim();
-
-  if (!trimmed) {
-    throw new Error('--target requires a non-empty value');
-  }
-
-  return trimmed;
-}
-
 export function parseAction(value: string): PublishAction {
   if (value === 'publish' || value === 'unpublish') {
     return value;
@@ -852,13 +838,6 @@ export async function runPublishJob(
     'info',
     `Scope: space ${config.spaceId}, environment ${config.environmentId}`,
   );
-  if (config.legacyTargetUsed) {
-    emitLog(
-      hooks,
-      'info',
-      `Warning: --target (${config.target}) is deprecated and ignored. Explicit spaceId/environmentId were used.`,
-    );
-  }
   emitLog(hooks, 'info', `Action: ${config.action}`);
 
   const { publishableEntries, scannedCount, fullyScanned } =

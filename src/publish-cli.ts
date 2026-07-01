@@ -85,12 +85,6 @@ export function parseArgs(argv: string[]): CliOptions {
       continue;
     }
 
-    if (arg === '--target' || arg.startsWith('--target=')) {
-      throw new Error(
-        '--target is no longer supported. Use explicit --space and --environment.',
-      );
-    }
-
     if (arg === '--space') {
       const value = argv[++i];
       if (value === undefined) {

@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [ -n "$(git status --porcelain)" ]; then
+  echo "❌ Error: Working tree is not clean."
+  echo "Please commit or stash your changes before releasing the version."
+  exit 1
+fi
+
 echo "Switching to main branch and pulling latest changes..."
 git checkout main
 git pull origin main
@@ -30,3 +36,7 @@ else
   echo "⚠️ GitHub CLI (gh) not found. Skipping automated release creation."
   echo "➡️ Next step: Go to GitHub and upload the DMG and release notes manually!"
 fi
+
+echo "Switching to dev branch and pulling latest changes..."
+git checkout dev
+git pull origin dev
