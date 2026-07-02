@@ -20,6 +20,8 @@ const WORKER_RESOURCE_CANDIDATES: [&str; 3] = [
   "resources/worker/publish-worker.js",
   "publish-worker.js",
 ];
+const TOKEN_KEYCHAIN_SERVICE: &str = "com.featheredtech.bulk-content-operations";
+const TOKEN_KEYCHAIN_ACCOUNT: &str = "contentful-cma-token";
 
 #[derive(Default)]
 struct AppState {
@@ -60,6 +62,12 @@ struct LoadTagsPayload {
   token: String,
   space_id: String,
   environment_id: String,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct SaveTokenPayload {
+  token: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -216,6 +224,66 @@ fn validate_load_tags_payload(payload: LoadTagsPayload) -> Result<ResolvedScopeP
     space_id,
     environment_id,
   })
+}
+
+fn normalize_token(value: &str) -> Option<String> {
+  let trimmed = value.trim();
+  if trimmed.is_empty() {
+    None
+  } else {
+    Some(trimmed.to_string())
+  }
+}
+
+fn keychain_entry() -> Result<keyring::Entry, String> {
+  keyring::Entry::new(TOKEN_KEYCHAIN_SERVICE, TOKEN_KEYCHAIN_ACCOUNT)
+    .map_err(|error| format!("Failed to initialize token Keychain entry: {error}"))
+}
+
+fn load_saved_token_from_keychain() -> Result<Option<String>, String> {
+  let entry = keychain_entry()?;
+  match entry.get_password() {
+    Ok(token) => Ok(normalize_token(&token)),
+    Err(keyring::Error::NoEntry) => Ok(None),
+    Err(error) => Err(format!("Failed to read saved token from Keychain: {error}")),
+  }
+}
+
+fn save_token_to_keychain(token: &str) -> Result<(), String> {
+  let entry = keychain_entry()?;
+  entry
+    .set_password(token)
+    .map_err(|error| format!("Failed to save token to Keychain: {error}"))
+}
+
+fn clear_token_from_keychain() -> Result<(), String> {
+  let entry = keychain_entry()?;
+  match entry.delete_password() {
+    Ok(()) | Err(keyring::Error::NoEntry) => Ok(()),
+    Err(error) => Err(format!("Failed to clear saved token from Keychain: {error}")),
+  }
+}
+
+fn load_saved_token_with<F>(loader: F) -> Result<Option<String>, String>
+where
+  F: FnOnce() -> Result<Option<String>, String>,
+{
+  loader()
+}
+
+fn save_token_with<F>(token: String, saver: F) -> Result<(), String>
+where
+  F: FnOnce(&str) -> Result<(), String>,
+{
+  let token = normalize_token(&token).ok_or_else(|| "token is required".to_string())?;
+  saver(&token)
+}
+
+fn clear_saved_token_with<F>(clearer: F) -> Result<(), String>
+where
+  F: FnOnce() -> Result<(), String>,
+{
+  clearer()
 }
 
 fn first_existing_path(candidates: Vec<PathBuf>) -> Option<PathBuf> {
@@ -540,6 +608,21 @@ fn load_tags(
 }
 
 #[tauri::command]
+fn load_saved_token() -> Result<Option<String>, String> {
+  load_saved_token_with(load_saved_token_from_keychain)
+}
+
+#[tauri::command]
+fn save_token(payload: SaveTokenPayload) -> Result<(), String> {
+  save_token_with(payload.token, save_token_to_keychain)
+}
+
+#[tauri::command]
+fn clear_saved_token() -> Result<(), String> {
+  clear_saved_token_with(clear_token_from_keychain)
+}
+
+#[tauri::command]
 fn run_publish(
   app: AppHandle,
   payload: RunPublishPayload,
@@ -692,7 +775,10 @@ pub fn run() {
       run_publish,
       load_spaces,
       load_environments,
-      load_tags
+      load_tags,
+      load_saved_token,
+      save_token,
+      clear_saved_token
     ])
     .build(tauri::generate_context!())
     .expect("error while building tauri application");
@@ -709,9 +795,11 @@ pub fn run() {
 #[cfg(test)]
 mod tests {
   use super::{
-    ensure_executable, first_existing_path, validate_load_tags_payload, validate_payload,
-    LoadTagsPayload, RunPublishPayload,
+    clear_saved_token_with, ensure_executable, first_existing_path, load_saved_token_with,
+    save_token_with, validate_load_tags_payload, validate_payload, LoadTagsPayload,
+    RunPublishPayload,
   };
+  use std::cell::RefCell;
   use std::env;
   use std::fs;
   use std::path::PathBuf;
@@ -762,6 +850,47 @@ mod tests {
     });
 
     assert_eq!(result.unwrap_err(), "environmentId is required");
+  }
+
+  #[test]
+  fn load_saved_token_with_returns_loaded_token() {
+    let result = load_saved_token_with(|| Ok(Some("token".to_string())))
+      .expect("load should succeed");
+
+    assert_eq!(result, Some("token".to_string()));
+  }
+
+  #[test]
+  fn load_saved_token_with_propagates_errors() {
+    let result = load_saved_token_with(|| Err("keychain failed".to_string()));
+
+    assert_eq!(result.unwrap_err(), "keychain failed");
+  }
+
+  #[test]
+  fn save_token_with_rejects_blank_token() {
+    let result = save_token_with("   ".to_string(), |_| Ok(()));
+
+    assert_eq!(result.unwrap_err(), "token is required");
+  }
+
+  #[test]
+  fn save_token_with_passes_trimmed_token_to_saver() {
+    let captured = RefCell::new(String::new());
+    save_token_with("  token  ".to_string(), |token| {
+      *captured.borrow_mut() = token.to_string();
+      Ok(())
+    })
+    .expect("save should succeed");
+
+    assert_eq!(captured.into_inner(), "token");
+  }
+
+  #[test]
+  fn clear_saved_token_with_propagates_errors() {
+    let result = clear_saved_token_with(|| Err("keychain failed".to_string()));
+
+    assert_eq!(result.unwrap_err(), "keychain failed");
   }
 
   #[test]

@@ -105,9 +105,10 @@ Install flow (end users):
 
 ## Token handling
 
-- By default, token is used in-memory only during a run.
-- Plaintext persistence is not enabled.
-- “Remember token securely” is currently a placeholder; secure keychain storage is a follow-up item.
+- By default, token is used in-memory for desktop runs unless **Remember token securely** is enabled.
+- When enabled, the desktop app stores the CMA token in Apple Keychain and restores it on next launch.
+- If **Remember token securely** is disabled on submit, any previously saved token is removed from Keychain.
+- The token is never persisted in plaintext project files or browser storage.
 
 ## Environment variables (CLI)
 
