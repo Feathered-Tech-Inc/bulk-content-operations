@@ -13,12 +13,12 @@ Set `CONTENTFUL_CMA_TOKEN` in `.env` for local CLI usage.
 
 ## Development Workflow
 
-To ensure code quality and security, direct pushes to `main` and `dev` are disabled. All changes must be made via Pull Requests.
+To ensure code quality and security, direct pushes to `main` are disabled. All changes must be made via Pull Requests.
 
-1. Fork the repository and create your feature branch from `dev`.
+1. Fork the repository and create your feature branch from `main`.
 2. Make your changes.
 3. Run the local checks before committing.
-4. Open a Pull Request against `dev`.
+4. Open a Pull Request against `main`.
 
 ## Code Quality and Local Checks
 

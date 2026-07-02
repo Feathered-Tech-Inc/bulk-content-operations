@@ -32,18 +32,18 @@ We use a Pull Request-based release flow to ensure main branch protection and sy
 
 ### 1. Bump version and create release branch
 
-Run the bump script. This automatically switches to the `dev` branch, pulls the latest changes, updates all version files (`package.json`, `tauri.conf.json`, `Cargo.toml`), commits them, and pushes a new `release/vX.X.X` branch.
+Run the bump script. This automatically switches to the `main` branch, pulls the latest changes, updates all version files (`package.json`, `tauri.conf.json`, `Cargo.toml`), commits them, and pushes a new `release/vX.X.X` branch.
 
 ```bash
 # Defaults to patch. Use --minor or --major as needed.
 ./bump-version.sh
 ```
 
-### 2. Merge Pull Requests
+### 2. Merge Pull Request
 
-If you have the GitHub CLI (`gh`) installed, the pull requests to `main` and `dev` will be created automatically by the script. Otherwise, go to GitHub and open Pull Requests from your new `release/vX.X.X` branch into **both** `main` and `dev` manually.
+If you have the GitHub CLI (`gh`) installed, the pull request to `main` will be created automatically by the script. Otherwise, go to GitHub and open a Pull Request from your new `release/vX.X.X` branch into **main** manually.
 
-Wait for CI checks to pass, then merge both pull requests.
+Wait for CI checks to pass, then merge the pull request.
 
 ### 3. Tag and build artifacts
 

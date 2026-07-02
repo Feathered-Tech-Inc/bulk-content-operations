@@ -49,6 +49,4 @@ else
   echo "⚠️ Current branch '$RELEASE_BRANCH' does not match release pattern release/v*.*.*. Skipping release branch deletion."
 fi
 
-echo "Switching to dev branch and pulling latest changes..."
-git checkout dev
-git pull origin dev
+echo "✅ Release flow complete on main."
