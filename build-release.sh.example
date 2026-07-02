@@ -6,6 +6,8 @@ if [ -n "$(git status --porcelain)" ]; then
   exit 1
 fi
 
+RELEASE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
 echo "Switching to main branch and pulling latest changes..."
 git checkout main
 git pull origin main
@@ -35,6 +37,16 @@ if command -v gh &> /dev/null; then
 else
   echo "⚠️ GitHub CLI (gh) not found. Skipping automated release creation."
   echo "➡️ Next step: Go to GitHub and upload the DMG and release notes manually!"
+fi
+
+if [[ "$RELEASE_BRANCH" =~ ^release/v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  echo "Deleting release branch $RELEASE_BRANCH from origin..."
+  git push origin --delete "$RELEASE_BRANCH"
+
+  echo "Deleting local release branch $RELEASE_BRANCH..."
+  git branch -D "$RELEASE_BRANCH"
+else
+  echo "⚠️ Current branch '$RELEASE_BRANCH' does not match release pattern release/v*.*.*. Skipping release branch deletion."
 fi
 
 echo "Switching to dev branch and pulling latest changes..."
