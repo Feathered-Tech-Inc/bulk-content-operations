@@ -12,12 +12,12 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6.0.3
               with:
                   fetch-depth: 0 # Required for Gitleaks to scan the full commit history in the PR
 
             - name: Run Gitleaks
-              uses: gitleaks/gitleaks-action@v2
+              uses: gitleaks/gitleaks-action@v3
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -27,9 +27,9 @@ jobs:
                   version: 11.9.0
 
             - name: Install Node.js
-              uses: actions/setup-node@v4
+              uses: actions/setup-node@v6.4.0
               with:
-                  node-version: 18
+                  node-version:  24
                   cache: "pnpm"
 
             - name: Install Dependencies
