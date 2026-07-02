@@ -1,117 +1,107 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bulk Content Operations</title>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <main class="app">
-      <h1>Bulk Content Operations</h1>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Bulk Content Operations</title>
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
+    <body>
+        <main class="app">
+            <h1>Bulk Content Operations</h1>
 
-      <section class="card">
-        <form id="publish-form" novalidate>
-          <label>
-            CMA token
-            <input id="token" name="token" type="password" autocomplete="off" required />
-          </label>
+            <section class="card">
+                <form id="publish-form" novalidate>
+                    <label>
+                        CMA token
+                        <input id="token" name="token" type="password" autocomplete="off" required />
+                    </label>
 
-          <label>
-            Space
-            <div class="tag-picker">
-              <select id="space" name="space" required>
-                <option value="">Load spaces first</option>
-              </select>
-              <button id="load-spaces-button" type="button">Load spaces</button>
-            </div>
-          </label>
+                    <label>
+                        Space
+                        <span class="tag-picker">
+                            <select id="space" name="space" required>
+                                <option value="">Load spaces first</option>
+                            </select>
+                            <button id="load-spaces-button" type="button">Load spaces</button>
+                        </span>
+                    </label>
 
-          <label>
-            Environment
-            <div class="tag-picker">
-              <select id="environment" name="environment" required>
-                <option value="">Load environments first</option>
-              </select>
-              <button id="load-environments-button" type="button">
-                Load environments
-              </button>
-            </div>
-          </label>
+                    <label>
+                        Environment
+                        <span class="tag-picker">
+                            <select id="environment" name="environment" required>
+                                <option value="">Load environments first</option>
+                            </select>
+                            <button id="load-environments-button" type="button">Load environments</button>
+                        </span>
+                    </label>
 
-          <label>
-            Action
-            <select id="action" name="action" required>
-              <option value="publish" selected>Publish</option>
-              <option value="unpublish">Unpublish</option>
-            </select>
-          </label>
+                    <label>
+                        Action
+                        <select id="action" name="action" required>
+                            <option value="publish" selected>Publish</option>
+                            <option value="unpublish">Unpublish</option>
+                        </select>
+                    </label>
 
-          <label>
-            Tag
-            <div class="tag-picker">
-              <select id="tag" name="tag" required>
-                <option value="">Load tags first</option>
-              </select>
-              <button id="load-tags-button" type="button">Load tags</button>
-            </div>
-          </label>
+                    <label>
+                        Tag
+                        <span class="tag-picker">
+                            <select id="tag" name="tag" required>
+                                <option value="">Load tags first</option>
+                            </select>
+                            <button id="load-tags-button" type="button">Load tags</button>
+                        </span>
+                    </label>
 
-          <div class="row">
-            <label>
-              Limit
-              <input id="limit" name="limit" type="number" min="1" step="1" required />
-            </label>
+                    <div class="row">
+                        <label>
+                            Limit
+                            <input id="limit" name="limit" type="number" min="1" step="1" required />
+                        </label>
 
-            <label>
-              Concurrency
-              <input
-                id="concurrency"
-                name="concurrency"
-                type="number"
-                min="1"
-                max="5"
-                step="1"
-                value="1"
-              />
-            </label>
-          </div>
+                        <label>
+                            Concurrency
+                            <input id="concurrency" name="concurrency" type="number" min="1" max="5" step="1" value="1" />
+                        </label>
+                    </div>
 
-          <div class="checkboxes">
-            <label><input id="dry-run" name="dryRun" type="checkbox" /> Dry run</label>
-            <label><input id="verbose" name="verbose" type="checkbox" /> Verbose</label>
-            <label>
-              <input id="remember-token" name="rememberToken" type="checkbox" />
-              Remember token securely
-            </label>
-          </div>
+                    <div class="checkboxes">
+                        <label><input id="dry-run" name="dryRun" type="checkbox" /> Dry run</label>
+                        <label><input id="verbose" name="verbose" type="checkbox" /> Verbose</label>
+                        <label>
+                            <input id="remember-token" name="rememberToken" type="checkbox" />
+                            Remember token securely
+                        </label>
+                    </div>
 
-          <div id="validation" class="validation"></div>
+                    <div id="validation" class="validation"></div>
 
-          <div class="actions">
-            <button id="run-button" type="submit">Run</button>
-            <button id="clear-logs-button" type="button">Clear logs</button>
-          </div>
-        </form>
-      </section>
+                    <div class="actions">
+                        <button id="run-button" type="submit">Run</button>
+                        <button id="clear-logs-button" type="button">Clear logs</button>
+                    </div>
+                </form>
+            </section>
 
-      <section class="card">
-        <h2>Status</h2>
-        <p id="status-indicator" class="status idle">Idle</p>
-        <p id="status-detail" class="status-detail"></p>
-      </section>
+            <section class="card">
+                <h2>Status</h2>
+                <p id="status-indicator" class="status idle">Idle</p>
+                <p id="status-detail" class="status-detail"></p>
+            </section>
 
-      <section class="card">
-        <h2>Summary</h2>
-        <pre id="summary" class="summary">No run yet.</pre>
-      </section>
+            <section class="card">
+                <h2>Summary</h2>
+                <pre id="summary" class="summary">No run yet.</pre>
+            </section>
 
-      <section class="card logs-card">
-        <h2>Logs</h2>
-        <div id="logs" class="logs"></div>
-      </section>
-    </main>
+            <section class="card logs-card">
+                <h2>Logs</h2>
+                <div id="logs" class="logs"></div>
+            </section>
+        </main>
 
-    <script type="module" src="./main.js"></script>
-  </body>
+        <script type="module" src="./main.js"></script>
+    </body>
 </html>
