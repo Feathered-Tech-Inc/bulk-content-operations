@@ -1,6 +1,6 @@
 {
     "name": "@feathered-tech/bulk-content-operations",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "private": true,
     "scripts": {
         "prepare": "node scripts/setup-git-hooks.mjs",
