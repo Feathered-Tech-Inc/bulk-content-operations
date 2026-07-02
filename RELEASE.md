@@ -1,6 +1,7 @@
 # RELEASE.md
 
 ## Purpose
+
 Standard process for producing a **signed + notarized macOS DMG** for public OSS release.
 
 ---
@@ -52,7 +53,7 @@ Once merged, run the build script. This will automatically switch to `main`, pul
 ./build-release.sh
 ```
 
-*(Note: Ensure your `APPLE_SIGNING_IDENTITY` and `NOTARY_PROFILE` are properly configured inside `build-release.sh` or exported in your environment).*
+_(Note: Ensure your `APPLE_SIGNING_IDENTITY` and `NOTARY_PROFILE` are properly configured inside `build-release.sh` or exported in your environment)._
 
 ---
 
@@ -73,32 +74,33 @@ Once merged, run the build script. This will automatically switch to `main`, pul
 
 - [ ] Build succeeds with no signing errors.
 - [ ] App is **not** ad-hoc signed:
-  ```bash
-  codesign -dvvv "src-tauri/target/release/bundle/macos/Bulk Content Operations.app"
-  ```
-  Must show:
+    ```bash
+    codesign -dvvv "src-tauri/target/release/bundle/macos/Bulk Content Operations.app"
+    ```
+    Must show:
     - `Authority=Developer ID Application: ...`
     - `TeamIdentifier=...`
     - **not** `Signature=adhoc`
 - [ ] Signature verification passes:
-  ```bash
-  codesign --verify --deep --strict --verbose=2 "src-tauri/target/release/bundle/macos/Bulk Content Operations.app"
-  ```
+    ```bash
+    codesign --verify --deep --strict --verbose=2 "src-tauri/target/release/bundle/macos/Bulk Content Operations.app"
+    ```
 - [ ] Notarization status is Accepted (from release script / notarytool).
 - [ ] Staple validation passes:
-  ```bash
-  xcrun stapler validate "src-tauri/target/release/bundle/dmg/Bulk Content Operations_*.dmg"
-  ```
+    ```bash
+    xcrun stapler validate "src-tauri/target/release/bundle/dmg/Bulk Content Operations_*.dmg"
+    ```
 - [ ] Gatekeeper check passes:
-  ```bash
-  spctl -a -vvv -t install "src-tauri/target/release/bundle/dmg/Bulk Content Operations_*.dmg"
-  ```
+    ```bash
+    spctl -a -vvv -t install "src-tauri/target/release/bundle/dmg/Bulk Content Operations_*.dmg"
+    ```
 - [ ] Smoke test on clean Apple Silicon Mac:
     - Mount DMG
     - Drag app to Applications
     - Launch app successfully
 
 ### NO-GO if any fail
+
 - Do not distribute artifact.
 - Fix signing/notary issue, rebuild, rerun checklist.
 

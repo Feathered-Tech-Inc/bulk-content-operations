@@ -1,0 +1,8 @@
+node_modules/
+dist/
+src-tauri/target/
+.cache/
+pnpm-lock.yaml
+
+# Ignore security scan artifacts
+*.sarif

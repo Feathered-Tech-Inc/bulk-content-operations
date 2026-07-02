@@ -10,7 +10,7 @@ function run(cmd, options = {}) {
 
 function findFirstByExt(dir, ext) {
     if (!existsSync(dir)) return null;
-    const file = readdirSync(dir).find((f) => f.toLowerCase().endsWith(ext));
+    const file = readdirSync(dir).find(f => f.toLowerCase().endsWith(ext));
     return file ? join(dir, file) : null;
 }
 
@@ -37,9 +37,7 @@ run(`codesign --verify --deep --strict --verbose=2 "${appPath}"`);
 
 if (!skipNotarize) {
     if (!notaryProfile) {
-        throw new Error(
-            "NOTARY_PROFILE is required when notarization is enabled. Set NOTARY_PROFILE or use SKIP_NOTARIZE=1.",
-        );
+        throw new Error("NOTARY_PROFILE is required when notarization is enabled. Set NOTARY_PROFILE or use SKIP_NOTARIZE=1.");
     }
     run(`xcrun notarytool submit "${dmgPath}" --keychain-profile "${notaryProfile}" --wait`);
     run(`xcrun stapler staple "${dmgPath}"`);
@@ -61,7 +59,7 @@ const buildDate = new Date().toISOString();
 let maintainer = "Unknown";
 try {
     maintainer = execSync("git config user.name", { encoding: "utf8" }).trim();
-} catch (e) {
+} catch {
     // Fallback if git config is missing
 }
 
@@ -75,7 +73,7 @@ const releaseNotes = `## Distribution Details
 
 ### Checksums
 \`\`\`text
-${shasumOutput.replace(dmgDir + '/', '')}
+${shasumOutput.replace(dmgDir + "/", "")}
 \`\`\`
 `;
 
