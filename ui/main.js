@@ -284,6 +284,50 @@ async function registerListeners() {
     });
 }
 
+async function hydrateSavedToken() {
+    if (!invoke) {
+        return;
+    }
+
+    try {
+        const savedToken = await invoke("load_saved_token");
+        if (typeof savedToken === "string" && savedToken.trim()) {
+            tokenInput.value = savedToken;
+            rememberTokenInput.checked = true;
+            appendLog("Loaded saved token from secure storage.");
+        }
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        showValidation(`Failed to load saved token: ${message}`);
+        appendLog(`Failed to load saved token: ${message}`, "error");
+    }
+}
+
+async function persistRememberedToken(token) {
+    if (rememberTokenInput.checked) {
+        try {
+            await invoke("save_token", {
+                payload: {
+                    token
+                }
+            });
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            showValidation(`Failed to save token to secure storage: ${message}`);
+            appendLog(`Failed to save token to secure storage: ${message}`, "error");
+        }
+        return;
+    }
+
+    try {
+        await invoke("clear_saved_token");
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        showValidation(`Failed to clear saved token from secure storage: ${message}`);
+        appendLog(`Failed to clear saved token from secure storage: ${message}`, "error");
+    }
+}
+
 loadSpacesButton.addEventListener("click", async () => {
     if (running || loadingSpaces) {
         return;
@@ -504,9 +548,7 @@ form.addEventListener("submit", async event => {
         return;
     }
 
-    if (rememberTokenInput.checked) {
-        appendLog("Secure token storage is not enabled yet in this build. The token is only used in-memory for this run.", "info");
-    }
+    await persistRememberedToken(payload.token);
 
     setRunningState(true);
     const actionLabel = payload.action === "unpublish" ? "Unpublish" : "Publish";
@@ -529,8 +571,13 @@ clearLogsButton.addEventListener("click", () => {
     logs.innerHTML = "";
 });
 
-registerListeners().catch(error => {
+async function initializeDesktopUi() {
+    await registerListeners();
+    await hydrateSavedToken();
+}
+
+initializeDesktopUi().catch(error => {
     const message = error instanceof Error ? error.message : String(error);
-    showValidation(`Failed to register desktop events: ${message}`);
+    showValidation(`Failed to initialize desktop app events: ${message}`);
     runButton.disabled = true;
 });
