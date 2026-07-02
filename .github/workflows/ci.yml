@@ -1,0 +1,48 @@
+name: CI Checks
+
+on:
+    push:
+        branches: ["main", "dev"]
+    pull_request:
+        branches: ["main", "dev"]
+
+jobs:
+    checks:
+        name: Code Quality and Security
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0 # Required for Gitleaks to scan the full commit history in the PR
+
+            - name: Run Gitleaks
+              uses: gitleaks/gitleaks-action@v2
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 11.9.0
+
+            - name: Install Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 18
+                  cache: "pnpm"
+
+            - name: Install Dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Run Typecheck
+              run: pnpm run typecheck
+
+            - name: Run Tests
+              run: pnpm run test
+
+            - name: Run Linting
+              run: pnpm run lint
+
+            - name: Run Formatting
+              run: pnpm run format:check

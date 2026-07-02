@@ -3,6 +3,7 @@
 Bulk-publish or bulk-unpublish Contentful entries for a selected `spaceId` / `environmentId` / `tagId`.
 
 This repo includes:
+
 - a CLI workflow (`pnpm run publish ...`)
 - a Tauri desktop app for non-technical users (`pnpm run tauri:dev`)
 
@@ -32,9 +33,12 @@ cp .env.example .env
 # Set CONTENTFUL_CMA_TOKEN in .env for CLI usage
 ```
 
+Please see `CONTRIBUTING.md` for details on our development workflow, linting, and pull request requirements.
+
 ## CLI usage
 
 Required flags:
+
 - `--space`
 - `--environment`
 - `--tag`
@@ -54,6 +58,7 @@ pnpm run publish -- --space example-space-id --environment example-env --tag exa
 ## Desktop app (Tauri)
 
 Desktop runtime model:
+
 - Worker build artifact: `dist/publish-worker.js`
 - Bundled Node runtime: `src-tauri/resources/node/node` (auto-fetched at build/dev, pinned `v22.15.0` for `darwin-arm64`)
 - Bundled worker resource: `src-tauri/resources/worker/publish-worker.js`
@@ -75,10 +80,12 @@ pnpm run tauri:build
 ```
 
 Artifacts are generated at:
+
 - `.app`: `src-tauri/target/release/bundle/macos/Bulk Content Operations.app`
 - `.dmg`: `src-tauri/target/release/bundle/dmg/Bulk Content Operations_0.1.0_aarch64.dmg`
 
 Install flow (end users):
+
 1. Download/open the generated `.dmg`.
 2. Drag `Bulk Content Operations.app` into `Applications`.
 3. Launch app and run jobs without installing Node/pnpm locally.
@@ -104,22 +111,22 @@ Install flow (end users):
 
 ## Environment variables (CLI)
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `CONTENTFUL_CMA_TOKEN` | yes | CMA token with publish/unpublish permissions |
+| Variable               | Required | Description                                  |
+| ---------------------- | -------- | -------------------------------------------- |
+| `CONTENTFUL_CMA_TOKEN` | yes      | CMA token with publish/unpublish permissions |
 
 ## CLI flags
 
-| Flag | Required | Description |
-|------|----------|-------------|
-| `--space ID` | yes | Contentful space ID |
-| `--environment ID` | yes | Contentful environment ID |
-| `--tag ID` | yes | Tag to filter entries for publish/unpublish |
-| `--action MODE` | no | `publish` (default) or `unpublish` |
-| `--limit N` | yes | Process at most `N` actionable entries |
-| `--concurrency N` | no | Run up to `N` bulk actions in parallel (max 5, default 1) |
-| `--dry-run` | no | List entry IDs without mutating content |
-| `--verbose` | no | Log content type and version per entry |
+| Flag               | Required | Description                                               |
+| ------------------ | -------- | --------------------------------------------------------- |
+| `--space ID`       | yes      | Contentful space ID                                       |
+| `--environment ID` | yes      | Contentful environment ID                                 |
+| `--tag ID`         | yes      | Tag to filter entries for publish/unpublish               |
+| `--action MODE`    | no       | `publish` (default) or `unpublish`                        |
+| `--limit N`        | yes      | Process at most `N` actionable entries                    |
+| `--concurrency N`  | no       | Run up to `N` bulk actions in parallel (max 5, default 1) |
+| `--dry-run`        | no       | List entry IDs without mutating content                   |
+| `--verbose`        | no       | Log content type and version per entry                    |
 
 ## Staged rollout
 
