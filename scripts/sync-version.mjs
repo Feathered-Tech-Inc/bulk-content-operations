@@ -5,12 +5,16 @@ import { execSync } from "node:child_process";
 const pkg = JSON.parse(readFileSync("package.json", "utf8"));
 const newVersion = pkg.version;
 
-// 2. Update tauri.conf.json
+// 2. Update tauri.conf.json WITHOUT reformatting the file
 const tauriConfPath = "src-tauri/tauri.conf.json";
-const tauriConf = JSON.parse(readFileSync(tauriConfPath, "utf8"));
-tauriConf.version = newVersion;
-// Note: tauri.conf.json in your project uses 4 spaces for indentation
-writeFileSync(tauriConfPath, JSON.stringify(tauriConf, null, 4) + "\n");
+let tauriConfRaw = readFileSync(tauriConfPath, "utf8");
+
+const versionFieldRegex = /("version"\s*:\s*")([^"]+)(")/;
+if (!versionFieldRegex.test(tauriConfRaw)) {
+    throw new Error(`Could not find "version" field in ${tauriConfPath}`);
+}
+tauriConfRaw = tauriConfRaw.replace(versionFieldRegex, `$1${newVersion}$3`);
+writeFileSync(tauriConfPath, tauriConfRaw);
 
 // 3. Update Cargo.toml (using regex to find the workspace/package version)
 const cargoTomlPath = "src-tauri/Cargo.toml";
