@@ -1,6 +1,6 @@
 {
     "name": "@feathered-tech/bulk-content-operations",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "private": true,
     "scripts": {
         "prepare": "node scripts/setup-git-hooks.mjs",
@@ -13,7 +13,8 @@
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "precommit:gitleaks": "gitleaks protect --staged --redact",
-        "precommit:checks": "pnpm run precommit:gitleaks && pnpm run format:check && pnpm run lint && pnpm run test",
+        "precommit:build-release-sync": "bash scripts/check-build-release-sync.sh",
+        "precommit:checks": "pnpm run precommit:build-release-sync && pnpm run precommit:gitleaks && pnpm run format:check && pnpm run lint && pnpm run test",
         "tauri:dev": "pnpm run build:worker && pnpm run prepare:runtime && tauri dev",
         "tauri:build": "pnpm run build:worker && pnpm run prepare:runtime && tauri build",
         "release:macos": "node scripts/release-tauri-macos.mjs",
