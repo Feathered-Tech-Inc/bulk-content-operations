@@ -446,7 +446,7 @@ dependencies = [
 
 [[package]]
 name = "bulk-content-operations"
-version = "1.0.9"
+version = "1.0.10"
 dependencies = [
  "keyring",
  "log",
