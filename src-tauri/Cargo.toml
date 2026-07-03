@@ -1,6 +1,6 @@
 [package]
 name = "bulk-content-operations"
-version = "1.0.11"
+version = "1.0.12"
 description = "Bulk Content Operations"
 authors = ["Feathered Tech Inc."]
 license = ""
