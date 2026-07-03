@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 if [ -n "$(git status --porcelain)" ]; then
   echo "❌ Error: Working tree is not clean."
@@ -19,8 +20,21 @@ NOTARY_PROFILE="MIKE_WAZOWSKI_NOTARY_PROFILE"
 NEW_VERSION=$(node -p "require('./package.json').version")
 TAG_NAME="v$NEW_VERSION"
 
+# Abort if the tag already exists locally or on origin
+if git rev-parse "$TAG_NAME" >/dev/null 2>&1 || git ls-remote --exit-code --tags origin "refs/tags/$TAG_NAME" >/dev/null 2>&1; then
+  echo "❌ Error: Tag $TAG_NAME already exists."
+  exit 1
+fi
+
+# Verify HEAD is the version-bump commit for this release
+if ! git log -1 --pretty=%s | grep -q "bump version to v$NEW_VERSION"; then
+  echo "❌ Error: HEAD is not the release bump commit for v$NEW_VERSION."
+  echo "Did the release PR merge? Is something else on main after it?"
+  exit 1
+fi
+
 echo "Creating and pushing tag $TAG_NAME..."
-git tag "$TAG_NAME"
+git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
 git push origin "$TAG_NAME"
 
 echo "Starting macOS release build for $TAG_NAME..."
@@ -30,9 +44,15 @@ echo "✅ Build complete."
 
 if command -v gh &> /dev/null; then
   echo "GitHub CLI found. Creating GitHub Release..."
-  gh release create "$TAG_NAME" src-tauri/target/release/bundle/dmg/*.dmg \
+  gh release create "$TAG_NAME" src-tauri/target/release/bundle/dmg/*.dmg src-tauri/target/release/bundle/dmg/*.dmg.sha256 \
     --title "Release $TAG_NAME" \
-    --notes-file "src-tauri/target/release/bundle/release-notes.md"
+    --verify-tag \
+    --generate-notes
+
+  # Append build/traceability metadata to the generated notes
+  GENERATED_NOTES=$(gh release view "$TAG_NAME" --json body -q .body)
+  NOTES_FILE="src-tauri/target/release/bundle/release-notes.md"
+  printf '%s\n\n%s\n' "$GENERATED_NOTES" "$(cat "$NOTES_FILE")" | gh release edit "$TAG_NAME" --notes-file -
   echo "✅ GitHub Release created successfully!"
 else
   echo "⚠️ GitHub CLI (gh) not found. Skipping automated release creation."

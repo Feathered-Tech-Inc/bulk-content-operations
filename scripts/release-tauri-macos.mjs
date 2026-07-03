@@ -52,6 +52,10 @@ console.log(`\n$ shasum -a 256 "${dmgPath}"`);
 const shasumOutput = execSync(`shasum -a 256 "${dmgPath}"`, { encoding: "utf8" }).trim();
 console.log(shasumOutput);
 
+const checksumPath = `${dmgPath}.sha256`;
+writeFileSync(checksumPath, shasumOutput.replace(dmgDir + "/", "") + "\n");
+console.log(`Checksum file: ${checksumPath}`);
+
 // Gather traceability metadata
 const version = JSON.parse(readFileSync("src-tauri/tauri.conf.json", "utf8")).version;
 const commitSha = execSync("git rev-parse --short=12 HEAD", { encoding: "utf8" }).trim();
