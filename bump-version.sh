@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 if [ -n "$(git status --porcelain)" ]; then
   echo "❌ Error: Working tree is not clean."

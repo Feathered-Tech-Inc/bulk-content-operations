@@ -47,7 +47,7 @@ Wait for CI checks to pass, then merge the pull request.
 
 ### 3. Tag and build artifacts
 
-Once merged, run the build script. This will automatically switch to `main`, pull the latest changes, officially tag the release, push the tag, and generate the signed/notarized `.dmg` along with the release notes.
+Once merged, run the build script. This will automatically switch to `main`, pull the latest changes, refuse to proceed if the tag already exists or if `main` `HEAD` is not the expected version-bump commit, create an **annotated** release tag, push it, and generate the signed/notarized `.dmg` along with the release notes.
 
 ```bash
 ./build-release.sh
@@ -108,11 +108,12 @@ _(Note: Ensure your `APPLE_SIGNING_IDENTITY` and `NOTARY_PROFILE` are properly c
 
 ## Distribution + traceability
 
-If you have the GitHub CLI (`gh`) installed, `build-release.sh` will automatically create a GitHub Release, attach the `.dmg` file, and set the release notes.
+If you have the GitHub CLI (`gh`) installed, `build-release.sh` will automatically create a GitHub Release with GitHub-generated changelog notes (`--generate-notes`), verify the pushed tag (`--verify-tag`), attach the `.dmg` and `.dmg.sha256` checksum artifact, then append the locally generated build/traceability metadata from `release-notes.md` to the generated release body.
 
 Otherwise, for each public release, you will need to manually publish the following to the GitHub Releases page:
 
 - The generated `.dmg` file
+- The generated `.dmg.sha256` checksum sidecar file
 - The contents of `release-notes.md` (which automatically includes the SHA256 checksum, version, commit SHA, build date, and releaser info).
 
 ---
