@@ -27,10 +27,16 @@ if git rev-parse "$TAG_NAME" >/dev/null 2>&1 || git ls-remote --exit-code --tags
 fi
 
 # Verify HEAD is the version-bump commit for this release
-if ! git log -1 --pretty=%s | grep -q "bump version to v$NEW_VERSION"; then
-  echo "❌ Error: HEAD is not the release bump commit for v$NEW_VERSION."
-  echo "Did the release PR merge? Is something else on main after it?"
-  exit 1
+HEAD_SUBJECT=$(git log -1 --pretty=%s)
+if ! printf '%s\n' "$HEAD_SUBJECT" | grep -q "bump version to v$NEW_VERSION"; then
+  # Allow GitHub merge-commit flow: HEAD is merge commit, release bump commit is PR head (HEAD^2)
+  if ! printf '%s\n' "$HEAD_SUBJECT" | grep -q "^Merge pull request" \
+    || ! git rev-parse -q --verify HEAD^2 >/dev/null 2>&1 \
+    || ! git log -1 --pretty=%s HEAD^2 | grep -q "bump version to v$NEW_VERSION"; then
+    echo "❌ Error: HEAD is not the release bump commit for v$NEW_VERSION."
+    echo "Did the release PR merge? Is something else on main after it?"
+    exit 1
+  fi
 fi
 
 echo "Creating and pushing tag $TAG_NAME..."

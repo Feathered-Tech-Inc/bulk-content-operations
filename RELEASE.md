@@ -47,7 +47,7 @@ Wait for CI checks to pass, then merge the pull request.
 
 ### 3. Tag and build artifacts
 
-Once merged, run the build script. This will automatically switch to `main`, pull the latest changes, refuse to proceed if the tag already exists or if `main` `HEAD` is not the expected version-bump commit, create an **annotated** release tag, push it, and generate the signed/notarized `.dmg` along with the release notes.
+Once merged, run the build script. This will automatically switch to `main`, pull the latest changes, refuse to proceed if the tag already exists or if `main` `HEAD` is neither the expected version-bump commit nor the GitHub merge commit that contains that bump commit, create an **annotated** release tag, push it, and generate the signed/notarized `.dmg` along with the release notes.
 
 ```bash
 ./build-release.sh
