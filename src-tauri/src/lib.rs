@@ -258,7 +258,7 @@ fn save_token_to_keychain(token: &str) -> Result<(), String> {
 
 fn clear_token_from_keychain() -> Result<(), String> {
   let entry = keychain_entry()?;
-  match entry.delete_password() {
+  match entry.delete_credential() {
     Ok(()) | Err(keyring::Error::NoEntry) => Ok(()),
     Err(error) => Err(format!("Failed to clear saved token from Keychain: {error}")),
   }
