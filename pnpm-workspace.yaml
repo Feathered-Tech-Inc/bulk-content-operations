@@ -1,2 +1,4 @@
 allowBuilds:
     esbuild: true
+minimumReleaseAgeExclude:
+    - tar@7.5.24

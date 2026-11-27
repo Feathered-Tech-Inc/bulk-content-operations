@@ -41,50 +41,50 @@ var require_cjs = __commonJS({
         "use strict";
         Object.defineProperty(exports2, "__esModule", { value: true });
         var toStringFunction2 = Function.prototype.toString;
-        var create45 = Object.create;
+        var create54 = Object.create;
         var toStringObject2 = Object.prototype.toString;
-        var LegacyCache2 =
+        var LegacyCache =
             /** @class */
             (function () {
-                function LegacyCache3() {
+                function LegacyCache2() {
                     this._keys = [];
                     this._values = [];
                 }
-                LegacyCache3.prototype.has = function (key) {
+                LegacyCache2.prototype.has = function (key) {
                     return !!~this._keys.indexOf(key);
                 };
-                LegacyCache3.prototype.get = function (key) {
+                LegacyCache2.prototype.get = function (key) {
                     return this._values[this._keys.indexOf(key)];
                 };
-                LegacyCache3.prototype.set = function (key, value) {
+                LegacyCache2.prototype.set = function (key, value) {
                     this._keys.push(key);
                     this._values.push(value);
                 };
-                return LegacyCache3;
+                return LegacyCache2;
             })();
-        function createCacheLegacy2() {
-            return new LegacyCache2();
+        function createCacheLegacy() {
+            return new LegacyCache();
         }
-        function createCacheModern2() {
+        function createCacheModern() {
             return /* @__PURE__ */ new WeakMap();
         }
-        var createCache2 = typeof WeakMap !== "undefined" ? createCacheModern2 : createCacheLegacy2;
+        var createCache = typeof WeakMap !== "undefined" ? createCacheModern : createCacheLegacy;
         function getCleanClone2(prototype2) {
             if (!prototype2) {
-                return create45(null);
+                return create54(null);
             }
             var Constructor = prototype2.constructor;
             if (Constructor === Object) {
-                return prototype2 === Object.prototype ? {} : create45(prototype2);
+                return prototype2 === Object.prototype ? {} : create54(prototype2);
             }
             if (Constructor && ~toStringFunction2.call(Constructor).indexOf("[native code]")) {
                 try {
                     return new Constructor();
-                } catch (_a3) {}
+                } catch (_a2) {}
             }
-            return create45(prototype2);
+            return create54(prototype2);
         }
-        function getRegExpFlagsLegacy2(regExp) {
+        function getRegExpFlagsLegacy(regExp) {
             var flags = "";
             if (regExp.global) {
                 flags += "g";
@@ -103,38 +103,38 @@ var require_cjs = __commonJS({
             }
             return flags;
         }
-        function getRegExpFlagsModern2(regExp) {
+        function getRegExpFlagsModern(regExp) {
             return regExp.flags;
         }
-        var getRegExpFlags2 = /test/g.flags === "g" ? getRegExpFlagsModern2 : getRegExpFlagsLegacy2;
-        function getTagLegacy2(value) {
+        var getRegExpFlags = /test/g.flags === "g" ? getRegExpFlagsModern : getRegExpFlagsLegacy;
+        function getTagLegacy(value) {
             var type = toStringObject2.call(value);
             return type.substring(8, type.length - 1);
         }
-        function getTagModern2(value) {
-            return value[Symbol.toStringTag] || getTagLegacy2(value);
+        function getTagModern(value) {
+            return value[Symbol.toStringTag] || getTagLegacy(value);
         }
-        var getTag2 = typeof Symbol !== "undefined" ? getTagModern2 : getTagLegacy2;
-        var defineProperty2 = Object.defineProperty;
-        var getOwnPropertyDescriptor2 = Object.getOwnPropertyDescriptor;
-        var getOwnPropertyNames2 = Object.getOwnPropertyNames;
-        var getOwnPropertySymbols2 = Object.getOwnPropertySymbols;
-        var _a2 = Object.prototype;
-        var hasOwnProperty3 = _a2.hasOwnProperty;
-        var propertyIsEnumerable3 = _a2.propertyIsEnumerable;
-        var SUPPORTS_SYMBOL2 = typeof getOwnPropertySymbols2 === "function";
-        function getStrictPropertiesModern2(object) {
-            return getOwnPropertyNames2(object).concat(getOwnPropertySymbols2(object));
+        var getTag2 = typeof Symbol !== "undefined" ? getTagModern : getTagLegacy;
+        var defineProperty = Object.defineProperty;
+        var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+        var getOwnPropertyNames = Object.getOwnPropertyNames;
+        var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+        var _a = Object.prototype;
+        var hasOwnProperty2 = _a.hasOwnProperty;
+        var propertyIsEnumerable2 = _a.propertyIsEnumerable;
+        var SUPPORTS_SYMBOL = typeof getOwnPropertySymbols === "function";
+        function getStrictPropertiesModern(object) {
+            return getOwnPropertyNames(object).concat(getOwnPropertySymbols(object));
         }
-        var getStrictProperties2 = SUPPORTS_SYMBOL2 ? getStrictPropertiesModern2 : getOwnPropertyNames2;
+        var getStrictProperties = SUPPORTS_SYMBOL ? getStrictPropertiesModern : getOwnPropertyNames;
         function copyOwnPropertiesStrict2(value, clone, state) {
-            var properties = getStrictProperties2(value);
-            for (var index3 = 0, length_1 = properties.length, property = void 0, descriptor = void 0; index3 < length_1; ++index3) {
-                property = properties[index3];
+            var properties = getStrictProperties(value);
+            for (var index2 = 0, length_1 = properties.length, property = void 0, descriptor = void 0; index2 < length_1; ++index2) {
+                property = properties[index2];
                 if (property === "callee" || property === "caller") {
                     continue;
                 }
-                descriptor = getOwnPropertyDescriptor2(value, property);
+                descriptor = getOwnPropertyDescriptor(value, property);
                 if (!descriptor) {
                     clone[property] = state.copier(value[property], state);
                     continue;
@@ -143,18 +143,18 @@ var require_cjs = __commonJS({
                     descriptor.value = state.copier(descriptor.value, state);
                 }
                 try {
-                    defineProperty2(clone, property, descriptor);
+                    defineProperty(clone, property, descriptor);
                 } catch (error) {
                     clone[property] = descriptor.value;
                 }
             }
             return clone;
         }
-        function copyArrayLoose2(array, state) {
+        function copyArrayLoose(array, state) {
             var clone = new state.Constructor();
             state.cache.set(array, clone);
-            for (var index3 = 0, length_2 = array.length; index3 < length_2; ++index3) {
-                clone[index3] = state.copier(array[index3], state);
+            for (var index2 = 0, length_2 = array.length; index2 < length_2; ++index2) {
+                clone[index2] = state.copier(array[index2], state);
             }
             return clone;
         }
@@ -175,7 +175,7 @@ var require_cjs = __commonJS({
         function copyDate2(date, state) {
             return new state.Constructor(date.getTime());
         }
-        function copyMapLoose2(map, state) {
+        function copyMapLoose(map, state) {
             var clone = new state.Constructor();
             state.cache.set(map, clone);
             map.forEach(function (value, key) {
@@ -184,36 +184,36 @@ var require_cjs = __commonJS({
             return clone;
         }
         function copyMapStrict2(map, state) {
-            return copyOwnPropertiesStrict2(map, copyMapLoose2(map, state), state);
+            return copyOwnPropertiesStrict2(map, copyMapLoose(map, state), state);
         }
-        function copyObjectLooseLegacy2(object, state) {
+        function copyObjectLooseLegacy(object, state) {
             var clone = getCleanClone2(state.prototype);
             state.cache.set(object, clone);
             for (var key in object) {
-                if (hasOwnProperty3.call(object, key)) {
+                if (hasOwnProperty2.call(object, key)) {
                     clone[key] = state.copier(object[key], state);
                 }
             }
             return clone;
         }
-        function copyObjectLooseModern2(object, state) {
+        function copyObjectLooseModern(object, state) {
             var clone = getCleanClone2(state.prototype);
             state.cache.set(object, clone);
             for (var key in object) {
-                if (hasOwnProperty3.call(object, key)) {
+                if (hasOwnProperty2.call(object, key)) {
                     clone[key] = state.copier(object[key], state);
                 }
             }
-            var symbols = getOwnPropertySymbols2(object);
-            for (var index3 = 0, length_3 = symbols.length, symbol = void 0; index3 < length_3; ++index3) {
-                symbol = symbols[index3];
-                if (propertyIsEnumerable3.call(object, symbol)) {
+            var symbols = getOwnPropertySymbols(object);
+            for (var index2 = 0, length_3 = symbols.length, symbol = void 0; index2 < length_3; ++index2) {
+                symbol = symbols[index2];
+                if (propertyIsEnumerable2.call(object, symbol)) {
                     clone[symbol] = state.copier(object[symbol], state);
                 }
             }
             return clone;
         }
-        var copyObjectLoose2 = SUPPORTS_SYMBOL2 ? copyObjectLooseModern2 : copyObjectLooseLegacy2;
+        var copyObjectLoose = SUPPORTS_SYMBOL ? copyObjectLooseModern : copyObjectLooseLegacy;
         function copyObjectStrict2(object, state) {
             var clone = getCleanClone2(state.prototype);
             state.cache.set(object, clone);
@@ -223,14 +223,14 @@ var require_cjs = __commonJS({
             return new state.Constructor(primitiveObject.valueOf());
         }
         function copyRegExp2(regExp, state) {
-            var clone = new state.Constructor(regExp.source, getRegExpFlags2(regExp));
+            var clone = new state.Constructor(regExp.source, getRegExpFlags(regExp));
             clone.lastIndex = regExp.lastIndex;
             return clone;
         }
         function copySelf2(value, _state) {
             return value;
         }
-        function copySetLoose2(set, state) {
+        function copySetLoose(set, state) {
             var clone = new state.Constructor();
             state.cache.set(set, clone);
             set.forEach(function (value) {
@@ -239,28 +239,28 @@ var require_cjs = __commonJS({
             return clone;
         }
         function copySetStrict2(set, state) {
-            return copyOwnPropertiesStrict2(set, copySetLoose2(set, state), state);
+            return copyOwnPropertiesStrict2(set, copySetLoose(set, state), state);
         }
-        var isArray3 = Array.isArray;
-        var assign2 = Object.assign;
-        var getPrototypeOf3 =
+        var isArray2 = Array.isArray;
+        var assign = Object.assign;
+        var getPrototypeOf2 =
             Object.getPrototypeOf ||
             function (obj) {
                 return obj.__proto__;
             };
-        var DEFAULT_LOOSE_OPTIONS2 = {
-            array: copyArrayLoose2,
+        var DEFAULT_LOOSE_OPTIONS = {
+            array: copyArrayLoose,
             arrayBuffer: copyArrayBuffer2,
             blob: copyBlob2,
             dataView: copyDataView2,
             date: copyDate2,
             error: copySelf2,
-            map: copyMapLoose2,
-            object: copyObjectLoose2,
+            map: copyMapLoose,
+            object: copyObjectLoose,
             regExp: copyRegExp2,
-            set: copySetLoose2
+            set: copySetLoose
         };
-        var DEFAULT_STRICT_OPTIONS2 = assign2({}, DEFAULT_LOOSE_OPTIONS2, {
+        var DEFAULT_STRICT_OPTIONS = assign({}, DEFAULT_LOOSE_OPTIONS, {
             array: copyArrayStrict2,
             map: copyMapStrict2,
             object: copyObjectStrict2,
@@ -298,7 +298,7 @@ var require_cjs = __commonJS({
             };
         }
         function createCopier2(options) {
-            var normalizedOptions = assign2({}, DEFAULT_LOOSE_OPTIONS2, options);
+            var normalizedOptions = assign({}, DEFAULT_LOOSE_OPTIONS, options);
             var tagSpecificCopiers = getTagSpecificCopiers2(normalizedOptions);
             var array = tagSpecificCopiers.Array,
                 object = tagSpecificCopiers.Object;
@@ -310,12 +310,12 @@ var require_cjs = __commonJS({
                 if (state.cache.has(value)) {
                     return state.cache.get(value);
                 }
-                state.prototype = getPrototypeOf3(value);
+                state.prototype = getPrototypeOf2(value);
                 state.Constructor = state.prototype && state.prototype.constructor;
                 if (!state.Constructor || state.Constructor === Object) {
                     return object(value, state);
                 }
-                if (isArray3(value)) {
+                if (isArray2(value)) {
                     return array(value, state);
                 }
                 var tagSpecificCopier = tagSpecificCopiers[getTag2(value)];
@@ -324,24 +324,24 @@ var require_cjs = __commonJS({
                 }
                 return typeof value.then === "function" ? value : object(value, state);
             }
-            return function copy(value) {
+            return function copy2(value) {
                 return copier(value, {
                     Constructor: void 0,
-                    cache: createCache2(),
+                    cache: createCache(),
                     copier,
                     prototype: void 0
                 });
             };
         }
-        function createStrictCopier2(options) {
-            return createCopier2(assign2({}, DEFAULT_STRICT_OPTIONS2, options));
+        function createStrictCopier(options) {
+            return createCopier2(assign({}, DEFAULT_STRICT_OPTIONS, options));
         }
-        var copyStrict2 = createStrictCopier2({});
-        var index2 = createCopier2({});
+        var copyStrict2 = createStrictCopier({});
+        var index = createCopier2({});
         exports2.copyStrict = copyStrict2;
         exports2.createCopier = createCopier2;
-        exports2.createStrictCopier = createStrictCopier2;
-        exports2.default = index2;
+        exports2.createStrictCopier = createStrictCopier;
+        exports2.default = index;
     }
 });
 
@@ -377,11 +377,11 @@ var require_getRawTag = __commonJS({
     "node_modules/.pnpm/lodash@4.18.1/node_modules/lodash/_getRawTag.js"(exports2, module2) {
         var Symbol2 = require_Symbol();
         var objectProto = Object.prototype;
-        var hasOwnProperty3 = objectProto.hasOwnProperty;
+        var hasOwnProperty2 = objectProto.hasOwnProperty;
         var nativeObjectToString = objectProto.toString;
         var symToStringTag = Symbol2 ? Symbol2.toStringTag : void 0;
         function getRawTag(value) {
-            var isOwn = hasOwnProperty3.call(value, symToStringTag),
+            var isOwn = hasOwnProperty2.call(value, symToStringTag),
                 tag = value[symToStringTag];
             try {
                 value[symToStringTag] = void 0;
@@ -435,8 +435,8 @@ var require_baseGetTag = __commonJS({
 // node_modules/.pnpm/lodash@4.18.1/node_modules/lodash/isArray.js
 var require_isArray = __commonJS({
     "node_modules/.pnpm/lodash@4.18.1/node_modules/lodash/isArray.js"(exports2, module2) {
-        var isArray3 = Array.isArray;
-        module2.exports = isArray3;
+        var isArray2 = Array.isArray;
+        module2.exports = isArray2;
     }
 });
 
@@ -454,11 +454,11 @@ var require_isObjectLike = __commonJS({
 var require_isString = __commonJS({
     "node_modules/.pnpm/lodash@4.18.1/node_modules/lodash/isString.js"(exports2, module2) {
         var baseGetTag = require_baseGetTag();
-        var isArray3 = require_isArray();
+        var isArray2 = require_isArray();
         var isObjectLike = require_isObjectLike();
         var stringTag = "[object String]";
         function isString2(value) {
-            return typeof value == "string" || (!isArray3(value) && isObjectLike(value) && baseGetTag(value) == stringTag);
+            return typeof value == "string" || (!isArray2(value) && isObjectLike(value) && baseGetTag(value) == stringTag);
         }
         module2.exports = isString2;
     }
@@ -597,7 +597,7 @@ var require_object_inspect = __commonJS({
                 depth = 0;
             }
             if (depth >= maxDepth && maxDepth > 0 && typeof obj === "object") {
-                return isArray3(obj) ? "[Array]" : "[Object]";
+                return isArray2(obj) ? "[Array]" : "[Object]";
             }
             var indent = getIndent(opts, depth);
             if (typeof seen === "undefined") {
@@ -643,7 +643,7 @@ var require_object_inspect = __commonJS({
                 s += "</" + $toLowerCase.call(String(obj.nodeName)) + ">";
                 return s;
             }
-            if (isArray3(obj)) {
+            if (isArray2(obj)) {
                 if (obj.length === 0) {
                     return "[]";
                 }
@@ -743,7 +743,7 @@ var require_object_inspect = __commonJS({
         function canTrustToString(obj) {
             return !toStringTag2 || !(typeof obj === "object" && (toStringTag2 in obj || typeof obj[toStringTag2] !== "undefined"));
         }
-        function isArray3(obj) {
+        function isArray2(obj) {
             return toStr(obj) === "[object Array]" && canTrustToString(obj);
         }
         function isDate2(obj) {
@@ -966,7 +966,7 @@ var require_object_inspect = __commonJS({
             return lineJoiner + $join.call(xs, "," + lineJoiner) + "\n" + indent.prev;
         }
         function arrObjKeys(obj, inspect) {
-            var isArr = isArray3(obj);
+            var isArr = isArray2(obj);
             var xs = [];
             if (isArr) {
                 xs.length = obj.length;
@@ -2129,7 +2129,7 @@ var require_utils = __commonJS({
         var formats = require_formats();
         var getSideChannel = require_side_channel();
         var has = Object.prototype.hasOwnProperty;
-        var isArray3 = Array.isArray;
+        var isArray2 = Array.isArray;
         var overflowChannel = getSideChannel();
         var markOverflow = function markOverflow2(obj, maxIndex) {
             overflowChannel.set(obj, maxIndex);
@@ -2155,7 +2155,7 @@ var require_utils = __commonJS({
             while (queue.length > 1) {
                 var item = queue.pop();
                 var obj = item.obj[item.prop];
-                if (isArray3(obj)) {
+                if (isArray2(obj)) {
                     var compacted = [];
                     for (var j = 0; j < obj.length; ++j) {
                         if (typeof obj[j] !== "undefined") {
@@ -2180,7 +2180,7 @@ var require_utils = __commonJS({
                 return target;
             }
             if (typeof source !== "object" && typeof source !== "function") {
-                if (isArray3(target)) {
+                if (isArray2(target)) {
                     var nextIndex = target.length;
                     if (options && typeof options.arrayLimit === "number" && nextIndex > options.arrayLimit) {
                         return markOverflow(arrayToObject2(target.concat(source), options), nextIndex);
@@ -2218,10 +2218,10 @@ var require_utils = __commonJS({
                 return combined;
             }
             var mergeTarget = target;
-            if (isArray3(target) && !isArray3(source)) {
+            if (isArray2(target) && !isArray2(source)) {
                 mergeTarget = arrayToObject2(target, options);
             }
-            if (isArray3(target) && isArray3(source)) {
+            if (isArray2(target) && isArray2(source)) {
                 source.forEach(function (item, i) {
                     if (has.call(target, i)) {
                         var targetItem = target[i];
@@ -2255,7 +2255,7 @@ var require_utils = __commonJS({
                 return acc;
             }, mergeTarget);
         };
-        var assign2 = function assignSingleSource(target, source) {
+        var assign = function assignSingleSource(target, source) {
             return Object.keys(source).reduce(function (acc, key) {
                 acc[key] = source[key];
                 return acc;
@@ -2360,7 +2360,7 @@ var require_utils = __commonJS({
             return result;
         };
         var maybeMap = function maybeMap2(val, fn) {
-            if (isArray3(val)) {
+            if (isArray2(val)) {
                 var mapped = [];
                 for (var i = 0; i < val.length; i += 1) {
                     mapped[mapped.length] = fn(val[i]);
@@ -2371,7 +2371,7 @@ var require_utils = __commonJS({
         };
         module2.exports = {
             arrayToObject: arrayToObject2,
-            assign: assign2,
+            assign,
             combine,
             compact,
             decode,
@@ -2406,10 +2406,10 @@ var require_stringify = __commonJS({
                 return prefix;
             }
         };
-        var isArray3 = Array.isArray;
+        var isArray2 = Array.isArray;
         var push = Array.prototype.push;
         var pushToArray = function (arr, valueOrArray) {
-            push.apply(arr, isArray3(valueOrArray) ? valueOrArray : [valueOrArray]);
+            push.apply(arr, isArray2(valueOrArray) ? valueOrArray : [valueOrArray]);
         };
         var toISO = Date.prototype.toISOString;
         var defaultFormat = formats["default"];
@@ -2464,7 +2464,7 @@ var require_stringify = __commonJS({
                 obj = filter2(prefix, obj);
             } else if (obj instanceof Date) {
                 obj = serializeDate(obj);
-            } else if (generateArrayPrefix === "comma" && isArray3(obj)) {
+            } else if (generateArrayPrefix === "comma" && isArray2(obj)) {
                 obj = utils.maybeMap(obj, function (value2) {
                     if (value2 instanceof Date) {
                         return serializeDate(value2);
@@ -2490,22 +2490,22 @@ var require_stringify = __commonJS({
                 return values;
             }
             var objKeys;
-            if (generateArrayPrefix === "comma" && isArray3(obj)) {
+            if (generateArrayPrefix === "comma" && isArray2(obj)) {
                 if (encodeValuesOnly && encoder) {
                     obj = utils.maybeMap(obj, function (v) {
                         return v == null ? v : encoder(v);
                     });
                 }
                 objKeys = [{ value: obj.length > 0 ? obj.join(",") || null : void 0 }];
-            } else if (isArray3(filter2)) {
+            } else if (isArray2(filter2)) {
                 objKeys = filter2;
             } else {
                 var keys = Object.keys(obj);
                 objKeys = sort ? keys.sort(sort) : keys;
             }
             var encodedPrefix = encodeDotInKeys ? String(prefix).replace(/\./g, "%2E") : String(prefix);
-            var adjustedPrefix = commaRoundTrip && isArray3(obj) && obj.length === 1 ? encodedPrefix + "[]" : encodedPrefix;
-            if (allowEmptyArrays && isArray3(obj) && obj.length === 0) {
+            var adjustedPrefix = commaRoundTrip && isArray2(obj) && obj.length === 1 ? encodedPrefix + "[]" : encodedPrefix;
+            if (allowEmptyArrays && isArray2(obj) && obj.length === 0) {
                 return adjustedPrefix + "[]";
             }
             for (var j = 0; j < objKeys.length; ++j) {
@@ -2515,7 +2515,7 @@ var require_stringify = __commonJS({
                     continue;
                 }
                 var encodedKey = allowDots && encodeDotInKeys ? String(key).replace(/\./g, "%2E") : String(key);
-                var keyPrefix = isArray3(obj) ? (typeof generateArrayPrefix === "function" ? generateArrayPrefix(adjustedPrefix, encodedKey) : adjustedPrefix) : adjustedPrefix + (allowDots ? "." + encodedKey : "[" + encodedKey + "]");
+                var keyPrefix = isArray2(obj) ? (typeof generateArrayPrefix === "function" ? generateArrayPrefix(adjustedPrefix, encodedKey) : adjustedPrefix) : adjustedPrefix + (allowDots ? "." + encodedKey : "[" + encodedKey + "]");
                 sideChannel.set(object, step);
                 var valueSideChannel = getSideChannel();
                 valueSideChannel.set(sentinel, sideChannel);
@@ -2530,7 +2530,7 @@ var require_stringify = __commonJS({
                         strictNullHandling,
                         skipNulls,
                         encodeDotInKeys,
-                        generateArrayPrefix === "comma" && encodeValuesOnly && isArray3(obj) ? null : encoder,
+                        generateArrayPrefix === "comma" && encodeValuesOnly && isArray2(obj) ? null : encoder,
                         filter2,
                         sort,
                         allowDots,
@@ -2571,7 +2571,7 @@ var require_stringify = __commonJS({
             }
             var formatter = formats.formatters[format];
             var filter2 = defaults2.filter;
-            if (typeof opts.filter === "function" || isArray3(opts.filter)) {
+            if (typeof opts.filter === "function" || isArray2(opts.filter)) {
                 filter2 = opts.filter;
             }
             var arrayFormat;
@@ -2616,7 +2616,7 @@ var require_stringify = __commonJS({
             if (typeof options.filter === "function") {
                 filter2 = options.filter;
                 obj = filter2("", obj);
-            } else if (isArray3(options.filter)) {
+            } else if (isArray2(options.filter)) {
                 filter2 = options.filter;
                 objKeys = filter2;
             }
@@ -2686,7 +2686,7 @@ var require_parse = __commonJS({
         "use strict";
         var utils = require_utils();
         var has = Object.prototype.hasOwnProperty;
-        var isArray3 = Array.isArray;
+        var isArray2 = Array.isArray;
         var defaults2 = {
             allowDots: false,
             allowEmptyArrays: false,
@@ -2767,7 +2767,7 @@ var require_parse = __commonJS({
                 } else {
                     key = options.decoder(part.slice(0, pos), defaults2.decoder, charset, "key");
                     if (key !== null) {
-                        val = utils.maybeMap(parseArrayValue(part.slice(pos + 1), options, isArray3(obj[key]) ? obj[key].length : 0), function (encodedVal) {
+                        val = utils.maybeMap(parseArrayValue(part.slice(pos + 1), options, isArray2(obj[key]) ? obj[key].length : 0), function (encodedVal) {
                             return options.decoder(encodedVal, defaults2.decoder, charset, "value");
                         });
                     }
@@ -2776,9 +2776,9 @@ var require_parse = __commonJS({
                     val = interpretNumericEntities(String(val));
                 }
                 if (part.indexOf("[]=") > -1) {
-                    val = isArray3(val) ? [val] : val;
+                    val = isArray2(val) ? [val] : val;
                 }
-                if (options.comma && isArray3(val) && val.length > options.arrayLimit) {
+                if (options.comma && isArray2(val) && val.length > options.arrayLimit) {
                     if (options.throwOnLimitExceeded) {
                         throw new RangeError("Array limit exceeded. Only " + options.arrayLimit + " element" + (options.arrayLimit === 1 ? "" : "s") + " allowed in an array.");
                     }
@@ -2815,18 +2815,18 @@ var require_parse = __commonJS({
                     obj = options.plainObjects ? { __proto__: null } : {};
                     var cleanRoot = root.charAt(0) === "[" && root.charAt(root.length - 1) === "]" ? root.slice(1, -1) : root;
                     var decodedRoot = options.decodeDotInKeys ? cleanRoot.replace(/%2E/g, ".") : cleanRoot;
-                    var index2 = parseInt(decodedRoot, 10);
-                    var isValidArrayIndex = !isNaN(index2) && root !== decodedRoot && String(index2) === decodedRoot && index2 >= 0 && options.parseArrays;
+                    var index = parseInt(decodedRoot, 10);
+                    var isValidArrayIndex = !isNaN(index) && root !== decodedRoot && String(index) === decodedRoot && index >= 0 && options.parseArrays;
                     if (!options.parseArrays && decodedRoot === "") {
                         obj = { 0: leaf };
-                    } else if (isValidArrayIndex && index2 < options.arrayLimit) {
+                    } else if (isValidArrayIndex && index < options.arrayLimit) {
                         obj = [];
-                        obj[index2] = leaf;
+                        obj[index] = leaf;
                     } else if (isValidArrayIndex && options.throwOnLimitExceeded) {
                         throw new RangeError("Array limit exceeded. Only " + options.arrayLimit + " element" + (options.arrayLimit === 1 ? "" : "s") + " allowed in an array.");
                     } else if (isValidArrayIndex) {
-                        obj[index2] = leaf;
-                        utils.markOverflow(obj, index2);
+                        obj[index] = leaf;
+                        utils.markOverflow(obj, index);
                     } else if (decodedRoot !== "__proto__") {
                         obj[decodedRoot] = leaf;
                     }
@@ -3024,7 +3024,7 @@ var require_isPlainObject = __commonJS({
         var funcProto = Function.prototype;
         var objectProto = Object.prototype;
         var funcToString = funcProto.toString;
-        var hasOwnProperty3 = objectProto.hasOwnProperty;
+        var hasOwnProperty2 = objectProto.hasOwnProperty;
         var objectCtorString = funcToString.call(Object);
         function isPlainObject2(value) {
             if (!isObjectLike(value) || baseGetTag(value) != objectTag) {
@@ -3034,18 +3034,18 @@ var require_isPlainObject = __commonJS({
             if (proto === null) {
                 return true;
             }
-            var Ctor = hasOwnProperty3.call(proto, "constructor") && proto.constructor;
+            var Ctor = hasOwnProperty2.call(proto, "constructor") && proto.constructor;
             return typeof Ctor == "function" && Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString;
         }
         module2.exports = isPlainObject2;
     }
 });
 
-// node_modules/.pnpm/contentful-sdk-core@9.4.5/node_modules/contentful-sdk-core/dist/cjs/index.cjs
+// node_modules/.pnpm/contentful-sdk-core@10.0.0/node_modules/contentful-sdk-core/dist/cjs/index.cjs
 var require_cjs2 = __commonJS({
-    "node_modules/.pnpm/contentful-sdk-core@9.4.5/node_modules/contentful-sdk-core/dist/cjs/index.cjs"(exports2) {
+    "node_modules/.pnpm/contentful-sdk-core@10.0.0/node_modules/contentful-sdk-core/dist/cjs/index.cjs"(exports2) {
         "use strict";
-        var copy = require_cjs();
+        var copy2 = require_cjs();
         var process2 = require("process");
         var isString2 = require_isString();
         var qs = require_lib();
@@ -3053,7 +3053,7 @@ var require_cjs2 = __commonJS({
         function _interopDefault(e) {
             return e && e.__esModule ? e : { default: e };
         }
-        var copy__default = /* @__PURE__ */ _interopDefault(copy);
+        var copy__default = /* @__PURE__ */ _interopDefault(copy2);
         var process__default = /* @__PURE__ */ _interopDefault(process2);
         var isString__default = /* @__PURE__ */ _interopDefault(isString2);
         var qs__default = /* @__PURE__ */ _interopDefault(qs);
@@ -13209,18 +13209,18 @@ var require_common = __commonJS({
                     if (typeof args[0] !== "string") {
                         args.unshift("%O");
                     }
-                    let index2 = 0;
+                    let index = 0;
                     args[0] = args[0].replace(/%([a-zA-Z%])/g, (match, format) => {
                         if (match === "%%") {
                             return "%";
                         }
-                        index2++;
+                        index++;
                         const formatter = createDebug.formatters[format];
                         if (typeof formatter === "function") {
-                            const val = args[index2];
+                            const val = args[index];
                             match = formatter.call(self2, val);
-                            args.splice(index2, 1);
-                            index2--;
+                            args.splice(index, 1);
+                            index--;
                         }
                         return match;
                     });
@@ -13454,15 +13454,15 @@ var require_browser = __commonJS({
             }
             const c = "color: " + this.color;
             args.splice(1, 0, c, "color: inherit");
-            let index2 = 0;
+            let index = 0;
             let lastC = 0;
             args[0].replace(/%[a-zA-Z%]/g, match => {
                 if (match === "%%") {
                     return;
                 }
-                index2++;
+                index++;
                 if (match === "%c") {
-                    lastC = index2;
+                    lastC = index;
                 }
             });
             args.splice(lastC, 0, c);
@@ -14288,7 +14288,7 @@ var require_follow_redirects = __commonJS({
             if (!options.headers) {
                 options.headers = {};
             }
-            if (!isArray3(options.sensitiveHeaders)) {
+            if (!isArray2(options.sensitiveHeaders)) {
                 options.sensitiveHeaders = [];
             }
             if (options.host) {
@@ -14458,14 +14458,14 @@ var require_follow_redirects = __commonJS({
                     debug("options", options);
                     return new RedirectableRequest(options, callback);
                 }
-                function get70(input, options, callback) {
+                function get81(input, options, callback) {
                     var wrappedRequest = wrappedProtocol.request(input, options, callback);
                     wrappedRequest.end();
                     return wrappedRequest;
                 }
                 Object.defineProperties(wrappedProtocol, {
                     request: { value: request2, configurable: true, enumerable: true, writable: true },
-                    get: { value: get70, configurable: true, enumerable: true, writable: true }
+                    get: { value: get81, configurable: true, enumerable: true, writable: true }
                 });
             });
             return exports3;
@@ -14553,7 +14553,7 @@ var require_follow_redirects = __commonJS({
             var dot = subdomain.length - domain.length - 1;
             return dot > 0 && subdomain[dot] === "." && subdomain.endsWith(domain);
         }
-        function isArray3(value) {
+        function isArray2(value) {
             return value instanceof Array;
         }
         function isString2(value) {
@@ -14583,7 +14583,7 @@ __export(publish_worker_exports, {
 });
 module.exports = __toCommonJS(publish_worker_exports);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/index.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/index.mjs
 var import_contentful_sdk_core82 = __toESM(require_cjs2(), 1);
 
 // node_modules/.pnpm/axios@1.18.1/node_modules/axios/lib/helpers/bind.js
@@ -14598,9 +14598,9 @@ var { toString } = Object.prototype;
 var { getPrototypeOf } = Object;
 var { iterator, toStringTag } = Symbol;
 var hasOwnProperty = (
-    ({ hasOwnProperty: hasOwnProperty3 }) =>
+    ({ hasOwnProperty: hasOwnProperty2 }) =>
     (obj, prop) =>
-        hasOwnProperty3.call(obj, prop)
+        hasOwnProperty2.call(obj, prop)
 )(Object.prototype);
 var hasOwnInPrototypeChain = (thing, prop) => {
     let obj = thing;
@@ -15642,11 +15642,11 @@ function toFormData(obj, formData, options) {
                 value = stringifyWithDepthLimit(value, 1);
             } else if ((utils_default.isArray(value) && isFlatArray(value)) || ((utils_default.isFileList(value) || utils_default.endsWith(key, "[]")) && (arr = utils_default.toArray(value)))) {
                 key = removeBrackets(key);
-                arr.forEach(function each(el, index2) {
+                arr.forEach(function each(el, index) {
                     !(utils_default.isUndefined(el) || el === null) &&
                         formData.append(
                             // eslint-disable-next-line no-nested-ternary
-                            indexes === true ? renderKey([key], index2, dots) : indexes === null ? key : key + "[]",
+                            indexes === true ? renderKey([key], index, dots) : indexes === null ? key : key + "[]",
                             convertValue(el)
                         );
                 });
@@ -15906,9 +15906,9 @@ function toURLEncodedForm(data, options) {
 
 // node_modules/.pnpm/axios@1.18.1/node_modules/axios/lib/helpers/formDataToJSON.js
 var MAX_DEPTH = DEFAULT_FORM_DATA_MAX_DEPTH;
-function throwIfDepthExceeded(index2) {
-    if (index2 > MAX_DEPTH) {
-        throw new AxiosError_default("FormData field is too deeply nested (" + index2 + " levels). Max depth: " + MAX_DEPTH, AxiosError_default.ERR_FORM_DATA_DEPTH_EXCEEDED);
+function throwIfDepthExceeded(index) {
+    if (index > MAX_DEPTH) {
+        throw new AxiosError_default("FormData field is too deeply nested (" + index + " levels). Max depth: " + MAX_DEPTH, AxiosError_default.ERR_FORM_DATA_DEPTH_EXCEEDED);
     }
 }
 function parsePropPath(name) {
@@ -15934,12 +15934,12 @@ function arrayToObject(arr) {
     return obj;
 }
 function formDataToJSON(formData) {
-    function buildPath(path, value, target, index2) {
-        throwIfDepthExceeded(index2);
-        let name = path[index2++];
+    function buildPath(path, value, target, index) {
+        throwIfDepthExceeded(index);
+        let name = path[index++];
         if (name === "__proto__") return true;
         const isNumericKey = Number.isFinite(+name);
-        const isLast = index2 >= path.length;
+        const isLast = index >= path.length;
         name = !name && utils_default.isArray(target) ? target.length : name;
         if (isLast) {
             if (utils_default.hasOwnProp(target, name)) {
@@ -15952,7 +15952,7 @@ function formDataToJSON(formData) {
         if (!utils_default.hasOwnProp(target, name) || !utils_default.isObject(target[name])) {
             target[name] = [];
         }
-        const result = buildPath(path, value, target[name], index2);
+        const result = buildPath(path, value, target[name], index);
         if (result && utils_default.isArray(target[name])) {
             target[name] = arrayToObject(target[name]);
         }
@@ -19116,9 +19116,9 @@ var CancelToken = class _CancelToken {
         if (!this._listeners) {
             return;
         }
-        const index2 = this._listeners.indexOf(listener);
-        if (index2 !== -1) {
-            this._listeners.splice(index2, 1);
+        const index = this._listeners.indexOf(listener);
+        if (index !== -1) {
+            this._listeners.splice(index, 1);
         }
     }
     toAbortSignal() {
@@ -19242,7 +19242,7 @@ function createInstance(defaultConfig) {
     const instance = bind(Axios_default.prototype.request, context);
     utils_default.extend(instance, Axios_default.prototype, context, { allOwnKeys: true });
     utils_default.extend(instance, context, null, { allOwnKeys: true });
-    instance.create = function create45(instanceConfig) {
+    instance.create = function create54(instanceConfig) {
         return createInstance(mergeConfig(defaultConfig, instanceConfig));
     };
     return instance;
@@ -19290,272 +19290,307 @@ var {
     create
 } = axios_default;
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/rest-adapter.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/rest-adapter.mjs
 var import_contentful_sdk_core5 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/fast-copy@3.0.2/node_modules/fast-copy/dist/esm/index.mjs
+// node_modules/.pnpm/fast-copy@4.3.4/node_modules/fast-copy/dist/es/index.mjs
+var MaxDepthExceededError = class extends RangeError {
+    constructor(maxDepth) {
+        super(`Maximum copy depth of ${String(maxDepth)} exceeded; the value copied is nested too deeply.`);
+        this.maxDepth = maxDepth;
+        this.name = "MaxDepthExceededError";
+    }
+};
 var toStringFunction = Function.prototype.toString;
-var create2 = Object.create;
 var toStringObject = Object.prototype.toString;
-var LegacyCache =
-    /** @class */
-    (function () {
-        function LegacyCache2() {
-            this._keys = [];
-            this._values = [];
-        }
-        LegacyCache2.prototype.has = function (key) {
-            return !!~this._keys.indexOf(key);
-        };
-        LegacyCache2.prototype.get = function (key) {
-            return this._values[this._keys.indexOf(key)];
-        };
-        LegacyCache2.prototype.set = function (key, value) {
-            this._keys.push(key);
-            this._values.push(value);
-        };
-        return LegacyCache2;
-    })();
-function createCacheLegacy() {
-    return new LegacyCache();
-}
-function createCacheModern() {
-    return /* @__PURE__ */ new WeakMap();
-}
-var createCache = typeof WeakMap !== "undefined" ? createCacheModern : createCacheLegacy;
 function getCleanClone(prototype2) {
     if (!prototype2) {
-        return create2(null);
+        return /* @__PURE__ */ Object.create(null);
     }
-    var Constructor = prototype2.constructor;
+    const Constructor = prototype2.constructor;
     if (Constructor === Object) {
-        return prototype2 === Object.prototype ? {} : create2(prototype2);
+        return prototype2 === Object.prototype ? {} : Object.create(prototype2);
     }
-    if (Constructor && ~toStringFunction.call(Constructor).indexOf("[native code]")) {
+    if (typeof Constructor === "function" && ~toStringFunction.call(Constructor).indexOf("[native code]")) {
         try {
             return new Constructor();
-        } catch (_a2) {}
+        } catch (_a) {}
     }
-    return create2(prototype2);
+    return Object.create(prototype2);
 }
-function getRegExpFlagsLegacy(regExp) {
-    var flags = "";
-    if (regExp.global) {
-        flags += "g";
+function getTag(value) {
+    const stringTag = value[Symbol.toStringTag];
+    if (stringTag) {
+        return stringTag;
     }
-    if (regExp.ignoreCase) {
-        flags += "i";
-    }
-    if (regExp.multiline) {
-        flags += "m";
-    }
-    if (regExp.unicode) {
-        flags += "u";
-    }
-    if (regExp.sticky) {
-        flags += "y";
-    }
-    return flags;
-}
-function getRegExpFlagsModern(regExp) {
-    return regExp.flags;
-}
-var getRegExpFlags = /test/g.flags === "g" ? getRegExpFlagsModern : getRegExpFlagsLegacy;
-function getTagLegacy(value) {
-    var type = toStringObject.call(value);
+    const type = toStringObject.call(value);
     return type.substring(8, type.length - 1);
 }
-function getTagModern(value) {
-    return value[Symbol.toStringTag] || getTagLegacy(value);
-}
-var getTag = typeof Symbol !== "undefined" ? getTagModern : getTagLegacy;
-var defineProperty = Object.defineProperty;
-var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
-var getOwnPropertyNames = Object.getOwnPropertyNames;
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var _a = Object.prototype;
-var hasOwnProperty2 = _a.hasOwnProperty;
-var propertyIsEnumerable2 = _a.propertyIsEnumerable;
-var SUPPORTS_SYMBOL = typeof getOwnPropertySymbols === "function";
-function getStrictPropertiesModern(object) {
-    return getOwnPropertyNames(object).concat(getOwnPropertySymbols(object));
-}
-var getStrictProperties = SUPPORTS_SYMBOL ? getStrictPropertiesModern : getOwnPropertyNames;
-function copyOwnPropertiesStrict(value, clone, state) {
-    var properties = getStrictProperties(value);
-    for (var index2 = 0, length_1 = properties.length, property = void 0, descriptor = void 0; index2 < length_1; ++index2) {
-        property = properties[index2];
-        if (property === "callee" || property === "caller") {
-            continue;
+var sliceTypedArray = Object.getPrototypeOf(Int8Array.prototype).slice;
+var IS_ARRAY_PROTOTYPE_STANDARD = Object.getPrototypeOf(Array.prototype) === Object.prototype;
+function copyOwnDescriptor(original, clone, property, state, assignable) {
+    const ownDescriptor = Object.getOwnPropertyDescriptor(original, property) || {
+        configurable: true,
+        enumerable: true,
+        value: original[property],
+        writable: true
+    };
+    let descriptor;
+    if (ownDescriptor.writable === void 0 || ownDescriptor.get || ownDescriptor.set) {
+        descriptor = ownDescriptor;
+    } else {
+        const { configurable, enumerable, writable } = ownDescriptor;
+        const value = state.copier(ownDescriptor.value, state);
+        if (assignable) {
+            if (configurable && enumerable && writable && !(property in clone)) {
+                clone[property] = value;
+                return;
+            }
+            if (property === "length" && writable && Array.isArray(clone) && clone.length === value) {
+                return;
+            }
         }
-        descriptor = getOwnPropertyDescriptor(value, property);
-        if (!descriptor) {
-            clone[property] = state.copier(value[property], state);
-            continue;
-        }
-        if (!descriptor.get && !descriptor.set) {
-            descriptor.value = state.copier(descriptor.value, state);
-        }
+        descriptor = { configurable, enumerable, value, writable };
+    }
+    try {
+        Object.defineProperty(clone, property, descriptor);
+    } catch (_a) {
         try {
-            defineProperty(clone, property, descriptor);
-        } catch (error) {
-            clone[property] = descriptor.value;
+            Object.defineProperty(clone, property, Object.setPrototypeOf(descriptor, null));
+        } catch (_b) {
+            clone[property] = descriptor.get ? descriptor.get() : descriptor.value;
         }
+    }
+}
+function defineOwnValue(clone, property, value) {
+    Object.defineProperty(clone, property, {
+        configurable: true,
+        enumerable: true,
+        value,
+        writable: true
+    });
+}
+function copyOwnPropertiesStrict(value, clone, state, names, start, assignable) {
+    for (let index = start; index < names.length; ++index) {
+        copyOwnDescriptor(value, clone, names[index], state, assignable);
+    }
+    for (const symbol of Object.getOwnPropertySymbols(value)) {
+        copyOwnDescriptor(value, clone, symbol, state, assignable);
     }
     return clone;
 }
-function copyArrayLoose(array, state) {
-    var clone = new state.Constructor();
+function copyArray(array, state) {
+    const clone = new state.Constructor();
     state.cache.set(array, clone);
-    for (var index2 = 0, length_2 = array.length; index2 < length_2; ++index2) {
-        clone[index2] = state.copier(array[index2], state);
+    for (let index = 0; index < array.length; ++index) {
+        clone[index] = state.copier(array[index], state);
     }
     return clone;
 }
 function copyArrayStrict(array, state) {
-    var clone = new state.Constructor();
+    const clone = new state.Constructor();
     state.cache.set(array, clone);
-    return copyOwnPropertiesStrict(array, clone, state);
+    return copyOwnPropertiesStrict(array, clone, state, Object.getOwnPropertyNames(array), 0, IS_ARRAY_PROTOTYPE_STANDARD && state.Constructor === Array);
 }
-function copyArrayBuffer(arrayBuffer, _state) {
+function copyArrayBuffer(arrayBuffer, state) {
+    if (ArrayBuffer.isView(arrayBuffer)) {
+        return sliceTypedArray.call(arrayBuffer, 0);
+    }
+    if (arrayBuffer.resizable || arrayBuffer.growable) {
+        const maxByteLength = arrayBuffer.maxByteLength;
+        const clone = new state.Constructor(arrayBuffer.byteLength, { maxByteLength });
+        new Uint8Array(clone).set(new Uint8Array(arrayBuffer));
+        return clone;
+    }
+    if (!arrayBuffer.byteLength && getTag(arrayBuffer) === "SharedArrayBuffer") {
+        return new state.Constructor(0);
+    }
     return arrayBuffer.slice(0);
+}
+function copyArrayBufferStrict(arrayBuffer, state) {
+    const clone = copyArrayBuffer(arrayBuffer, state);
+    state.cache.set(arrayBuffer, clone);
+    const start = ArrayBuffer.isView(clone) ? clone.length || 0 : 0;
+    return copyOwnPropertiesStrict(arrayBuffer, clone, state, Object.getOwnPropertyNames(arrayBuffer), start, false);
 }
 function copyBlob(blob, _state) {
     return blob.slice(0, blob.size, blob.type);
 }
+var copyBlobStrict = createStrictHandler(copyBlob);
 function copyDataView(dataView, state) {
-    return new state.Constructor(copyArrayBuffer(dataView.buffer));
+    return new state.Constructor(state.copier(dataView.buffer, state), dataView.byteOffset, dataView.byteLength);
+}
+function copyDataViewStrict(dataView, state) {
+    const { buffer } = dataView;
+    const { cache, Constructor } = state;
+    const bufferCopied = cache.has(buffer);
+    const bufferClone = bufferCopied ? cache.get(buffer) : state.copier(buffer, state);
+    if (!bufferCopied && cache.has(dataView)) {
+        return cache.get(dataView);
+    }
+    const clone = new Constructor(bufferClone, dataView.byteOffset, dataView.byteLength);
+    state.cache.set(dataView, clone);
+    return copyOwnPropertiesStrict(dataView, clone, state, Object.getOwnPropertyNames(dataView), 0, false);
 }
 function copyDate(date, state) {
     return new state.Constructor(date.getTime());
 }
-function copyMapLoose(map, state) {
-    var clone = new state.Constructor();
+var copyDateStrict = createStrictHandler(copyDate);
+function copyMap(map, state) {
+    const clone = new state.Constructor();
     state.cache.set(map, clone);
-    map.forEach(function (value, key) {
-        clone.set(key, state.copier(value, state));
-    });
+    for (const [key, value] of map) {
+        clone.set(key != null && typeof key === "object" ? state.copier(key, state) : key, state.copier(value, state));
+    }
     return clone;
 }
 function copyMapStrict(map, state) {
-    return copyOwnPropertiesStrict(map, copyMapLoose(map, state), state);
+    return copyOwnPropertiesStrict(map, copyMap(map, state), state, Object.getOwnPropertyNames(map), 0, false);
 }
-function copyObjectLooseLegacy(object, state) {
-    var clone = getCleanClone(state.prototype);
+function copyObject(object, state) {
+    const clone = getCleanClone(state.prototype);
     state.cache.set(object, clone);
-    for (var key in object) {
-        if (hasOwnProperty2.call(object, key)) {
-            clone[key] = state.copier(object[key], state);
+    for (const key of Object.keys(object)) {
+        const value = state.copier(object[key], state);
+        if (key === "__proto__") {
+            defineOwnValue(clone, key, value);
+        } else {
+            try {
+                clone[key] = value;
+            } catch (_a) {
+                defineOwnValue(clone, key, value);
+            }
+        }
+    }
+    for (const symbol of Object.getOwnPropertySymbols(object)) {
+        if (Object.prototype.propertyIsEnumerable.call(object, symbol)) {
+            const value = state.copier(object[symbol], state);
+            try {
+                clone[symbol] = value;
+            } catch (_b) {
+                defineOwnValue(clone, symbol, value);
+            }
         }
     }
     return clone;
 }
-function copyObjectLooseModern(object, state) {
-    var clone = getCleanClone(state.prototype);
-    state.cache.set(object, clone);
-    for (var key in object) {
-        if (hasOwnProperty2.call(object, key)) {
-            clone[key] = state.copier(object[key], state);
-        }
-    }
-    var symbols = getOwnPropertySymbols(object);
-    for (var index2 = 0, length_3 = symbols.length, symbol = void 0; index2 < length_3; ++index2) {
-        symbol = symbols[index2];
-        if (propertyIsEnumerable2.call(object, symbol)) {
-            clone[symbol] = state.copier(object[symbol], state);
-        }
-    }
-    return clone;
-}
-var copyObjectLoose = SUPPORTS_SYMBOL ? copyObjectLooseModern : copyObjectLooseLegacy;
 function copyObjectStrict(object, state) {
-    var clone = getCleanClone(state.prototype);
+    const { prototype: prototype2 } = state;
+    const clone = getCleanClone(prototype2);
     state.cache.set(object, clone);
-    return copyOwnPropertiesStrict(object, clone, state);
+    return copyOwnPropertiesStrict(object, clone, state, Object.getOwnPropertyNames(object), 0, prototype2 === Object.prototype || prototype2 === null);
 }
 function copyPrimitiveWrapper(primitiveObject, state) {
     return new state.Constructor(primitiveObject.valueOf());
 }
+var copyPrimitiveWrapperStrict = createStrictHandler(copyPrimitiveWrapper);
 function copyRegExp(regExp, state) {
-    var clone = new state.Constructor(regExp.source, getRegExpFlags(regExp));
+    const clone = new state.Constructor(regExp.source, regExp.flags);
     clone.lastIndex = regExp.lastIndex;
     return clone;
 }
+var copyRegExpStrict = createStrictHandler(copyRegExp);
 function copySelf(value, _state) {
     return value;
 }
-function copySetLoose(set, state) {
-    var clone = new state.Constructor();
+function copySet(set, state) {
+    const clone = new state.Constructor();
     state.cache.set(set, clone);
-    set.forEach(function (value) {
+    for (const value of set) {
         clone.add(state.copier(value, state));
-    });
+    }
     return clone;
 }
 function copySetStrict(set, state) {
-    return copyOwnPropertiesStrict(set, copySetLoose(set, state), state);
+    return copyOwnPropertiesStrict(set, copySet(set, state), state, Object.getOwnPropertyNames(set), 0, false);
 }
-var isArray2 = Array.isArray;
-var assign = Object.assign;
-var getPrototypeOf2 =
-    Object.getPrototypeOf ||
-    function (obj) {
-        return obj.__proto__;
+function createStrictHandler(handler) {
+    return (value, state) => {
+        const clone = handler(value, state);
+        state.cache.set(value, clone);
+        return copyOwnPropertiesStrict(value, clone, state, Object.getOwnPropertyNames(value), 0, false);
     };
-var DEFAULT_LOOSE_OPTIONS = {
-    array: copyArrayLoose,
-    arrayBuffer: copyArrayBuffer,
-    blob: copyBlob,
-    dataView: copyDataView,
-    date: copyDate,
-    error: copySelf,
-    map: copyMapLoose,
-    object: copyObjectLoose,
-    regExp: copyRegExp,
-    set: copySetLoose
-};
-var DEFAULT_STRICT_OPTIONS = assign({}, DEFAULT_LOOSE_OPTIONS, {
-    array: copyArrayStrict,
-    map: copyMapStrict,
-    object: copyObjectStrict,
-    set: copySetStrict
-});
-function getTagSpecificCopiers(options) {
+}
+function copyStringStrict(string, state) {
+    const clone = copyPrimitiveWrapper(string, state);
+    state.cache.set(string, clone);
+    const { length } = string;
+    const names = Object.getOwnPropertyNames(string);
+    const start = names[length] === "length" ? length + 1 : length;
+    return copyOwnPropertiesStrict(string, clone, state, names, start, false);
+}
+var DEFAULT_MAX_DEPTH = 1e3;
+function createDefaultCache() {
+    return /* @__PURE__ */ new WeakMap();
+}
+function getOptions({ createCache: createCacheOverride, maxDepth, methods: methodsOverride, strict }) {
+    const defaultMethods = {
+        array: strict ? copyArrayStrict : copyArray,
+        arrayBuffer: strict ? copyArrayBufferStrict : copyArrayBuffer,
+        asyncGenerator: copySelf,
+        blob: strict ? copyBlobStrict : copyBlob,
+        dataView: strict ? copyDataViewStrict : copyDataView,
+        date: strict ? copyDateStrict : copyDate,
+        error: copySelf,
+        generator: copySelf,
+        map: strict ? copyMapStrict : copyMap,
+        object: strict ? copyObjectStrict : copyObject,
+        regExp: strict ? copyRegExpStrict : copyRegExp,
+        set: strict ? copySetStrict : copySet
+    };
+    const methods = methodsOverride ? Object.assign(defaultMethods, methodsOverride) : defaultMethods;
+    const copiers = getTagSpecificCopiers(methods, strict);
+    const createCache = createCacheOverride || createDefaultCache;
+    if (!copiers.Object || !copiers.Array) {
+        throw new Error("An object and array copier must be provided.");
+    }
     return {
-        Arguments: options.object,
-        Array: options.array,
-        ArrayBuffer: options.arrayBuffer,
-        Blob: options.blob,
-        Boolean: copyPrimitiveWrapper,
-        DataView: options.dataView,
-        Date: options.date,
-        Error: options.error,
-        Float32Array: options.arrayBuffer,
-        Float64Array: options.arrayBuffer,
-        Int8Array: options.arrayBuffer,
-        Int16Array: options.arrayBuffer,
-        Int32Array: options.arrayBuffer,
-        Map: options.map,
-        Number: copyPrimitiveWrapper,
-        Object: options.object,
+        createCache,
+        copiers,
+        maxDepth: maxDepth == null ? DEFAULT_MAX_DEPTH : maxDepth,
+        methods,
+        strict: Boolean(strict)
+    };
+}
+function getTagSpecificCopiers(methods, strict) {
+    const copyPrimitive = strict ? copyPrimitiveWrapperStrict : copyPrimitiveWrapper;
+    return Object.assign(/* @__PURE__ */ Object.create(null), {
+        Arguments: methods.object,
+        Array: methods.array,
+        ArrayBuffer: methods.arrayBuffer,
+        AsyncGenerator: methods.asyncGenerator,
+        BigInt64Array: methods.arrayBuffer,
+        BigUint64Array: methods.arrayBuffer,
+        Blob: methods.blob,
+        Boolean: copyPrimitive,
+        DataView: methods.dataView,
+        Date: methods.date,
+        Error: methods.error,
+        Float32Array: methods.arrayBuffer,
+        Float64Array: methods.arrayBuffer,
+        Generator: methods.generator,
+        Int8Array: methods.arrayBuffer,
+        Int16Array: methods.arrayBuffer,
+        Int32Array: methods.arrayBuffer,
+        Map: methods.map,
+        Number: copyPrimitive,
+        Object: methods.object,
         Promise: copySelf,
-        RegExp: options.regExp,
-        Set: options.set,
-        String: copyPrimitiveWrapper,
+        RegExp: methods.regExp,
+        Set: methods.set,
+        SharedArrayBuffer: methods.arrayBuffer,
+        String: strict ? copyStringStrict : copyPrimitiveWrapper,
         WeakMap: copySelf,
         WeakSet: copySelf,
-        Uint8Array: options.arrayBuffer,
-        Uint8ClampedArray: options.arrayBuffer,
-        Uint16Array: options.arrayBuffer,
-        Uint32Array: options.arrayBuffer,
-        Uint64Array: options.arrayBuffer
-    };
+        Uint8Array: methods.arrayBuffer,
+        Uint8ClampedArray: methods.arrayBuffer,
+        Uint16Array: methods.arrayBuffer,
+        Uint32Array: methods.arrayBuffer
+    });
 }
-function createCopier(options) {
-    var normalizedOptions = assign({}, DEFAULT_LOOSE_OPTIONS, options);
-    var tagSpecificCopiers = getTagSpecificCopiers(normalizedOptions);
-    var array = tagSpecificCopiers.Array,
-        object = tagSpecificCopiers.Object;
+function createCopier(options = {}) {
+    const { createCache, copiers, maxDepth } = getOptions(options);
+    const { Array: copyArray2, Object: copyObject2 } = copiers;
     function copier(value, state) {
         state.prototype = state.Constructor = void 0;
         if (!value || typeof value !== "object") {
@@ -19564,39 +19599,44 @@ function createCopier(options) {
         if (state.cache.has(value)) {
             return state.cache.get(value);
         }
-        state.prototype = getPrototypeOf2(value);
+        if (++state.depth > maxDepth) {
+            throw new MaxDepthExceededError(maxDepth);
+        }
+        state.prototype = Object.getPrototypeOf(value);
         state.Constructor = state.prototype && state.prototype.constructor;
+        let clone;
         if (!state.Constructor || state.Constructor === Object) {
-            return object(value, state);
+            clone = copyObject2(value, state);
+        } else if (Array.isArray(value)) {
+            clone = copyArray2(value, state);
+        } else {
+            const tagSpecificCopier = copiers[getTag(value)];
+            if (tagSpecificCopier) {
+                clone = tagSpecificCopier(value, state);
+            } else {
+                clone = typeof value.then === "function" ? value : copyObject2(value, state);
+            }
         }
-        if (isArray2(value)) {
-            return array(value, state);
-        }
-        var tagSpecificCopier = tagSpecificCopiers[getTag(value)];
-        if (tagSpecificCopier) {
-            return tagSpecificCopier(value, state);
-        }
-        return typeof value.then === "function" ? value : object(value, state);
+        --state.depth;
+        return clone;
     }
-    return function copy(value) {
+    return function copy2(value) {
         return copier(value, {
             Constructor: void 0,
             cache: createCache(),
             copier,
+            depth: 0,
             prototype: void 0
         });
     };
 }
-function createStrictCopier(options) {
-    return createCopier(assign({}, DEFAULT_STRICT_OPTIONS, options));
-}
-var copyStrict = createStrictCopier({});
-var index = createCopier({});
+var copyStrict = createCopier({ strict: true });
+var copy = createCopier();
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/ai-action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/ai-action.mjs
 var ai_action_exports = {};
 __export(ai_action_exports, {
-    create: () => create3,
+    create: () => create2,
     del: () => del2,
     get: () => get2,
     getMany: () => getMany,
@@ -19606,7 +19646,7 @@ __export(ai_action_exports, {
     update: () => update
 });
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/raw.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/raw.mjs
 var import_contentful_sdk_core = __toESM(require_cjs2(), 1);
 function getBaseUrl(http4) {
     return http4.defaults.baseURL?.split("/spaces")[0];
@@ -19658,7 +19698,7 @@ function http3(http4, url2, config) {
     }).then(response => response.data, import_contentful_sdk_core.errorHandler);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/ai-action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/ai-action.mjs
 var get2 = (http4, params, headers) => {
     return get(http4, `/spaces/${params.spaceId}/ai/actions/${params.aiActionId}`, {
         headers
@@ -19670,11 +19710,11 @@ var getMany = (http4, params, headers) => {
         headers
     });
 };
-var create3 = (http4, params, data, headers) => {
+var create2 = (http4, params, data, headers) => {
     return post(http4, `/spaces/${params.spaceId}/ai/actions`, data, { headers });
 };
 var update = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     const { sys, ...payload } = data;
     return put(http4, `/spaces/${params.spaceId}/ai/actions/${params.aiActionId}`, payload, {
         headers: {
@@ -19703,7 +19743,7 @@ var invoke = (http4, params, data, headers) => {
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/ai/actions/${params.aiActionId}/invoke`, data, { headers, params: params.query });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/ai-action-invocation.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/ai-action-invocation.mjs
 var ai_action_invocation_exports = {};
 __export(ai_action_invocation_exports, {
     get: () => get3
@@ -19712,7 +19752,7 @@ var get3 = (http4, params, headers) => {
     return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/ai/actions/${params.aiActionId}/invocations/${params.invocationId}`, { headers });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/agent.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/agent.mjs
 var agent_exports = {};
 __export(agent_exports, {
     generate: () => generate,
@@ -19747,7 +19787,7 @@ var generate = (http4, params, data, headers) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/agent-run.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/agent-run.mjs
 var agent_run_exports = {};
 __export(agent_run_exports, {
     get: () => get5,
@@ -19783,7 +19823,7 @@ var resumeRun = (http4, params, data, headers) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/access-token.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/access-token.mjs
 var access_token_exports = {};
 __export(access_token_exports, {
     createPersonalAccessToken: () => createPersonalAccessToken,
@@ -19814,10 +19854,10 @@ var getManyForOrganization = (http4, params) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/automation-definition.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/automation-definition.mjs
 var automation_definition_exports = {};
 __export(automation_definition_exports, {
-    create: () => create4,
+    create: () => create3,
     del: () => del3,
     get: () => get7,
     getMany: () => getMany5,
@@ -19834,14 +19874,14 @@ var getMany5 = (http4, params, headers) =>
         headers,
         params: params.query
     });
-var create4 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var create3 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     return post(http4, getBaseUrl2(params), data, {
         headers
     });
 };
 var update2 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getAutomationDefinitionUrl(params), data, {
         headers: {
@@ -19856,7 +19896,7 @@ var del3 = (http4, params, headers) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/automation-execution.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/automation-execution.mjs
 var automation_execution_exports = {};
 __export(automation_execution_exports, {
     get: () => get8,
@@ -19881,10 +19921,10 @@ var getForAutomationDefinition = (http4, params, headers) =>
         params: params.query
     });
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/api-key.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/api-key.mjs
 var api_key_exports = {};
 __export(api_key_exports, {
-    create: () => create5,
+    create: () => create4,
     createWithId: () => createWithId,
     del: () => del4,
     get: () => get9,
@@ -19899,7 +19939,7 @@ var getMany7 = (http4, params) => {
         params: params.query
     });
 };
-var create5 = (http4, params, data, headers) => {
+var create4 = (http4, params, data, headers) => {
     return post(http4, `/spaces/${params.spaceId}/api_keys`, data, { headers });
 };
 var createWithId = (http4, params, data, headers) => {
@@ -19908,7 +19948,7 @@ var createWithId = (http4, params, data, headers) => {
     });
 };
 var update3 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     if ("accessToken" in data) {
         delete data.accessToken;
     }
@@ -19930,19 +19970,19 @@ var del4 = (http4, params) => {
     return del(http4, `/spaces/${params.spaceId}/api_keys/${params.apiKeyId}`);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-access-token.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-access-token.mjs
 var app_access_token_exports = {};
 __export(app_access_token_exports, {
-    create: () => create6
+    create: () => create5
 });
-var create6 = (http4, params, data) => {
+var create5 = (http4, params, data) => {
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/app_installations/${params.appDefinitionId}/access_tokens`, void 0, { headers: { Authorization: `Bearer ${data.jwt}` } });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-action.mjs
 var app_action_exports = {};
 __export(app_action_exports, {
-    create: () => create7,
+    create: () => create6,
     del: () => del5,
     get: () => get10,
     getMany: () => getMany8,
@@ -19950,7 +19990,7 @@ __export(app_action_exports, {
     update: () => update4
 });
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/utils.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/utils.mjs
 function normalizeSelect(query2) {
     if (query2 && query2.select && !/sys/i.test(query2.select)) {
         return {
@@ -19971,7 +20011,7 @@ function normalizeSpaceId(query2) {
     return query2;
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-action.mjs
 var getBaseUrl4 = params => `/organizations/${params.organizationId}/app_definitions/${params.appDefinitionId}/actions`;
 var getAppActionUrl = params => `${getBaseUrl4(params)}/${params.appActionId}`;
 var getAppActionsEnvUrl = params => {
@@ -19996,17 +20036,17 @@ var getManyForEnvironment = (http4, params) => {
 var del5 = (http4, params) => {
     return del(http4, getAppActionUrl(params));
 };
-var create7 = (http4, params, data) => {
+var create6 = (http4, params, data) => {
     return post(http4, getBaseUrl4(params), data);
 };
 var update4 = (http4, params, data) => {
     return put(http4, getAppActionUrl(params), data);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-action-call.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-action-call.mjs
 var app_action_call_exports = {};
 __export(app_action_call_exports, {
-    create: () => create8,
+    create: () => create7,
     createWithResponse: () => createWithResponse,
     createWithResult: () => createWithResult,
     get: () => get11,
@@ -20014,19 +20054,19 @@ __export(app_action_call_exports, {
     getResponse: () => getResponse
 });
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/common-utils.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/common-utils.mjs
 var import_contentful_sdk_core2 = __toESM(require_cjs2(), 1);
 var wrapCollection =
     fn =>
     (makeRequest2, data, ...rest) => {
-        const collectionData = (0, import_contentful_sdk_core2.toPlainObject)(index(data));
+        const collectionData = (0, import_contentful_sdk_core2.toPlainObject)(copy(data));
         collectionData.items = collectionData.items.map(entity => fn(makeRequest2, entity, ...rest));
         return collectionData;
     };
 var wrapCursorPaginatedCollection =
     fn =>
     (makeRequest2, data, ...rest) => {
-        const collectionData = (0, import_contentful_sdk_core2.toPlainObject)(index(data));
+        const collectionData = (0, import_contentful_sdk_core2.toPlainObject)(copy(data));
         collectionData.items = collectionData.items.map(entity => fn(makeRequest2, entity, ...rest));
         return collectionData;
     };
@@ -20073,8 +20113,8 @@ function normalizeCursorPaginationResponse(data) {
     };
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-action-call.mjs
-var create8 = (http4, params, data) => {
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-action-call.mjs
+var create7 = (http4, params, data) => {
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/app_installations/${params.appDefinitionId}/actions/${params.appActionId}/calls`, data);
 };
 var getCallDetails = (http4, params) => {
@@ -20163,10 +20203,10 @@ var createWithResult = async (http4, params, data) => {
     return pollStructuredAppActionCall(http4, params, { callId });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-bundle.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-bundle.mjs
 var app_bundle_exports = {};
 __export(app_bundle_exports, {
-    create: () => create9,
+    create: () => create8,
     del: () => del6,
     get: () => get12,
     getMany: () => getMany9
@@ -20184,7 +20224,7 @@ var getMany9 = (http4, params) => {
 var del6 = (http4, params) => {
     return del(http4, getAppBundleUrl(params));
 };
-var create9 = (http4, params, payload) => {
+var create8 = (http4, params, payload) => {
     const { appUploadId, comment, actions, functions } = payload;
     const data = {
         upload: {
@@ -20201,10 +20241,10 @@ var create9 = (http4, params, payload) => {
     return post(http4, getBaseUrl5(params), data);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-definition.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-definition.mjs
 var app_definition_exports = {};
 __export(app_definition_exports, {
-    create: () => create10,
+    create: () => create9,
     del: () => del7,
     get: () => get13,
     getAppDefinitionUrl: () => getAppDefinitionUrl,
@@ -20225,12 +20265,12 @@ var getMany10 = (http4, params) => {
         params: params.query
     });
 };
-var create10 = (http4, params, rawData) => {
-    const data = index(rawData);
+var create9 = (http4, params, rawData) => {
+    const data = copy(rawData);
     return post(http4, getBaseUrl6(params), data);
 };
 var update5 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getAppDefinitionUrl(params), data, {
         headers: {
@@ -20251,7 +20291,7 @@ var getInstallationsForOrg = (http4, params) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-details.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-details.mjs
 var app_details_exports = {};
 __export(app_details_exports, {
     del: () => del8,
@@ -20268,7 +20308,7 @@ var del8 = (http4, params) => {
     return del(http4, `/organizations/${params.organizationId}/app_definitions/${params.appDefinitionId}/details`);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-event-subscription.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-event-subscription.mjs
 var app_event_subscription_exports = {};
 __export(app_event_subscription_exports, {
     del: () => del9,
@@ -20285,7 +20325,7 @@ var del9 = (http4, params) => {
     return del(http4, `/organizations/${params.organizationId}/app_definitions/${params.appDefinitionId}/event_subscription`);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-installation.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-installation.mjs
 var app_installation_exports = {};
 __export(app_installation_exports, {
     del: () => del10,
@@ -20309,7 +20349,7 @@ var getMany11 = (http4, params) => {
     });
 };
 var upsert3 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     return put(http4, getAppInstallationUrl(params), data, {
         headers: {
             ...headers,
@@ -20331,10 +20371,10 @@ var getForOrganization = (http4, params) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-key.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-key.mjs
 var app_key_exports = {};
 __export(app_key_exports, {
-    create: () => create11,
+    create: () => create10,
     del: () => del11,
     get: () => get17,
     getMany: () => getMany12
@@ -20345,23 +20385,23 @@ var get17 = (http4, params) => {
 var getMany12 = (http4, params) => {
     return get(http4, `/organizations/${params.organizationId}/app_definitions/${params.appDefinitionId}/keys`);
 };
-var create11 = (http4, params, data) => {
+var create10 = (http4, params, data) => {
     return post(http4, `/organizations/${params.organizationId}/app_definitions/${params.appDefinitionId}/keys`, data);
 };
 var del11 = (http4, params) => {
     return del(http4, `/organizations/${params.organizationId}/app_definitions/${params.appDefinitionId}/keys/${params.fingerprint}`);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-signed-request.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-signed-request.mjs
 var app_signed_request_exports = {};
 __export(app_signed_request_exports, {
-    create: () => create12
+    create: () => create11
 });
-var create12 = (http4, params, data) => {
+var create11 = (http4, params, data) => {
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/app_installations/${params.appDefinitionId}/signed_requests`, data);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-signing-secret.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-signing-secret.mjs
 var app_signing_secret_exports = {};
 __export(app_signing_secret_exports, {
     del: () => del12,
@@ -20378,15 +20418,15 @@ var del12 = (http4, params) => {
     return del(http4, `/organizations/${params.organizationId}/app_definitions/${params.appDefinitionId}/signing_secret`);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-upload.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-upload.mjs
 var app_upload_exports = {};
 __export(app_upload_exports, {
-    create: () => create13,
+    create: () => create12,
     del: () => del13,
     get: () => get19
 });
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/upload-http-client.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/upload-http-client.mjs
 function getUploadHttpClient(http4, options) {
     const { hostUpload, defaultHostnameUpload, timeout } = http4.httpClientParams;
     const uploadHttp = http4.cloneWithNewParams({
@@ -20397,7 +20437,7 @@ function getUploadHttpClient(http4, options) {
     return uploadHttp;
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-upload.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/app-upload.mjs
 var getBaseUrl8 = params => `/organizations/${params.organizationId}/app_uploads`;
 var getAppUploadUrl = params => `${getBaseUrl8(params)}/${params.appUploadId}`;
 var get19 = (http4, params) => {
@@ -20408,7 +20448,7 @@ var del13 = (http4, params) => {
     const httpUpload = getUploadHttpClient(http4);
     return del(httpUpload, getAppUploadUrl(params));
 };
-var create13 = (http4, params, payload) => {
+var create12 = (http4, params, payload) => {
     const httpUpload = getUploadHttpClient(http4);
     const { file } = payload;
     return post(httpUpload, getBaseUrl8(params), file, {
@@ -20418,11 +20458,11 @@ var create13 = (http4, params, payload) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/asset.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/asset.mjs
 var asset_exports = {};
 __export(asset_exports, {
     archive: () => archive,
-    create: () => create16,
+    create: () => create15,
     createFromFiles: () => createFromFiles2,
     createWithId: () => createWithId3,
     del: () => del15,
@@ -20439,10 +20479,10 @@ __export(asset_exports, {
 });
 var import_contentful_sdk_core4 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/upload.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/upload.mjs
 var upload_exports = {};
 __export(upload_exports, {
-    create: () => create14,
+    create: () => create13,
     del: () => del14,
     get: () => get20
 });
@@ -20456,7 +20496,7 @@ var getEntityUploadUrl = params => {
     const path = getBaseUploadUrl(params);
     return path + `/${params.uploadId}`;
 };
-var create14 = (http4, params, data) => {
+var create13 = (http4, params, data) => {
     const httpUpload = getUploadHttpClient(http4);
     const { file } = data;
     if (!file) {
@@ -20480,10 +20520,10 @@ var get20 = (http4, params) => {
     return get(httpUpload, path);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/release-asset.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/release-asset.mjs
 var release_asset_exports = {};
 __export(release_asset_exports, {
-    create: () => create15,
+    create: () => create14,
     createFromFiles: () => createFromFiles,
     createWithId: () => createWithId2,
     get: () => get21,
@@ -20506,7 +20546,7 @@ var getMany13 = (http4, params, rawData, headers) => {
     });
 };
 var update6 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases/${params.releaseId}/assets/${params.assetId}`, data, {
         headers: {
@@ -20515,14 +20555,14 @@ var update6 = (http4, params, rawData, headers) => {
         }
     });
 };
-var create15 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var create14 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases/${params.releaseId}/assets`, data, {
         headers
     });
 };
 var createWithId2 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases/${params.releaseId}/assets/${params.assetId}`, data, {
         headers
     });
@@ -20533,7 +20573,7 @@ var createFromFiles = async (http4, params, data) => {
     return Promise.all(
         Object.keys(file).map(async locale => {
             const { contentType, fileName } = file[locale];
-            return create14(httpUpload, params, file[locale]).then(upload => {
+            return create13(httpUpload, params, file[locale]).then(upload => {
                 return {
                     [locale]: {
                         contentType,
@@ -20559,7 +20599,7 @@ var createFromFiles = async (http4, params, data) => {
                     file: file2
                 }
             };
-            return create15(http4, params, asset, {});
+            return create14(http4, params, asset, {});
         })
         .catch(import_contentful_sdk_core3.errorHandler);
 };
@@ -20628,7 +20668,7 @@ var processForAllLocales = async (http4, { asset, options = {}, ...params }) => 
     return Promise.all(allProcessingLocales).then(() => mostUpToDateAssetVersion);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/asset.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/asset.mjs
 var get22 = (http4, params, rawData, headers) => {
     if (params.releaseId) {
         return get21(http4, params);
@@ -20666,7 +20706,7 @@ var update7 = (http4, params, rawData, headers) => {
     if (params.releaseId) {
         return update6(http4, params, rawData, headers ?? {});
     }
-    const data = index(rawData);
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/assets/${params.assetId}`, data, {
         headers: {
@@ -20704,18 +20744,18 @@ var archive = (http4, params) => {
 var unarchive = (http4, params) => {
     return del(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/assets/${params.assetId}/archived`);
 };
-var create16 = (http4, params, rawData) => {
+var create15 = (http4, params, rawData) => {
     if (params.releaseId) {
-        return create15(http4, params, rawData, {});
+        return create14(http4, params, rawData, {});
     }
-    const data = index(rawData);
+    const data = copy(rawData);
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/assets`, data);
 };
 var createWithId3 = (http4, params, rawData) => {
     if (params.releaseId) {
         return createWithId2(http4, params, rawData, {});
     }
-    const data = index(rawData);
+    const data = copy(rawData);
     return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/assets/${params.assetId}`, data);
 };
 var createFromFiles2 = async (http4, params, data) => {
@@ -20727,7 +20767,7 @@ var createFromFiles2 = async (http4, params, data) => {
     return Promise.all(
         Object.keys(file).map(async locale => {
             const { contentType, fileName } = file[locale];
-            return create14(httpUpload, params, file[locale]).then(upload => {
+            return create13(httpUpload, params, file[locale]).then(upload => {
                 return {
                     [locale]: {
                         contentType,
@@ -20753,7 +20793,7 @@ var createFromFiles2 = async (http4, params, data) => {
                     file: file2
                 }
             };
-            return create16(http4, params, asset);
+            return create15(http4, params, asset);
         })
         .catch(import_contentful_sdk_core4.errorHandler);
 };
@@ -20836,11 +20876,11 @@ var processForAllLocales2 = async (http4, { asset, options = {}, ...params }) =>
     return Promise.all(allProcessingLocales).then(() => mostUpToDateAssetVersion);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/asset-key.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/asset-key.mjs
 var asset_key_exports = {};
 __export(asset_key_exports, {
     ValidationError: () => ValidationError,
-    create: () => create17
+    create: () => create16
 });
 var ASSET_KEY_MAX_LIFETIME = 48 * 60 * 60;
 var ValidationError = class extends Error {
@@ -20861,7 +20901,7 @@ var validateTimestamp = (name, timestamp, options) => {
         throw new ValidationError(name, `value (${timestamp}) cannot be in the past, current time was ${options.now}`);
     }
 };
-var create17 = (http4, params, data) => {
+var create16 = (http4, params, data) => {
     const expiresAt = data.expiresAt;
     const now = Math.floor(Date.now() / 1e3);
     const currentMaxLifetime = now + ASSET_KEY_MAX_LIFETIME;
@@ -20870,7 +20910,7 @@ var create17 = (http4, params, data) => {
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/asset_keys`, postParams);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/available-license.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/available-license.mjs
 var available_license_exports = {};
 __export(available_license_exports, {
     getMany: () => getMany15
@@ -20882,7 +20922,7 @@ var getMany15 = (http4, params) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/bulk-action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/bulk-action.mjs
 var bulk_action_exports = {};
 __export(bulk_action_exports, {
     get: () => get23,
@@ -20919,10 +20959,10 @@ var validateV2 = (http4, params, payload) => {
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/bulk_actions`, payload);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/comment.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/comment.mjs
 var comment_exports = {};
 __export(comment_exports, {
-    create: () => create18,
+    create: () => create17,
     del: () => del16,
     get: () => get24,
     getAll: () => getAll,
@@ -20945,12 +20985,12 @@ function getParentPlural(parentEntityType) {
             return "workflows";
         case "Experience":
             return "experiences";
-        case "Fragment":
-            return "fragments";
-        case "ComponentType":
-            return "component_types";
-        case "Template":
-            return "templates";
+        case "ExperienceFragment":
+            return "experience_fragments";
+        case "Component":
+            return "components";
+        case "ExperienceTemplate":
+            return "experience_templates";
     }
 }
 var getEntityBaseUrl = paramsOrg => {
@@ -20987,8 +21027,8 @@ var getMany16 = (http4, params) =>
                   }
                 : {}
     });
-var create18 = (http4, params, rawData) => {
-    const data = index(rawData);
+var create17 = (http4, params, rawData) => {
+    const data = copy(rawData);
     return post(http4, getEntityBaseUrl(params), data, {
         headers: {
             ...(typeof rawData.body !== "string" ? { [BODY_FORMAT_HEADER]: "rich-text" } : {}),
@@ -20998,7 +21038,7 @@ var create18 = (http4, params, rawData) => {
     });
 };
 var update8 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getEntityCommentUrl(params), data, {
         headers: {
@@ -21015,29 +21055,132 @@ var del16 = (http4, { version, ...params }) => {
 };
 var getAll = getMany16;
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/component-type.mjs
-var component_type_exports = {};
-__export(component_type_exports, {
-    getMany: () => getMany17
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/component.mjs
+var component_exports = {};
+__export(component_exports, {
+    create: () => create18,
+    del: () => del17,
+    get: () => get25,
+    getMany: () => getMany17,
+    publish: () => publish4,
+    unpublish: () => unpublish4,
+    upsert: () => upsert5
 });
-var getBaseUrl10 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/component_types`;
+var getBaseUrl10 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/components`;
 var getMany17 = (http4, params, headers) => {
     return get(http4, getBaseUrl10(params), {
         params: params.query,
         headers
     });
 };
+var get25 = (http4, params, headers) => {
+    return get(http4, getBaseUrl10(params) + `/${params.componentId}`, {
+        headers
+    });
+};
+var create18 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl10(params), data, { headers });
+};
+var upsert5 = (http4, params, rawData, headers) => {
+    const { sys, ...body } = copy(rawData);
+    return put(http4, getBaseUrl10(params) + `/${params.componentId}`, body, {
+        headers: {
+            ...(sys.version !== void 0 && {
+                "X-Contentful-Version": sys.version
+            }),
+            ...headers
+        }
+    });
+};
+var del17 = (http4, params) => {
+    return del(http4, getBaseUrl10(params) + `/${params.componentId}`);
+};
+var publish4 = (http4, params, headers) => {
+    return put(http4, `${getBaseUrl10(params)}/${params.componentId}/published`, null, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+var unpublish4 = (http4, params, headers) => {
+    return del(http4, `${getBaseUrl10(params)}/${params.componentId}/published`, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/concept.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/component-type.mjs
+var component_type_exports = {};
+__export(component_type_exports, {
+    create: () => create19,
+    del: () => del18,
+    get: () => get26,
+    getMany: () => getMany18,
+    publish: () => publish5,
+    unpublish: () => unpublish5,
+    upsert: () => upsert6
+});
+var getBaseUrl11 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/component_types`;
+var getMany18 = (http4, params, headers) => {
+    return get(http4, getBaseUrl11(params), {
+        params: params.query,
+        headers
+    });
+};
+var get26 = (http4, params, headers) => {
+    return get(http4, getBaseUrl11(params) + `/${params.componentTypeId}`, {
+        headers
+    });
+};
+var create19 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl11(params), data, { headers });
+};
+var upsert6 = (http4, params, rawData, headers) => {
+    const { sys, ...body } = copy(rawData);
+    return put(http4, getBaseUrl11(params) + `/${params.componentTypeId}`, body, {
+        headers: {
+            ...(sys.version !== void 0 && {
+                "X-Contentful-Version": sys.version
+            }),
+            ...headers
+        }
+    });
+};
+var del18 = (http4, params) => {
+    return del(http4, getBaseUrl11(params) + `/${params.componentTypeId}`);
+};
+var publish5 = (http4, params, headers) => {
+    return put(http4, `${getBaseUrl11(params)}/${params.componentTypeId}/published`, null, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+var unpublish5 = (http4, params, headers) => {
+    return del(http4, `${getBaseUrl11(params)}/${params.componentTypeId}/published`, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/concept.mjs
 var concept_exports = {};
 __export(concept_exports, {
-    create: () => create19,
+    create: () => create20,
     createWithId: () => createWithId4,
-    del: () => del17,
-    get: () => get25,
+    del: () => del19,
+    get: () => get27,
     getAncestors: () => getAncestors,
     getDescendants: () => getDescendants,
-    getMany: () => getMany18,
+    getMany: () => getMany19,
     getTotal: () => getTotal,
     patch: () => patch2,
     update: () => update9
@@ -21045,7 +21188,7 @@ __export(concept_exports, {
 function basePath(organizationId) {
     return `/organizations/${organizationId}/taxonomy/concepts`;
 }
-var create19 = (http4, params, data) => {
+var create20 = (http4, params, data) => {
     return post(http4, basePath(params.organizationId), data);
 };
 var createWithId4 = (http4, params, data) => {
@@ -21068,15 +21211,15 @@ var update9 = (http4, params, data, headers) => {
         }
     });
 };
-var get25 = (http4, params) => get(http4, `${basePath(params.organizationId)}/${params.conceptId}`);
-var del17 = (http4, params, headers) =>
+var get27 = (http4, params) => get(http4, `${basePath(params.organizationId)}/${params.conceptId}`);
+var del19 = (http4, params, headers) =>
     del(http4, `${basePath(params.organizationId)}/${params.conceptId}`, {
         headers: {
             "X-Contentful-Version": params.version ?? 0,
             ...headers
         }
     });
-var getMany18 = (http4, params) => {
+var getMany19 = (http4, params) => {
     const { url: url2, queryParams } = cursorBasedCollection("", params);
     return get(http4, url2, {
         params: queryParams
@@ -21100,14 +21243,14 @@ function cursorBasedCollection(path, params) {
           };
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/concept-scheme.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/concept-scheme.mjs
 var concept_scheme_exports = {};
 __export(concept_scheme_exports, {
-    create: () => create20,
+    create: () => create21,
     createWithId: () => createWithId5,
-    del: () => del18,
-    get: () => get26,
-    getMany: () => getMany19,
+    del: () => del20,
+    get: () => get28,
+    getMany: () => getMany20,
     getTotal: () => getTotal2,
     patch: () => patch3,
     update: () => update10
@@ -21115,22 +21258,22 @@ __export(concept_scheme_exports, {
 function basePath2(orgId) {
     return `/organizations/${orgId}/taxonomy/concept-schemes`;
 }
-var get26 = (http4, params) => get(http4, `${basePath2(params.organizationId)}/${params.conceptSchemeId}`);
-var del18 = (http4, params, headers) =>
+var get28 = (http4, params) => get(http4, `${basePath2(params.organizationId)}/${params.conceptSchemeId}`);
+var del20 = (http4, params, headers) =>
     del(http4, `${basePath2(params.organizationId)}/${params.conceptSchemeId}`, {
         headers: {
             "X-Contentful-Version": params.version,
             ...headers
         }
     });
-var getMany19 = (http4, params) => {
+var getMany20 = (http4, params) => {
     const url2 = params.query?.pageUrl ?? basePath2(params.organizationId);
     return get(http4, url2, {
         params: params.query?.pageUrl ? void 0 : params.query
     });
 };
 var getTotal2 = (http4, params) => get(http4, `${basePath2(params.organizationId)}/total`);
-var create20 = (http4, params, data) => {
+var create21 = (http4, params, data) => {
     return post(http4, basePath2(params.organizationId), data);
 };
 var createWithId5 = (http4, params, data) => {
@@ -21154,49 +21297,49 @@ var update10 = (http4, params, data, headers) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/content-type.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/content-type.mjs
 var content_type_exports = {};
 __export(content_type_exports, {
-    create: () => create21,
+    create: () => create22,
     createWithId: () => createWithId6,
-    del: () => del19,
-    get: () => get27,
-    getMany: () => getMany20,
+    del: () => del21,
+    get: () => get29,
+    getMany: () => getMany21,
     getManyWithCursor: () => getManyWithCursor2,
-    publish: () => publish4,
-    unpublish: () => unpublish4,
+    publish: () => publish6,
+    unpublish: () => unpublish6,
     update: () => update11
 });
-var getBaseUrl11 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/content_types`;
-var getContentTypeUrl = params => getBaseUrl11(params) + `/${params.contentTypeId}`;
-var get27 = (http4, params, headers) => {
+var getBaseUrl12 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/content_types`;
+var getContentTypeUrl = params => getBaseUrl12(params) + `/${params.contentTypeId}`;
+var get29 = (http4, params, headers) => {
     return get(http4, getContentTypeUrl(params), {
         params: normalizeSelect(params.query),
         headers
     });
 };
-var getMany20 = (http4, params, headers) => {
-    return get(http4, getBaseUrl11(params), {
+var getMany21 = (http4, params, headers) => {
+    return get(http4, getBaseUrl12(params), {
         params: params.query,
         headers
     });
 };
 var getManyWithCursor2 = (http4, params, headers) => {
-    return get(http4, getBaseUrl11(params), {
+    return get(http4, getBaseUrl12(params), {
         params: { cursor: true, ...(params.query ?? {}) },
         headers
     }).then(normalizeCursorPaginationResponse);
 };
-var create21 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
-    return post(http4, getBaseUrl11(params), data, { headers });
+var create22 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl12(params), data, { headers });
 };
 var createWithId6 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     return put(http4, getContentTypeUrl(params), data, { headers });
 };
 var update11 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getContentTypeUrl(params), data, {
         headers: {
@@ -21205,10 +21348,10 @@ var update11 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del19 = (http4, params, headers) => {
+var del21 = (http4, params, headers) => {
     return del(http4, getContentTypeUrl(params), { headers });
 };
-var publish4 = (http4, params, rawData, headers) => {
+var publish6 = (http4, params, rawData, headers) => {
     return put(http4, getContentTypeUrl(params) + "/published", null, {
         headers: {
             "X-Contentful-Version": rawData.sys.version,
@@ -21216,28 +21359,135 @@ var publish4 = (http4, params, rawData, headers) => {
         }
     });
 };
-var unpublish4 = (http4, params, headers) => {
+var unpublish6 = (http4, params, headers) => {
     return del(http4, getContentTypeUrl(params) + "/published", { headers });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/editor-interface.mjs
-var editor_interface_exports = {};
-__export(editor_interface_exports, {
-    get: () => get28,
-    getMany: () => getMany21,
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/data-assembly.mjs
+var data_assembly_exports = {};
+__export(data_assembly_exports, {
+    create: () => create23,
+    del: () => del22,
+    get: () => get30,
+    getMany: () => getMany22,
+    getManyPublished: () => getManyPublished,
+    getPublished: () => getPublished2,
+    publish: () => publish7,
+    unpublish: () => unpublish7,
     update: () => update12
 });
-var getBaseUrl12 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/content_types/${params.contentTypeId}/editor_interface`;
-var get28 = (http4, params) => {
-    return get(http4, getBaseUrl12(params));
+var getBaseUrl13 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/data_assemblies`;
+var getPublicUrl = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/public/data_assemblies`;
+var getMany22 = (http4, params, headers) => {
+    return get(http4, getBaseUrl13(params), {
+        params: params.query,
+        headers
+    });
 };
-var getMany21 = (http4, params) => {
-    return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/editor_interfaces`);
+var get30 = (http4, params, headers) => {
+    return get(http4, getBaseUrl13(params) + `/${params.dataAssemblyId}`, {
+        headers
+    });
+};
+var create23 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl13(params), data, { headers });
 };
 var update12 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
+    return put(http4, getBaseUrl13(params) + `/${params.dataAssemblyId}`, data, {
+        headers: {
+            // Omit the version only when this PUT creates the data assembly. Updating an existing one
+            // without its current version fails with a version mismatch.
+            ...(params.version !== void 0 && { "X-Contentful-Version": params.version }),
+            ...headers
+        }
+    });
+};
+var del22 = (http4, params) => {
+    return del(http4, getBaseUrl13(params) + `/${params.dataAssemblyId}`);
+};
+var publish7 = (http4, params, headers) => {
+    return put(http4, `${getBaseUrl13(params)}/${params.dataAssemblyId}/published`, null, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+var getPublished2 = (http4, params, headers) => {
+    return get(http4, getPublicUrl(params) + `/${params.dataAssemblyId}`, {
+        headers
+    });
+};
+var getManyPublished = (http4, params, headers) => {
+    return get(http4, getPublicUrl(params), {
+        params: params.query,
+        headers
+    });
+};
+var unpublish7 = (http4, params, headers) => {
+    return del(http4, `${getBaseUrl13(params)}/${params.dataAssemblyId}/published`, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/design-token.mjs
+var design_token_exports = {};
+__export(design_token_exports, {
+    del: () => del23,
+    get: () => get31,
+    getMany: () => getMany23,
+    upsert: () => upsert7
+});
+var getBaseUrl14 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/design_tokens`;
+var getMany23 = (http4, params, headers) => {
+    return get(http4, getBaseUrl14(params), {
+        params: params.query,
+        headers
+    });
+};
+var get31 = (http4, params, headers) => {
+    return get(http4, getBaseUrl14(params) + `/${params.designTokenId}`, {
+        headers
+    });
+};
+var upsert7 = (http4, params, rawData, headers) => {
+    const { sys, ...body } = copy(rawData);
+    return put(http4, getBaseUrl14(params) + `/${params.designTokenId}`, body, {
+        headers: {
+            ...(sys.version !== void 0 && {
+                "X-Contentful-Version": sys.version
+            }),
+            ...headers
+        }
+    });
+};
+var del23 = (http4, params) => {
+    return del(http4, getBaseUrl14(params) + `/${params.designTokenId}`);
+};
+
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/editor-interface.mjs
+var editor_interface_exports = {};
+__export(editor_interface_exports, {
+    get: () => get32,
+    getMany: () => getMany24,
+    update: () => update13
+});
+var getBaseUrl15 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/content_types/${params.contentTypeId}/editor_interface`;
+var get32 = (http4, params) => {
+    return get(http4, getBaseUrl15(params));
+};
+var getMany24 = (http4, params) => {
+    return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/editor_interfaces`);
+};
+var update13 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
-    return put(http4, getBaseUrl12(params), data, {
+    return put(http4, getBaseUrl15(params), data, {
         headers: {
             "X-Contentful-Version": rawData.sys.version ?? 0,
             ...headers
@@ -21245,61 +21495,61 @@ var update12 = (http4, params, rawData, headers) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/eligible-license.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/eligible-license.mjs
 var eligible_license_exports = {};
 __export(eligible_license_exports, {
-    getMany: () => getMany22
+    getMany: () => getMany25
 });
-var getBaseUrl13 = params => `/spaces/${params.spaceId}/eligible_licenses`;
-var getMany22 = (http4, params) => {
-    return get(http4, getBaseUrl13(params), {
+var getBaseUrl16 = params => `/spaces/${params.spaceId}/eligible_licenses`;
+var getMany25 = (http4, params) => {
+    return get(http4, getBaseUrl16(params), {
         params: params.query
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/entry.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/entry.mjs
 var entry_exports = {};
 __export(entry_exports, {
     archive: () => archive2,
-    create: () => create23,
+    create: () => create25,
     createWithId: () => createWithId8,
-    del: () => del20,
-    get: () => get30,
-    getMany: () => getMany24,
+    del: () => del24,
+    get: () => get34,
+    getMany: () => getMany27,
     getManyWithCursor: () => getManyWithCursor3,
-    getPublished: () => getPublished2,
+    getPublished: () => getPublished3,
     patch: () => patch5,
-    publish: () => publish5,
+    publish: () => publish8,
     references: () => references,
     unarchive: () => unarchive2,
-    unpublish: () => unpublish5,
-    update: () => update14
+    unpublish: () => unpublish8,
+    update: () => update15
 });
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/release-entry.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/release-entry.mjs
 var release_entry_exports = {};
 __export(release_entry_exports, {
-    create: () => create22,
+    create: () => create24,
     createWithId: () => createWithId7,
-    get: () => get29,
-    getMany: () => getMany23,
+    get: () => get33,
+    getMany: () => getMany26,
     patch: () => patch4,
-    update: () => update13
+    update: () => update14
 });
-var get29 = (http4, params, rawData, headers) => {
+var get33 = (http4, params, rawData, headers) => {
     return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases/${params.releaseId}/entries/${params.entryId}`, {
         params: normalizeSelect(params.query),
         headers: { ...headers }
     });
 };
-var getMany23 = (http4, params, rawData, headers) => {
+var getMany26 = (http4, params, rawData, headers) => {
     return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases/${params.releaseId}/entries`, {
         params: normalizeSelect(params.query),
         headers: { ...headers }
     });
 };
-var update13 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update14 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases/${params.releaseId}/entries/${params.entryId}`, data, {
         headers: {
@@ -21317,8 +21567,8 @@ var patch4 = (http4, params, data, headers) => {
         }
     });
 };
-var create22 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var create24 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases/${params.releaseId}/entries`, data, {
         headers: {
             "X-Contentful-Content-Type": params.contentTypeId,
@@ -21327,7 +21577,7 @@ var create22 = (http4, params, rawData, headers) => {
     });
 };
 var createWithId7 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases/${params.releaseId}/entries/${params.entryId}`, data, {
         headers: {
             "X-Contentful-Content-Type": params.contentTypeId,
@@ -21336,25 +21586,25 @@ var createWithId7 = (http4, params, rawData, headers) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/entry.mjs
-var get30 = (http4, params, rawData, headers) => {
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/entry.mjs
+var get34 = (http4, params, rawData, headers) => {
     if (params.releaseId) {
-        return get29(http4, params);
+        return get33(http4, params);
     }
     return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/entries/${params.entryId}`, {
         params: normalizeSelect(params.query),
         headers: { ...headers }
     });
 };
-var getPublished2 = (http4, params, rawData, headers) => {
+var getPublished3 = (http4, params, rawData, headers) => {
     return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/public/entries`, {
         params: normalizeSelect(params.query),
         headers: { ...headers }
     });
 };
-var getMany24 = (http4, params, rawData, headers) => {
+var getMany27 = (http4, params, rawData, headers) => {
     if (params.releaseId) {
-        return getMany23(http4, params);
+        return getMany26(http4, params);
     }
     return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/entries`, {
         params: normalizeSelect(params.query),
@@ -21382,11 +21632,11 @@ var patch5 = (http4, params, data, headers) => {
         }
     });
 };
-var update14 = (http4, params, rawData, headers) => {
+var update15 = (http4, params, rawData, headers) => {
     if (params.releaseId) {
-        return update13(http4, params, rawData, headers ?? {});
+        return update14(http4, params, rawData, headers ?? {});
     }
-    const data = index(rawData);
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/entries/${params.entryId}`, data, {
         headers: {
@@ -21395,10 +21645,10 @@ var update14 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del20 = (http4, params) => {
+var del24 = (http4, params) => {
     return del(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/entries/${params.entryId}`);
 };
-var publish5 = (http4, params, rawData) => {
+var publish8 = (http4, params, rawData) => {
     const payload = params.locales?.length ? { add: { fields: { "*": params.locales } } } : null;
     return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/entries/${params.entryId}/published`, payload, {
         headers: {
@@ -21406,7 +21656,7 @@ var publish5 = (http4, params, rawData) => {
         }
     });
 };
-var unpublish5 = (http4, params, rawData) => {
+var unpublish8 = (http4, params, rawData) => {
     if (params.locales?.length) {
         const payload = { remove: { fields: { "*": params.locales } } };
         return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/entries/${params.entryId}/published`, payload, {
@@ -21424,11 +21674,11 @@ var archive2 = (http4, params) => {
 var unarchive2 = (http4, params) => {
     return del(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/entries/${params.entryId}/archived`);
 };
-var create23 = (http4, params, rawData) => {
+var create25 = (http4, params, rawData) => {
     if (params.releaseId) {
-        return create22(http4, params, rawData, {});
+        return create24(http4, params, rawData, {});
     }
-    const data = index(rawData);
+    const data = copy(rawData);
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/entries`, data, {
         headers: {
             "X-Contentful-Content-Type": params.contentTypeId
@@ -21439,7 +21689,7 @@ var createWithId8 = (http4, params, rawData) => {
     if (params.releaseId) {
         return createWithId7(http4, params, rawData, {});
     }
-    const data = index(rawData);
+    const data = copy(rawData);
     return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/entries/${params.entryId}`, data, {
         headers: {
             "X-Contentful-Content-Type": params.contentTypeId
@@ -21452,26 +21702,26 @@ var references = (http4, params) => {
     return get(http4, `/spaces/${spaceId}/environments/${environmentId}/entries/${entryId}/references?include=${level}`);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/environment.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/environment.mjs
 var environment_exports = {};
 __export(environment_exports, {
-    create: () => create24,
+    create: () => create26,
     createWithId: () => createWithId9,
-    del: () => del21,
-    get: () => get31,
-    getMany: () => getMany25,
-    update: () => update15
+    del: () => del25,
+    get: () => get35,
+    getMany: () => getMany28,
+    update: () => update16
 });
-var get31 = (http4, params) => {
+var get35 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}`);
 };
-var getMany25 = (http4, params) => {
+var getMany28 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/environments`, {
         params: params.query
     });
 };
-var update15 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update16 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}`, data, {
         headers: {
@@ -21480,17 +21730,17 @@ var update15 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del21 = (http4, params) => {
+var del25 = (http4, params) => {
     return del(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}`);
 };
-var create24 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var create26 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     return post(http4, `/spaces/${params.spaceId}/environments`, data, {
         headers
     });
 };
 var createWithId9 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}`, data, {
         headers: {
             ...headers,
@@ -21503,33 +21753,33 @@ var createWithId9 = (http4, params, rawData, headers) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/environment-alias.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/environment-alias.mjs
 var environment_alias_exports = {};
 __export(environment_alias_exports, {
     createWithId: () => createWithId10,
-    del: () => del22,
-    get: () => get32,
-    getMany: () => getMany26,
-    update: () => update16
+    del: () => del26,
+    get: () => get36,
+    getMany: () => getMany29,
+    update: () => update17
 });
-var getBaseUrl14 = params => `/spaces/${params.spaceId}/environment_aliases`;
-var getEnvironmentAliasUrl = params => getBaseUrl14(params) + `/${params.environmentAliasId}`;
-var get32 = (http4, params) => {
+var getBaseUrl17 = params => `/spaces/${params.spaceId}/environment_aliases`;
+var getEnvironmentAliasUrl = params => getBaseUrl17(params) + `/${params.environmentAliasId}`;
+var get36 = (http4, params) => {
     return get(http4, getEnvironmentAliasUrl(params));
 };
-var getMany26 = (http4, params) => {
-    return get(http4, getBaseUrl14(params), {
+var getMany29 = (http4, params) => {
+    return get(http4, getBaseUrl17(params), {
         params: params.query
     });
 };
 var createWithId10 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     return put(http4, getEnvironmentAliasUrl(params), data, {
         headers
     });
 };
-var update16 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update17 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getEnvironmentAliasUrl(params), data, {
         headers: {
@@ -21538,26 +21788,26 @@ var update16 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del22 = (http4, params) => {
+var del26 = (http4, params) => {
     return del(http4, getEnvironmentAliasUrl(params));
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/environment-template.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/environment-template.mjs
 var environment_template_exports = {};
 __export(environment_template_exports, {
-    create: () => create25,
-    del: () => del23,
+    create: () => create27,
+    del: () => del27,
     disconnect: () => disconnect,
-    get: () => get33,
-    getMany: () => getMany27,
+    get: () => get37,
+    getMany: () => getMany30,
     install: () => install,
-    update: () => update17,
+    update: () => update18,
     validate: () => validate2,
     versionUpdate: () => versionUpdate,
     versions: () => versions
 });
 var apiPath = (organizationId, ...pathSegments) => `/organizations/${organizationId}/environment_templates/` + pathSegments.join("/");
-var get33 = (http4, { organizationId, environmentTemplateId, version, query: query2 = {} }, headers) =>
+var get37 = (http4, { organizationId, environmentTemplateId, version, query: query2 = {} }, headers) =>
     version
         ? get(http4, apiPath(organizationId, environmentTemplateId, "versions", version), {
               params: query2,
@@ -21567,10 +21817,10 @@ var get33 = (http4, { organizationId, environmentTemplateId, version, query: que
               params: query2,
               headers
           });
-var getMany27 = (http4, { organizationId, query: query2 = {} }, headers) => get(http4, apiPath(organizationId), { params: query2, headers });
-var create25 = (http4, { organizationId }, payload, headers) => post(http4, apiPath(organizationId), payload, { headers });
-var update17 = (http4, { organizationId, environmentTemplateId }, payload, headers) => {
-    const data = index(payload);
+var getMany30 = (http4, { organizationId, query: query2 = {} }, headers) => get(http4, apiPath(organizationId), { params: query2, headers });
+var create27 = (http4, { organizationId }, payload, headers) => post(http4, apiPath(organizationId), payload, { headers });
+var update18 = (http4, { organizationId, environmentTemplateId }, payload, headers) => {
+    const data = copy(payload);
     delete data.sys;
     return put(http4, apiPath(organizationId, environmentTemplateId), data, {
         headers: {
@@ -21583,7 +21833,7 @@ var versionUpdate = (http4, { organizationId, version, environmentTemplateId }, 
     patch(http4, apiPath(organizationId, environmentTemplateId, "versions", version), payload, {
         headers
     });
-var del23 = (http4, { organizationId, environmentTemplateId }, headers) => del(http4, apiPath(organizationId, environmentTemplateId), { headers });
+var del27 = (http4, { organizationId, environmentTemplateId }, headers) => del(http4, apiPath(organizationId, environmentTemplateId), { headers });
 var versions = (http4, { organizationId, environmentTemplateId, query: query2 = {} }, headers) =>
     get(http4, apiPath(organizationId, environmentTemplateId, "versions"), {
         params: query2,
@@ -21594,14 +21844,14 @@ var validate2 = (http4, { spaceId, environmentId, environmentTemplateId, version
 var install = (http4, { spaceId, environmentId, environmentTemplateId }, payload, headers) => post(http4, `/spaces/${spaceId}/environments/${environmentId}/template_installations/${environmentTemplateId}/versions`, payload, { headers });
 var disconnect = (http4, { spaceId, environmentId, environmentTemplateId }, headers) => del(http4, `/spaces/${spaceId}/environments/${environmentId}/template_installations/${environmentTemplateId}`, { headers });
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/environment-template-installation.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/environment-template-installation.mjs
 var environment_template_installation_exports = {};
 __export(environment_template_installation_exports, {
     getForEnvironment: () => getForEnvironment,
-    getMany: () => getMany28
+    getMany: () => getMany31
 });
 var apiPath2 = (organizationId, ...pathSegments) => `/organizations/${organizationId}/environment_templates/` + pathSegments.join("/");
-var getMany28 = (http4, { organizationId, environmentTemplateId, spaceId, environmentId, ...otherProps }, headers) =>
+var getMany31 = (http4, { organizationId, environmentTemplateId, spaceId, environmentId, ...otherProps }, headers) =>
     get(http4, apiPath2(organizationId, environmentTemplateId, "template_installations"), {
         params: {
             ...otherProps,
@@ -21619,38 +21869,38 @@ var getForEnvironment = (http4, { spaceId, environmentId, environmentTemplateId,
         headers
     });
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/extension.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/extension.mjs
 var extension_exports = {};
 __export(extension_exports, {
-    create: () => create26,
+    create: () => create28,
     createWithId: () => createWithId11,
-    del: () => del24,
-    get: () => get34,
+    del: () => del28,
+    get: () => get38,
     getExtensionUrl: () => getExtensionUrl,
-    getMany: () => getMany29,
-    update: () => update18
+    getMany: () => getMany32,
+    update: () => update19
 });
-var getBaseUrl15 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/extensions`;
-var getExtensionUrl = params => getBaseUrl15(params) + `/${params.extensionId}`;
-var get34 = (http4, params) => {
+var getBaseUrl18 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/extensions`;
+var getExtensionUrl = params => getBaseUrl18(params) + `/${params.extensionId}`;
+var get38 = (http4, params) => {
     return get(http4, getExtensionUrl(params), {
         params: normalizeSelect(params.query)
     });
 };
-var getMany29 = (http4, params) => {
-    return get(http4, getBaseUrl15(params), {
+var getMany32 = (http4, params) => {
+    return get(http4, getBaseUrl18(params), {
         params: normalizeSelect(params.query)
     });
 };
-var create26 = (http4, params, rawData, headers) => {
-    return post(http4, getBaseUrl15(params), rawData, { headers });
+var create28 = (http4, params, rawData, headers) => {
+    return post(http4, getBaseUrl18(params), rawData, { headers });
 };
 var createWithId11 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     return put(http4, getExtensionUrl(params), data, { headers });
 };
-var update18 = async (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update19 = async (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getExtensionUrl(params), data, {
         headers: {
@@ -21659,15 +21909,71 @@ var update18 = async (http4, params, rawData, headers) => {
         }
     });
 };
-var del24 = (http4, params) => {
+var del28 = (http4, params) => {
     return del(http4, getExtensionUrl(params));
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/function.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/fragment.mjs
+var fragment_exports = {};
+__export(fragment_exports, {
+    create: () => create29,
+    del: () => del29,
+    get: () => get39,
+    getMany: () => getMany33,
+    publish: () => publish9,
+    unpublish: () => unpublish9,
+    upsert: () => upsert8
+});
+var getBaseUrl19 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/fragments`;
+var getMany33 = (http4, params, headers) => {
+    return get(http4, getBaseUrl19(params), {
+        params: params.query,
+        headers
+    });
+};
+var get39 = (http4, params, headers) => {
+    return get(http4, getBaseUrl19(params) + `/${params.fragmentId}`, { headers });
+};
+var create29 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl19(params), data, { headers });
+};
+var upsert8 = (http4, params, rawData, headers) => {
+    const { sys, ...body } = copy(rawData);
+    return put(http4, getBaseUrl19(params) + `/${params.fragmentId}`, body, {
+        headers: {
+            ...(sys?.version !== void 0 && {
+                "X-Contentful-Version": sys.version
+            }),
+            ...headers
+        }
+    });
+};
+var del29 = (http4, params) => {
+    return del(http4, getBaseUrl19(params) + `/${params.fragmentId}`);
+};
+var publish9 = (http4, params, headers) => {
+    return put(http4, getBaseUrl19(params) + `/${params.fragmentId}/published`, null, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+var unpublish9 = (http4, params, headers) => {
+    return del(http4, getBaseUrl19(params) + `/${params.fragmentId}/published`, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/function.mjs
 var function_exports = {};
 __export(function_exports, {
-    get: () => get35,
-    getMany: () => getMany30,
+    get: () => get40,
+    getMany: () => getMany34,
     getManyForEnvironment: () => getManyForEnvironment2
 });
 var getManyUrl = params => `/organizations/${params.organizationId}/app_definitions/${params.appDefinitionId}/functions`;
@@ -21675,10 +21981,10 @@ var getFunctionUrl = params => `${getManyUrl(params)}/${params.functionId}`;
 var getFunctionsEnvURL = params => {
     return `/spaces/${params.spaceId}/environments/${params.environmentId}/app_installations/${params.appInstallationId}/functions`;
 };
-var get35 = (http4, params) => {
+var get40 = (http4, params) => {
     return get(http4, getFunctionUrl(params));
 };
-var getMany30 = (http4, params) => {
+var getMany34 = (http4, params) => {
     return get(http4, getManyUrl(params), { params: params.query });
 };
 var getManyForEnvironment2 = (http4, params) => {
@@ -21687,25 +21993,25 @@ var getManyForEnvironment2 = (http4, params) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/function-log.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/function-log.mjs
 var function_log_exports = {};
 __export(function_log_exports, {
-    get: () => get36,
-    getMany: () => getMany31
+    get: () => get41,
+    getMany: () => getMany35
 });
 var FunctionLogAlphaHeaders = {
     "x-contentful-enable-alpha-feature": "function-logs"
 };
 var baseURL = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/app_installations/${params.appInstallationId}/functions/${params.functionId}/logs`;
 var getURL = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/app_installations/${params.appInstallationId}/functions/${params.functionId}/logs/${params.logId}`;
-var get36 = (http4, params) => {
+var get41 = (http4, params) => {
     return get(http4, getURL(params), {
         headers: {
             ...FunctionLogAlphaHeaders
         }
     });
 };
-var getMany31 = (http4, params) => {
+var getMany35 = (http4, params) => {
     return get(http4, baseURL(params), {
         params: params.query,
         headers: {
@@ -21714,17 +22020,17 @@ var getMany31 = (http4, params) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/http.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/http.mjs
 var http_exports = {};
 __export(http_exports, {
-    del: () => del25,
-    get: () => get37,
+    del: () => del30,
+    get: () => get42,
     patch: () => patch6,
     post: () => post2,
     put: () => put2,
     request: () => request
 });
-var get37 = (http4, { url: url2, config }) => {
+var get42 = (http4, { url: url2, config }) => {
     return get(http4, url2, config);
 };
 var post2 = (http4, { url: url2, config }, payload) => {
@@ -21736,37 +22042,37 @@ var put2 = (http4, { url: url2, config }, payload) => {
 var patch6 = (http4, { url: url2, config }, payload) => {
     return patch(http4, url2, payload, config);
 };
-var del25 = (http4, { url: url2, config }) => {
+var del30 = (http4, { url: url2, config }) => {
     return del(http4, url2, config);
 };
 var request = (http$1, { url: url2, config }) => {
     return http3(http$1, url2, config);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/locale.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/locale.mjs
 var locale_exports = {};
 __export(locale_exports, {
-    create: () => create27,
-    del: () => del26,
-    get: () => get38,
-    getMany: () => getMany32,
-    update: () => update19
+    create: () => create30,
+    del: () => del31,
+    get: () => get43,
+    getMany: () => getMany36,
+    update: () => update20
 });
-var get38 = (http4, params) => {
+var get43 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/locales/${params.localeId}`);
 };
-var getMany32 = (http4, params) => {
+var getMany36 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/locales`, {
         params: normalizeSelect(params.query)
     });
 };
-var create27 = (http4, params, data, headers) => {
+var create30 = (http4, params, data, headers) => {
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/locales`, data, {
         headers
     });
 };
-var update19 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update20 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     delete data.default;
     return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/locales/${params.localeId}`, data, {
@@ -21776,23 +22082,23 @@ var update19 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del26 = (http4, params) => {
+var del31 = (http4, params) => {
     return del(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/locales/${params.localeId}`);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/organization.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/organization.mjs
 var organization_exports = {};
 __export(organization_exports, {
-    get: () => get39,
-    getMany: () => getMany33
+    get: () => get44,
+    getMany: () => getMany37
 });
-var getMany33 = (http4, params) => {
+var getMany37 = (http4, params) => {
     return get(http4, `/organizations`, {
         params: params?.query
     });
 };
-var get39 = (http4, params) => {
-    return getMany33(http4, { query: { limit: 100 } }).then(data => {
+var get44 = (http4, params) => {
+    return getMany37(http4, { query: { limit: 100 } }).then(data => {
         const org = data.items.find(org2 => org2.sys.id === params.organizationId);
         if (!org) {
             const error = new Error(`No organization was found with the ID ${params.organizationId} instead got ${JSON.stringify(data)}`);
@@ -21804,11 +22110,11 @@ var get39 = (http4, params) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/organization-invitation.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/organization-invitation.mjs
 var organization_invitation_exports = {};
 __export(organization_invitation_exports, {
-    create: () => create28,
-    get: () => get40
+    create: () => create31,
+    get: () => get45
 });
 var OrganizationUserManagementAlphaHeaders = {
     "x-contentful-enable-alpha-feature": "organization-user-management-api"
@@ -21816,7 +22122,7 @@ var OrganizationUserManagementAlphaHeaders = {
 var InvitationAlphaHeaders = {
     "x-contentful-enable-alpha-feature": "pending-org-membership"
 };
-var create28 = (http4, params, data, headers) => {
+var create31 = (http4, params, data, headers) => {
     return post(http4, `/organizations/${params.organizationId}/invitations`, data, {
         headers: {
             ...InvitationAlphaHeaders,
@@ -21824,7 +22130,7 @@ var create28 = (http4, params, data, headers) => {
         }
     });
 };
-var get40 = (http4, params, headers) => {
+var get45 = (http4, params, headers) => {
     return get(http4, `/organizations/${params.organizationId}/invitations/${params.invitationId}`, {
         headers: {
             ...OrganizationUserManagementAlphaHeaders,
@@ -21833,26 +22139,26 @@ var get40 = (http4, params, headers) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/organization-membership.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/organization-membership.mjs
 var organization_membership_exports = {};
 __export(organization_membership_exports, {
-    del: () => del27,
-    get: () => get41,
-    getMany: () => getMany34,
-    update: () => update20
+    del: () => del32,
+    get: () => get46,
+    getMany: () => getMany38,
+    update: () => update21
 });
-var getBaseUrl16 = params => `/organizations/${params.organizationId}/organization_memberships`;
-var getEntityUrl = params => `${getBaseUrl16(params)}/${params.organizationMembershipId}`;
-var get41 = (http4, params) => {
+var getBaseUrl20 = params => `/organizations/${params.organizationId}/organization_memberships`;
+var getEntityUrl = params => `${getBaseUrl20(params)}/${params.organizationMembershipId}`;
+var get46 = (http4, params) => {
     return get(http4, getEntityUrl(params));
 };
-var getMany34 = (http4, params) => {
-    return get(http4, getBaseUrl16(params), {
+var getMany38 = (http4, params) => {
+    return get(http4, getBaseUrl20(params), {
         params: params.query
     });
 };
-var update20 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update21 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     const { role } = data;
     return put(
@@ -21867,20 +22173,20 @@ var update20 = (http4, params, rawData, headers) => {
         }
     );
 };
-var del27 = (http4, params) => {
+var del32 = (http4, params) => {
     return del(http4, getEntityUrl(params));
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/oauth-application.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/oauth-application.mjs
 var oauth_application_exports = {};
 __export(oauth_application_exports, {
-    create: () => create29,
-    del: () => del28,
-    get: () => get42,
+    create: () => create32,
+    del: () => del33,
+    get: () => get47,
     getManyForUser: () => getManyForUser,
-    update: () => update21
+    update: () => update22
 });
-var get42 = (http4, params) => {
+var get47 = (http4, params) => {
     return get(http4, `/users/${params.userId}/oauth_applications/${params.oauthApplicationId}`);
 };
 var getManyForUser = (http4, params) => {
@@ -21888,37 +22194,37 @@ var getManyForUser = (http4, params) => {
         params: params.query
     });
 };
-var create29 = (http4, params, rawData, headers) => {
+var create32 = (http4, params, rawData, headers) => {
     return post(http4, `/users/${params.userId}/oauth_applications`, rawData, {
         headers
     });
 };
-var update21 = (http4, params, rawData, headers) => {
+var update22 = (http4, params, rawData, headers) => {
     return put(http4, `/users/${params.userId}/oauth_applications/${params.oauthApplicationId}`, rawData, {
         headers
     });
 };
-var del28 = (http4, params) => {
+var del33 = (http4, params) => {
     return del(http4, `/users/${params.userId}/oauth_applications/${params.oauthApplicationId}`);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/personal-access-token.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/personal-access-token.mjs
 var personal_access_token_exports = {};
 __export(personal_access_token_exports, {
-    create: () => create30,
-    get: () => get43,
-    getMany: () => getMany35,
+    create: () => create33,
+    get: () => get48,
+    getMany: () => getMany39,
     revoke: () => revoke2
 });
-var get43 = (http4, params) => {
+var get48 = (http4, params) => {
     return get(http4, `/users/me/access_tokens/${params.tokenId}`);
 };
-var getMany35 = (http4, params) => {
+var getMany39 = (http4, params) => {
     return get(http4, "/users/me/access_tokens", {
         params: params.query
     });
 };
-var create30 = (http4, _params, rawData, headers) => {
+var create33 = (http4, _params, rawData, headers) => {
     return post(http4, "/users/me/access_tokens", rawData, {
         headers
     });
@@ -21927,36 +22233,36 @@ var revoke2 = (http4, params) => {
     return put(http4, `/users/me/access_tokens/${params.tokenId}/revoked`, null);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/preview-api-key.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/preview-api-key.mjs
 var preview_api_key_exports = {};
 __export(preview_api_key_exports, {
-    get: () => get44,
-    getMany: () => getMany36
+    get: () => get49,
+    getMany: () => getMany40
 });
-var get44 = (http4, params) => {
+var get49 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/preview_api_keys/${params.previewApiKeyId}`);
 };
-var getMany36 = (http4, params) => {
+var getMany40 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/preview_api_keys`, {
         params: params.query
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/release.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/release.mjs
 var release_exports = {};
 __export(release_exports, {
     archive: () => archive3,
-    create: () => create31,
-    del: () => del29,
-    get: () => get45,
-    publish: () => publish6,
+    create: () => create34,
+    del: () => del34,
+    get: () => get50,
+    publish: () => publish10,
     query: () => query,
     unarchive: () => unarchive3,
-    unpublish: () => unpublish6,
-    update: () => update22,
+    unpublish: () => unpublish10,
+    update: () => update23,
     validate: () => validate3
 });
-var get45 = (http4, params) => {
+var get50 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases/${params.releaseId}`);
 };
 var query = (http4, params) => {
@@ -21968,14 +22274,14 @@ var query = (http4, params) => {
         params: params.query
     });
 };
-var create31 = (http4, params, payload) => {
+var create34 = (http4, params, payload) => {
     const releaseSchemaVersion = payload.sys?.schemaVersion ?? params.releaseSchemaVersion;
     if (releaseSchemaVersion === "Release.v2") {
         payload.sys = { ...payload.sys, type: "Release", schemaVersion: "Release.v2" };
     }
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases`, payload);
 };
-var update22 = (http4, params, payload, headers) => {
+var update23 = (http4, params, payload, headers) => {
     const releaseSchemaVersion = payload.sys?.schemaVersion ?? params.releaseSchemaVersion;
     if (releaseSchemaVersion === "Release.v2") {
         payload.sys = { ...payload.sys, type: "Release", schemaVersion: "Release.v2" };
@@ -21987,10 +22293,10 @@ var update22 = (http4, params, payload, headers) => {
         }
     });
 };
-var del29 = (http4, params) => {
+var del34 = (http4, params) => {
     return del(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases/${params.releaseId}`);
 };
-var publish6 = (http4, params, headers) => {
+var publish10 = (http4, params, headers) => {
     return put(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases/${params.releaseId}/published`, null, {
         headers: {
             "X-Contentful-Version": params.version,
@@ -21998,7 +22304,7 @@ var publish6 = (http4, params, headers) => {
         }
     });
 };
-var unpublish6 = (http4, params, headers) => {
+var unpublish10 = (http4, params, headers) => {
     return del(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases/${params.releaseId}/published`, {
         headers: {
             "X-Contentful-Version": params.version,
@@ -22024,17 +22330,17 @@ var unarchive3 = (http4, params) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/release-action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/release-action.mjs
 var release_action_exports = {};
 __export(release_action_exports, {
-    get: () => get46,
-    getMany: () => getMany37,
+    get: () => get51,
+    getMany: () => getMany41,
     queryForRelease: () => queryForRelease
 });
-var get46 = (http4, params) => {
+var get51 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/releases/${params.releaseId}/actions/${params.actionId}`);
 };
-var getMany37 = (http4, params) => {
+var getMany41 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/release_actions`, {
         params: params.query
     });
@@ -22048,79 +22354,79 @@ var queryForRelease = (http4, params) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/resource.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/resource.mjs
 var resource_exports = {};
 __export(resource_exports, {
-    getMany: () => getMany38
+    getMany: () => getMany42
 });
-var getBaseUrl17 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/resource_types/${params.resourceTypeId}/resources`;
-var getMany38 = (http4, params) =>
-    get(http4, getBaseUrl17(params), {
+var getBaseUrl21 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/resource_types/${params.resourceTypeId}/resources`;
+var getMany42 = (http4, params) =>
+    get(http4, getBaseUrl21(params), {
         params: params.query
     });
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/resource-provider.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/resource-provider.mjs
 var resource_provider_exports = {};
 __export(resource_provider_exports, {
-    del: () => del30,
-    get: () => get47,
-    upsert: () => upsert5
+    del: () => del35,
+    get: () => get52,
+    upsert: () => upsert9
 });
-var getBaseUrl18 = params => `/organizations/${params.organizationId}/app_definitions/${params.appDefinitionId}/resource_provider`;
-var get47 = (http4, params) => {
-    return get(http4, getBaseUrl18(params));
+var getBaseUrl22 = params => `/organizations/${params.organizationId}/app_definitions/${params.appDefinitionId}/resource_provider`;
+var get52 = (http4, params) => {
+    return get(http4, getBaseUrl22(params));
 };
-var upsert5 = (http4, params, rawData, headers) => {
-    return put(http4, getBaseUrl18(params), rawData, { headers });
+var upsert9 = (http4, params, rawData, headers) => {
+    return put(http4, getBaseUrl22(params), rawData, { headers });
 };
-var del30 = (http4, params) => {
-    return del(http4, getBaseUrl18(params));
+var del35 = (http4, params) => {
+    return del(http4, getBaseUrl22(params));
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/resource-type.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/resource-type.mjs
 var resource_type_exports = {};
 __export(resource_type_exports, {
-    del: () => del31,
-    get: () => get48,
+    del: () => del36,
+    get: () => get53,
     getForEnvironment: () => getForEnvironment2,
-    getMany: () => getMany39,
-    upsert: () => upsert6
+    getMany: () => getMany43,
+    upsert: () => upsert10
 });
-var getBaseUrl19 = params => `/organizations/${params.organizationId}/app_definitions/${params.appDefinitionId}/resource_provider/resource_types`;
-var getEntityUrl2 = params => `${getBaseUrl19(params)}/${params.resourceTypeId}`;
+var getBaseUrl23 = params => `/organizations/${params.organizationId}/app_definitions/${params.appDefinitionId}/resource_provider/resource_types`;
+var getEntityUrl2 = params => `${getBaseUrl23(params)}/${params.resourceTypeId}`;
 var getSpaceEnvUrl = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/resource_types`;
-var get48 = (http4, params) => {
+var get53 = (http4, params) => {
     return get(http4, getEntityUrl2(params));
 };
-var upsert6 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var upsert10 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     return put(http4, getEntityUrl2(params), data, { headers });
 };
-var del31 = (http4, params) => {
+var del36 = (http4, params) => {
     return del(http4, getEntityUrl2(params));
 };
-var getMany39 = (http4, params) => {
-    return get(http4, getBaseUrl19(params));
+var getMany43 = (http4, params) => {
+    return get(http4, getBaseUrl23(params));
 };
 var getForEnvironment2 = (http4, params) => {
     return get(http4, getSpaceEnvUrl(params));
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/role.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/role.mjs
 var role_exports = {};
 __export(role_exports, {
-    create: () => create32,
+    create: () => create35,
     createWithId: () => createWithId12,
-    del: () => del32,
-    get: () => get49,
-    getMany: () => getMany40,
+    del: () => del37,
+    get: () => get54,
+    getMany: () => getMany44,
     getManyForOrganization: () => getManyForOrganization2,
-    update: () => update23
+    update: () => update24
 });
-var get49 = (http4, params) => {
+var get54 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/roles/${params.roleId}`);
 };
-var getMany40 = (http4, params) => {
+var getMany44 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/roles`, {
         params: normalizeSelect(params.query)
     });
@@ -22130,7 +22436,7 @@ var getManyForOrganization2 = (http4, params) => {
         params: normalizeSelect(params.query)
     });
 };
-var create32 = (http4, params, data, headers) => {
+var create35 = (http4, params, data, headers) => {
     return post(http4, `/spaces/${params.spaceId}/roles`, data, {
         headers
     });
@@ -22140,8 +22446,8 @@ var createWithId12 = (http4, params, data, headers) => {
         headers
     });
 };
-var update23 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update24 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, `/spaces/${params.spaceId}/roles/${params.roleId}`, data, {
         headers: {
@@ -22150,42 +22456,42 @@ var update23 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del32 = (http4, params) => {
+var del37 = (http4, params) => {
     return del(http4, `/spaces/${params.spaceId}/roles/${params.roleId}`);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/scheduled-action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/scheduled-action.mjs
 var scheduled_action_exports = {};
 __export(scheduled_action_exports, {
-    create: () => create33,
-    del: () => del33,
-    get: () => get50,
-    getMany: () => getMany41,
-    update: () => update24
+    create: () => create36,
+    del: () => del38,
+    get: () => get55,
+    getMany: () => getMany45,
+    update: () => update25
 });
-var get50 = (http4, params) => {
+var get55 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/scheduled_actions/${params.scheduledActionId}`, {
         params: {
             "environment.sys.id": params.environmentId
         }
     });
 };
-var getMany41 = (http4, params) => {
+var getMany45 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/scheduled_actions`, {
         params: normalizeSelect(params.query)
     });
 };
-var create33 = (http4, params, data) => {
+var create36 = (http4, params, data) => {
     return post(http4, `/spaces/${params.spaceId}/scheduled_actions`, data);
 };
-var del33 = (http4, params) => {
+var del38 = (http4, params) => {
     return del(http4, `/spaces/${params.spaceId}/scheduled_actions/${params.scheduledActionId}`, {
         params: {
             "environment.sys.id": params.environmentId
         }
     });
 };
-var update24 = (http4, params, data) => {
+var update25 = (http4, params, data) => {
     return put(http4, `/spaces/${params.spaceId}/scheduled_actions/${params.scheduledActionId}`, data, {
         params: {
             "environment.sys.id": data.environment?.sys.id
@@ -22196,77 +22502,77 @@ var update24 = (http4, params, data) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/content-semantics-index.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/content-semantics-index.mjs
 var content_semantics_index_exports = {};
 __export(content_semantics_index_exports, {
-    create: () => create34,
-    del: () => del34,
-    get: () => get51,
-    getMany: () => getMany42,
+    create: () => create37,
+    del: () => del39,
+    get: () => get56,
+    getMany: () => getMany46,
     getManyForEnvironment: () => getManyForEnvironment3
 });
-var get51 = (http4, params) => {
+var get56 = (http4, params) => {
     return get(http4, `/organizations/${params.organizationId}/semantic/search-index/${params.indexId}`);
 };
-var getMany42 = (http4, params) => {
+var getMany46 = (http4, params) => {
     return get(http4, `/organizations/${params.organizationId}/semantic/search-index`, { params: params.status ? { status: params.status } : void 0 });
 };
 var getManyForEnvironment3 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/semantic/search-index`, { params: params.status ? { status: params.status } : void 0 });
 };
-var create34 = (http4, params, data) => {
+var create37 = (http4, params, data) => {
     return post(http4, `/organizations/${params.organizationId}/semantic/search-index`, data);
 };
-var del34 = (http4, params) => {
+var del39 = (http4, params) => {
     return del(http4, `/organizations/${params.organizationId}/semantic/search-index/${params.indexId}`);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/semantic-duplicates.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/semantic-duplicates.mjs
 var semantic_duplicates_exports = {};
 __export(semantic_duplicates_exports, {
-    get: () => get52
+    get: () => get57
 });
-var get52 = (http4, params, data, headers) => {
+var get57 = (http4, params, data, headers) => {
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/semantic/duplicates`, data, { headers });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/semantic-recommendations.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/semantic-recommendations.mjs
 var semantic_recommendations_exports = {};
 __export(semantic_recommendations_exports, {
-    get: () => get53
+    get: () => get58
 });
-var get53 = (http4, params, data, headers) => {
+var get58 = (http4, params, data, headers) => {
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/semantic/recommendations`, data, { headers });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/semantic-reference-suggestions.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/semantic-reference-suggestions.mjs
 var semantic_reference_suggestions_exports = {};
 __export(semantic_reference_suggestions_exports, {
-    get: () => get54
+    get: () => get59
 });
-var get54 = (http4, params, data, headers) => {
+var get59 = (http4, params, data, headers) => {
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/semantic/reference-suggestions`, data, { headers });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/semantic-search.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/semantic-search.mjs
 var semantic_search_exports = {};
 __export(semantic_search_exports, {
-    get: () => get55
+    get: () => get60
 });
-var get55 = (http4, params, data, headers) => {
+var get60 = (http4, params, data, headers) => {
     return post(http4, `/spaces/${params.spaceId}/environments/${params.environmentId}/semantic/search`, data, { headers });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/semantic-settings.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/semantic-settings.mjs
 var semantic_settings_exports = {};
 __export(semantic_settings_exports, {
-    get: () => get56
+    get: () => get61
 });
-var get56 = (http4, params) => {
+var get61 = (http4, params) => {
     return get(http4, `/organizations/${params.organizationId}/semantic/settings`);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/snapshot.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/snapshot.mjs
 var snapshot_exports = {};
 __export(snapshot_exports, {
     getForContentType: () => getForContentType,
@@ -22295,22 +22601,22 @@ var getForContentType = (http4, params) => {
     return get(http4, getContentTypeUrl2(params));
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/space.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/space.mjs
 var space_exports = {};
 __export(space_exports, {
-    create: () => create35,
-    del: () => del35,
-    get: () => get57,
-    getMany: () => getMany43,
+    create: () => create38,
+    del: () => del40,
+    get: () => get62,
+    getMany: () => getMany47,
     getManyForOrganization: () => getManyForOrganization3,
     unarchive: () => unarchive4,
-    update: () => update25
+    update: () => update26
 });
-var get57 = (http4, params) =>
+var get62 = (http4, params) =>
     get(http4, `/spaces/${params.spaceId}`, {
         params: params.include ? { include: params.include } : void 0
     });
-var getMany43 = (http4, params) =>
+var getMany47 = (http4, params) =>
     get(http4, `/spaces`, {
         params: { ...params.query, ...(params.include ? { include: params.include } : {}) },
         headers: params.organizationId ? { "X-Contentful-Organization": params.organizationId } : void 0
@@ -22319,13 +22625,13 @@ var getManyForOrganization3 = (http4, params) =>
     get(http4, `/organizations/${params.organizationId}/spaces`, {
         params: params.query
     });
-var create35 = (http4, params, payload, headers) => {
+var create38 = (http4, params, payload, headers) => {
     return post(http4, `/spaces`, payload, {
         headers: params.organizationId ? { ...headers, "X-Contentful-Organization": params.organizationId } : headers
     });
 };
-var update25 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update26 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, `/spaces/${params.spaceId}`, data, {
         headers: {
@@ -22339,16 +22645,22 @@ var unarchive4 = (http4, params, data, headers) => {
         headers
     });
 };
-var del35 = (http4, params) => del(http4, `/spaces/${params.spaceId}`);
+var del40 = (http4, params) => del(http4, `/spaces/${params.spaceId}`);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/space-add-on.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/space-add-on.mjs
 var space_add_on_exports = {};
 __export(space_add_on_exports, {
-    getMany: () => getMany44,
+    getMany: () => getMany48,
+    getManyForOrganization: () => getManyForOrganization4,
     updateAllocations: () => updateAllocations
 });
-var getMany44 = (http4, params) => {
+var getMany48 = (http4, params) => {
     return get(http4, `/spaces/${params.spaceId}/space_add_ons`, {
+        params: normalizeSelect(params.query)
+    });
+};
+var getManyForOrganization4 = (http4, params) => {
+    return get(http4, `/organizations/${params.organizationId}/space_add_ons`, {
         params: normalizeSelect(params.query)
     });
 };
@@ -22358,56 +22670,56 @@ var updateAllocations = (http4, params, data, headers) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/space-member.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/space-member.mjs
 var space_member_exports = {};
 __export(space_member_exports, {
-    get: () => get58,
-    getMany: () => getMany45
+    get: () => get63,
+    getMany: () => getMany49
 });
-var get58 = (http4, params) => get(http4, `/spaces/${params.spaceId}/space_members/${params.spaceMemberId}`);
-var getMany45 = (http4, params) =>
+var get63 = (http4, params) => get(http4, `/spaces/${params.spaceId}/space_members/${params.spaceMemberId}`);
+var getMany49 = (http4, params) =>
     get(http4, `/spaces/${params.spaceId}/space_members`, {
         params: params.query
     });
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/space-membership.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/space-membership.mjs
 var space_membership_exports = {};
 __export(space_membership_exports, {
-    create: () => create36,
+    create: () => create39,
     createWithId: () => createWithId13,
-    del: () => del36,
-    get: () => get59,
+    del: () => del41,
+    get: () => get64,
     getForOrganization: () => getForOrganization2,
-    getMany: () => getMany46,
-    getManyForOrganization: () => getManyForOrganization4,
-    update: () => update26
+    getMany: () => getMany50,
+    getManyForOrganization: () => getManyForOrganization5,
+    update: () => update27
 });
 function spaceMembershipDeprecationWarning() {
     console.warn("The user attribute in the space membership root is deprecated. The attribute has been moved inside the sys  object (i.e. sys.user)");
 }
-var getBaseUrl20 = params => `/spaces/${params.spaceId}/space_memberships`;
-var getEntityUrl3 = params => `${getBaseUrl20(params)}/${params.spaceMembershipId}`;
-var get59 = (http4, params) => {
+var getBaseUrl24 = params => `/spaces/${params.spaceId}/space_memberships`;
+var getEntityUrl3 = params => `${getBaseUrl24(params)}/${params.spaceMembershipId}`;
+var get64 = (http4, params) => {
     spaceMembershipDeprecationWarning();
     return get(http4, getEntityUrl3(params));
 };
-var getMany46 = (http4, params) => {
+var getMany50 = (http4, params) => {
     spaceMembershipDeprecationWarning();
-    return get(http4, getBaseUrl20(params), {
+    return get(http4, getBaseUrl24(params), {
         params: params.query
     });
 };
 var getForOrganization2 = (http4, params) => {
     return get(http4, `/organizations/${params.organizationId}/space_memberships/${params.spaceMembershipId}`);
 };
-var getManyForOrganization4 = (http4, params) => {
+var getManyForOrganization5 = (http4, params) => {
     return get(http4, `/organizations/${params.organizationId}/space_memberships`, {
         params: params.query
     });
 };
-var create36 = (http4, params, data, headers) => {
+var create39 = (http4, params, data, headers) => {
     spaceMembershipDeprecationWarning();
-    return post(http4, getBaseUrl20(params), data, {
+    return post(http4, getBaseUrl24(params), data, {
         headers
     });
 };
@@ -22417,8 +22729,8 @@ var createWithId13 = (http4, params, data, headers) => {
         headers
     });
 };
-var update26 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update27 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getEntityUrl3(params), data, {
         headers: {
@@ -22427,34 +22739,34 @@ var update26 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del36 = (http4, params) => {
+var del41 = (http4, params) => {
     return del(http4, getEntityUrl3(params));
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/tag.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/tag.mjs
 var tag_exports = {};
 __export(tag_exports, {
     createWithId: () => createWithId14,
-    del: () => del37,
-    get: () => get60,
-    getMany: () => getMany47,
-    update: () => update27
+    del: () => del42,
+    get: () => get65,
+    getMany: () => getMany51,
+    update: () => update28
 });
-var getBaseUrl21 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/tags`;
-var getTagUrl = params => getBaseUrl21(params) + `/${params.tagId}`;
-var get60 = (http4, params) => get(http4, getTagUrl(params));
-var getMany47 = (http4, params) =>
-    get(http4, getBaseUrl21(params), {
+var getBaseUrl25 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/tags`;
+var getTagUrl = params => getBaseUrl25(params) + `/${params.tagId}`;
+var get65 = (http4, params) => get(http4, getTagUrl(params));
+var getMany51 = (http4, params) =>
+    get(http4, getBaseUrl25(params), {
         params: params.query
     });
 var createWithId14 = (http4, params, rawData) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     return put(http4, getTagUrl(params), data, {
         headers: { "X-Contentful-Tag-Visibility": rawData.sys.visibility ?? "private" }
     });
 };
-var update27 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update28 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getTagUrl(params), data, {
         headers: {
@@ -22463,19 +22775,19 @@ var update27 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del37 = (http4, { version, ...params }) => {
+var del42 = (http4, { version, ...params }) => {
     return del(http4, getTagUrl(params), { headers: { "X-Contentful-Version": version } });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/task.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/task.mjs
 var task_exports = {};
 __export(task_exports, {
-    create: () => create37,
-    del: () => del38,
-    get: () => get61,
+    create: () => create40,
+    del: () => del43,
+    get: () => get66,
     getAll: () => getAll2,
-    getMany: () => getMany48,
-    update: () => update28
+    getMany: () => getMany52,
+    update: () => update29
 });
 var getSpaceEnvBaseUrl2 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}`;
 function getParentPlural2(parentEntityType) {
@@ -22484,12 +22796,12 @@ function getParentPlural2(parentEntityType) {
             return "entries";
         case "Experience":
             return "experiences";
-        case "Fragment":
-            return "fragments";
-        case "Template":
-            return "templates";
-        case "ComponentType":
-            return "component_types";
+        case "ExperienceFragment":
+            return "experience_fragments";
+        case "ExperienceTemplate":
+            return "experience_templates";
+        case "Component":
+            return "components";
     }
 }
 var normalizeTaskParentParams = paramsOrg =>
@@ -22501,24 +22813,24 @@ var normalizeTaskParentParams = paramsOrg =>
               parentEntityId: paramsOrg.entryId
           }
         : paramsOrg;
-var getBaseUrl22 = paramsOrg => {
+var getBaseUrl26 = paramsOrg => {
     const params = normalizeTaskParentParams(paramsOrg);
     const parentPlural = getParentPlural2(params.parentEntityType);
     return `${getSpaceEnvBaseUrl2(params)}/${parentPlural}/${params.parentEntityId}/tasks`;
 };
-var getTaskUrl = params => `${getBaseUrl22(params)}/${params.taskId}`;
-var get61 = (http4, params) => get(http4, getTaskUrl(params));
-var getMany48 = (http4, params) =>
-    get(http4, getBaseUrl22(params), {
+var getTaskUrl = params => `${getBaseUrl26(params)}/${params.taskId}`;
+var get66 = (http4, params) => get(http4, getTaskUrl(params));
+var getMany52 = (http4, params) =>
+    get(http4, getBaseUrl26(params), {
         params: normalizeSelect(params.query)
     });
-var getAll2 = getMany48;
-var create37 = (http4, params, rawData) => {
-    const data = index(rawData);
-    return post(http4, getBaseUrl22(params), data);
+var getAll2 = getMany52;
+var create40 = (http4, params, rawData) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl26(params), data);
 };
-var update28 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update29 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getTaskUrl(params), data, {
         headers: {
@@ -22527,25 +22839,25 @@ var update28 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del38 = (http4, { version, ...params }) => {
+var del43 = (http4, { version, ...params }) => {
     return del(http4, getTaskUrl(params), { headers: { "X-Contentful-Version": version } });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/team.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/team.mjs
 var team_exports = {};
 __export(team_exports, {
-    create: () => create38,
-    del: () => del39,
-    get: () => get62,
-    getMany: () => getMany49,
+    create: () => create41,
+    del: () => del44,
+    get: () => get67,
+    getMany: () => getMany53,
     getManyForSpace: () => getManyForSpace,
-    update: () => update29
+    update: () => update30
 });
-var getBaseUrl23 = params => `/organizations/${params.organizationId}/teams`;
-var getEntityUrl4 = params => `${getBaseUrl23(params)}/${params.teamId}`;
-var get62 = (http4, params) => get(http4, getEntityUrl4(params));
-var getMany49 = (http4, params) =>
-    get(http4, getBaseUrl23(params), {
+var getBaseUrl27 = params => `/organizations/${params.organizationId}/teams`;
+var getEntityUrl4 = params => `${getBaseUrl27(params)}/${params.teamId}`;
+var get67 = (http4, params) => get(http4, getEntityUrl4(params));
+var getMany53 = (http4, params) =>
+    get(http4, getBaseUrl27(params), {
         params: normalizeSelect(params.query)
     });
 var getManyForSpace = (http4, params) => {
@@ -22553,11 +22865,11 @@ var getManyForSpace = (http4, params) => {
         params: normalizeSelect(params.query)
     });
 };
-var create38 = (http4, params, rawData, headers) => {
-    return post(http4, getBaseUrl23(params), rawData, { headers });
+var create41 = (http4, params, rawData, headers) => {
+    return post(http4, getBaseUrl27(params), rawData, { headers });
 };
-var update29 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update30 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getEntityUrl4(params), data, {
         headers: {
@@ -22566,35 +22878,35 @@ var update29 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del39 = (http4, params) => del(http4, getEntityUrl4(params));
+var del44 = (http4, params) => del(http4, getEntityUrl4(params));
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/team-membership.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/team-membership.mjs
 var team_membership_exports = {};
 __export(team_membership_exports, {
-    create: () => create39,
-    del: () => del40,
-    get: () => get63,
-    getManyForOrganization: () => getManyForOrganization5,
+    create: () => create42,
+    del: () => del45,
+    get: () => get68,
+    getManyForOrganization: () => getManyForOrganization6,
     getManyForTeam: () => getManyForTeam,
-    update: () => update30
+    update: () => update31
 });
-var getBaseUrl24 = params => `/organizations/${params.organizationId}/teams/${params.teamId}/team_memberships`;
+var getBaseUrl28 = params => `/organizations/${params.organizationId}/teams/${params.teamId}/team_memberships`;
 var getEntityUrl5 = params => `/organizations/${params.organizationId}/teams/${params.teamId}/team_memberships/${params.teamMembershipId}`;
-var get63 = (http4, params) => get(http4, getEntityUrl5(params));
-var getManyForOrganization5 = (http4, params) =>
+var get68 = (http4, params) => get(http4, getEntityUrl5(params));
+var getManyForOrganization6 = (http4, params) =>
     get(http4, `/organizations/${params.organizationId}/team_memberships`, {
         params: normalizeSelect(params.query)
     });
 var getManyForTeam = (http4, params) => {
-    return get(http4, getBaseUrl24(params), {
+    return get(http4, getBaseUrl28(params), {
         params: normalizeSelect(params.query)
     });
 };
-var create39 = (http4, params, rawData, headers) => {
-    return post(http4, getBaseUrl24(params), rawData, { headers });
+var create42 = (http4, params, rawData, headers) => {
+    return post(http4, getBaseUrl28(params), rawData, { headers });
 };
-var update30 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update31 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getEntityUrl5(params), data, {
         headers: {
@@ -22603,30 +22915,30 @@ var update30 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del40 = (http4, params) => del(http4, getEntityUrl5(params));
+var del45 = (http4, params) => del(http4, getEntityUrl5(params));
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/team-space-membership.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/team-space-membership.mjs
 var team_space_membership_exports = {};
 __export(team_space_membership_exports, {
-    create: () => create40,
-    del: () => del41,
-    get: () => get64,
+    create: () => create43,
+    del: () => del46,
+    get: () => get69,
     getForOrganization: () => getForOrganization3,
-    getMany: () => getMany50,
-    getManyForOrganization: () => getManyForOrganization6,
-    update: () => update31
+    getMany: () => getMany54,
+    getManyForOrganization: () => getManyForOrganization7,
+    update: () => update32
 });
-var getBaseUrl25 = params => `/spaces/${params.spaceId}/team_space_memberships`;
-var getEntityUrl6 = params => `${getBaseUrl25(params)}/${params.teamSpaceMembershipId}`;
-var get64 = (http4, params) => get(http4, getEntityUrl6(params));
-var getMany50 = (http4, params) =>
-    get(http4, getBaseUrl25(params), {
+var getBaseUrl29 = params => `/spaces/${params.spaceId}/team_space_memberships`;
+var getEntityUrl6 = params => `${getBaseUrl29(params)}/${params.teamSpaceMembershipId}`;
+var get69 = (http4, params) => get(http4, getEntityUrl6(params));
+var getMany54 = (http4, params) =>
+    get(http4, getBaseUrl29(params), {
         params: params.query
     });
 var getForOrganization3 = (http4, params) => {
     return get(http4, `/organizations/${params.organizationId}/team_space_memberships/${params.teamSpaceMembershipId}`);
 };
-var getManyForOrganization6 = (http4, params) => {
+var getManyForOrganization7 = (http4, params) => {
     const query2 = params.query || {};
     if (params.teamId) {
         query2["sys.team.sys.id"] = params.teamId;
@@ -22635,16 +22947,16 @@ var getManyForOrganization6 = (http4, params) => {
         params: params.query
     });
 };
-var create40 = (http4, params, rawData, headers) => {
-    return post(http4, getBaseUrl25(params), rawData, {
+var create43 = (http4, params, rawData, headers) => {
+    return post(http4, getBaseUrl29(params), rawData, {
         headers: {
             "x-contentful-team": params.teamId,
             ...headers
         }
     });
 };
-var update31 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update32 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getEntityUrl6(params), data, {
         headers: {
@@ -22654,22 +22966,78 @@ var update31 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del41 = (http4, params) => {
+var del46 = (http4, params) => {
     return del(http4, getEntityUrl6(params));
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/ui-config.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/template.mjs
+var template_exports = {};
+__export(template_exports, {
+    create: () => create44,
+    del: () => del47,
+    get: () => get70,
+    getMany: () => getMany55,
+    publish: () => publish11,
+    unpublish: () => unpublish11,
+    upsert: () => upsert11
+});
+var getBaseUrl30 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/templates`;
+var getMany55 = (http4, params, headers) => {
+    return get(http4, getBaseUrl30(params), {
+        params: params.query,
+        headers
+    });
+};
+var get70 = (http4, params, headers) => {
+    return get(http4, getBaseUrl30(params) + `/${params.templateId}`, { headers });
+};
+var create44 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl30(params), data, { headers });
+};
+var upsert11 = (http4, params, rawData, headers) => {
+    const { sys, ...body } = copy(rawData);
+    return put(http4, getBaseUrl30(params) + `/${params.templateId}`, body, {
+        headers: {
+            ...(sys.version !== void 0 && {
+                "X-Contentful-Version": sys.version
+            }),
+            ...headers
+        }
+    });
+};
+var del47 = (http4, params) => {
+    return del(http4, getBaseUrl30(params) + `/${params.templateId}`);
+};
+var publish11 = (http4, params, headers) => {
+    return put(http4, getBaseUrl30(params) + `/${params.templateId}/published`, null, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+var unpublish11 = (http4, params, headers) => {
+    return del(http4, getBaseUrl30(params) + `/${params.templateId}/published`, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/ui-config.mjs
 var ui_config_exports = {};
 __export(ui_config_exports, {
-    get: () => get65,
-    update: () => update32
+    get: () => get71,
+    update: () => update33
 });
 var getUrl = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/ui_config`;
-var get65 = (http4, params) => {
+var get71 = (http4, params) => {
     return get(http4, getUrl(params));
 };
-var update32 = (http4, params, rawData) => {
-    const data = index(rawData);
+var update33 = (http4, params, rawData) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getUrl(params), data, {
         headers: {
@@ -22678,24 +23046,371 @@ var update32 = (http4, params, rawData) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/upload-credentials.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/experience.mjs
+var experience_exports = {};
+__export(experience_exports, {
+    ExperienceAlphaHeaders: () => ExperienceAlphaHeaders,
+    create: () => create45,
+    del: () => del48,
+    get: () => get72,
+    getMany: () => getMany56,
+    publish: () => publish12,
+    unpublish: () => unpublish12,
+    upsert: () => upsert12
+});
+var getBaseUrl31 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/experiences`;
+var ExperienceAlphaHeaders = {
+    "x-contentful-enable-alpha-feature": "new-exo-entity-types"
+};
+var getMany56 = (http4, params, headers) => {
+    return get(http4, getBaseUrl31(params), {
+        params: params.query,
+        headers: {
+            ...ExperienceAlphaHeaders,
+            ...headers
+        }
+    });
+};
+var get72 = (http4, params, headers) => {
+    return get(http4, getBaseUrl31(params) + `/${params.experienceId}`, {
+        headers: {
+            ...ExperienceAlphaHeaders,
+            ...headers
+        }
+    });
+};
+var create45 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl31(params), data, {
+        headers: {
+            ...ExperienceAlphaHeaders,
+            ...headers
+        }
+    });
+};
+var upsert12 = (http4, params, rawData, headers) => {
+    const { sys, ...body } = copy(rawData);
+    return put(http4, getBaseUrl31(params) + `/${params.experienceId}`, body, {
+        headers: {
+            ...ExperienceAlphaHeaders,
+            ...(sys.version !== void 0 && {
+                "X-Contentful-Version": sys.version
+            }),
+            ...headers
+        }
+    });
+};
+var del48 = (http4, params) => {
+    return del(http4, getBaseUrl31(params) + `/${params.experienceId}`, {
+        headers: {
+            ...ExperienceAlphaHeaders
+        }
+    });
+};
+var publish12 = (http4, params, payload, headers) => {
+    return put(http4, getBaseUrl31(params) + `/${params.experienceId}/published`, payload ?? null, {
+        headers: {
+            ...ExperienceAlphaHeaders,
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+var unpublish12 = (http4, params, headers) => {
+    return del(http4, getBaseUrl31(params) + `/${params.experienceId}/published`, {
+        headers: {
+            ...ExperienceAlphaHeaders,
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/experience-variant.mjs
+var experience_variant_exports = {};
+__export(experience_variant_exports, {
+    archive: () => archive4,
+    create: () => create46,
+    del: () => del49,
+    get: () => get73,
+    getMany: () => getMany57,
+    publish: () => publish13,
+    unarchive: () => unarchive5,
+    unpublish: () => unpublish13,
+    upsert: () => upsert13
+});
+var getBaseUrl32 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/experiences/${params.experienceId}/optimization_variants`;
+var getVariantUrl = params => `${getBaseUrl32(params)}/${params.variantId}`;
+var actionHeaders = (version, headers) => ({
+    ...ExperienceAlphaHeaders,
+    "X-Contentful-Version": version,
+    ...headers
+});
+var getMany57 = (http4, params, headers) => {
+    return get(http4, getBaseUrl32(params), {
+        params: params.query,
+        headers: {
+            ...ExperienceAlphaHeaders,
+            ...headers
+        }
+    });
+};
+var get73 = (http4, params, headers) => {
+    return get(http4, getVariantUrl(params), {
+        headers: {
+            ...ExperienceAlphaHeaders,
+            ...headers
+        }
+    });
+};
+var create46 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl32(params), data, {
+        headers: {
+            ...ExperienceAlphaHeaders,
+            ...headers
+        }
+    });
+};
+var upsert13 = (http4, params, rawData, headers) => {
+    const { sys, ...body } = copy(rawData);
+    return put(http4, getVariantUrl(params), body, {
+        headers: {
+            ...ExperienceAlphaHeaders,
+            ...(sys.version !== void 0 && {
+                "X-Contentful-Version": sys.version
+            }),
+            ...headers
+        }
+    });
+};
+var del49 = (http4, params) => {
+    return del(http4, getVariantUrl(params), {
+        headers: {
+            ...ExperienceAlphaHeaders
+        }
+    });
+};
+var publish13 = (http4, params, headers) => {
+    return put(http4, `${getVariantUrl(params)}/published`, null, {
+        headers: actionHeaders(params.version, headers)
+    });
+};
+var unpublish13 = (http4, params, headers) => {
+    return del(http4, `${getVariantUrl(params)}/published`, {
+        headers: actionHeaders(params.version, headers)
+    });
+};
+var archive4 = (http4, params, headers) => {
+    return put(http4, `${getVariantUrl(params)}/archived`, null, {
+        headers: actionHeaders(params.version, headers)
+    });
+};
+var unarchive5 = (http4, params, headers) => {
+    return del(http4, `${getVariantUrl(params)}/archived`, {
+        headers: actionHeaders(params.version, headers)
+    });
+};
+
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/experience-fragment.mjs
+var experience_fragment_exports = {};
+__export(experience_fragment_exports, {
+    create: () => create47,
+    del: () => del50,
+    get: () => get74,
+    getMany: () => getMany58,
+    publish: () => publish14,
+    unpublish: () => unpublish14,
+    upsert: () => upsert14
+});
+var getBaseUrl33 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/experience_fragments`;
+var getMany58 = (http4, params, headers) => {
+    return get(http4, getBaseUrl33(params), {
+        params: params.query,
+        headers
+    });
+};
+var get74 = (http4, params, headers) => {
+    return get(http4, getBaseUrl33(params) + `/${params.experienceFragmentId}`, { headers });
+};
+var create47 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl33(params), data, { headers });
+};
+var upsert14 = (http4, params, rawData, headers) => {
+    const { sys, ...body } = copy(rawData);
+    return put(http4, getBaseUrl33(params) + `/${params.experienceFragmentId}`, body, {
+        headers: {
+            ...(sys?.version !== void 0 && {
+                "X-Contentful-Version": sys.version
+            }),
+            ...headers
+        }
+    });
+};
+var del50 = (http4, params) => {
+    return del(http4, getBaseUrl33(params) + `/${params.experienceFragmentId}`);
+};
+var publish14 = (http4, params, headers) => {
+    return put(http4, getBaseUrl33(params) + `/${params.experienceFragmentId}/published`, null, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+var unpublish14 = (http4, params, headers) => {
+    return del(http4, getBaseUrl33(params) + `/${params.experienceFragmentId}/published`, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/experience-template.mjs
+var experience_template_exports = {};
+__export(experience_template_exports, {
+    create: () => create48,
+    del: () => del51,
+    get: () => get75,
+    getMany: () => getMany59,
+    publish: () => publish15,
+    unpublish: () => unpublish15,
+    upsert: () => upsert15
+});
+var getBaseUrl34 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/experience_templates`;
+var getMany59 = (http4, params, headers) => {
+    return get(http4, getBaseUrl34(params), {
+        params: params.query,
+        headers
+    });
+};
+var get75 = (http4, params, headers) => {
+    return get(http4, getBaseUrl34(params) + `/${params.experienceTemplateId}`, { headers });
+};
+var create48 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl34(params), data, { headers });
+};
+var upsert15 = (http4, params, rawData, headers) => {
+    const { sys, ...body } = copy(rawData);
+    return put(http4, getBaseUrl34(params) + `/${params.experienceTemplateId}`, body, {
+        headers: {
+            ...(sys.version !== void 0 && {
+                "X-Contentful-Version": sys.version
+            }),
+            ...headers
+        }
+    });
+};
+var del51 = (http4, params) => {
+    return del(http4, getBaseUrl34(params) + `/${params.experienceTemplateId}`);
+};
+var publish15 = (http4, params, headers) => {
+    return put(http4, getBaseUrl34(params) + `/${params.experienceTemplateId}/published`, null, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+var unpublish15 = (http4, params, headers) => {
+    return del(http4, getBaseUrl34(params) + `/${params.experienceTemplateId}/published`, {
+        headers: {
+            "X-Contentful-Version": params.version,
+            ...headers
+        }
+    });
+};
+
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/experience-fragment-variant.mjs
+var experience_fragment_variant_exports = {};
+__export(experience_fragment_variant_exports, {
+    archive: () => archive5,
+    create: () => create49,
+    del: () => del52,
+    get: () => get76,
+    getMany: () => getMany60,
+    publish: () => publish16,
+    unarchive: () => unarchive6,
+    unpublish: () => unpublish16,
+    upsert: () => upsert16
+});
+var getBaseUrl35 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/experience_fragments/${params.experienceFragmentId}/optimization_variants`;
+var getVariantUrl2 = params => `${getBaseUrl35(params)}/${params.variantId}`;
+var actionHeaders2 = (version, headers) => ({
+    "X-Contentful-Version": version,
+    ...headers
+});
+var getMany60 = (http4, params, headers) => {
+    return get(http4, getBaseUrl35(params), {
+        params: params.query,
+        headers
+    });
+};
+var get76 = (http4, params, headers) => {
+    return get(http4, getVariantUrl2(params), { headers });
+};
+var create49 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl35(params), data, { headers });
+};
+var upsert16 = (http4, params, rawData, headers) => {
+    const { sys, ...body } = copy(rawData);
+    return put(http4, getVariantUrl2(params), body, {
+        headers: {
+            ...(sys?.version !== void 0 && {
+                "X-Contentful-Version": sys.version
+            }),
+            ...headers
+        }
+    });
+};
+var del52 = (http4, params) => {
+    return del(http4, getVariantUrl2(params));
+};
+var publish16 = (http4, params, headers) => {
+    return put(http4, `${getVariantUrl2(params)}/published`, null, {
+        headers: actionHeaders2(params.version, headers)
+    });
+};
+var unpublish16 = (http4, params, headers) => {
+    return del(http4, `${getVariantUrl2(params)}/published`, {
+        headers: actionHeaders2(params.version, headers)
+    });
+};
+var archive5 = (http4, params, headers) => {
+    return put(http4, `${getVariantUrl2(params)}/archived`, null, {
+        headers: actionHeaders2(params.version, headers)
+    });
+};
+var unarchive6 = (http4, params, headers) => {
+    return del(http4, `${getVariantUrl2(params)}/archived`, {
+        headers: actionHeaders2(params.version, headers)
+    });
+};
+
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/upload-credentials.mjs
 var upload_credentials_exports = {};
 __export(upload_credentials_exports, {
-    create: () => create41
+    create: () => create50
 });
-var getBaseUrl26 = params => {
+var getBaseUrl36 = params => {
     return `/spaces/${params.spaceId}/environments/${params.environmentId ?? "master"}/upload_credentials`;
 };
-var create41 = (http4, params) => {
+var create50 = (http4, params) => {
     const httpUpload = getUploadHttpClient(http4);
-    const path = getBaseUrl26(params);
+    const path = getBaseUrl36(params);
     return post(httpUpload, path);
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/usage.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/usage.mjs
 var usage_exports = {};
 __export(usage_exports, {
-    getManyForOrganization: () => getManyForOrganization7,
+    getAggregated: () => getAggregated,
+    getAssetBandwidthUsageDetailed: () => getAssetBandwidthUsageDetailed,
+    getManyForOrganization: () => getManyForOrganization8,
     getManyForSpace: () => getManyForSpace2
 });
 var getManyForSpace2 = (http4, params) => {
@@ -22703,19 +23418,29 @@ var getManyForSpace2 = (http4, params) => {
         params: params.query
     });
 };
-var getManyForOrganization7 = (http4, params) => {
+var getManyForOrganization8 = (http4, params) => {
     return get(http4, `/organizations/${params.organizationId}/organization_periodic_usages`, {
         params: params.query
     });
 };
+var getAggregated = (http4, params) => {
+    return get(http4, `/organizations/${params.organizationId}/usages/${params.metricKey}`, {
+        params: params.query
+    });
+};
+var getAssetBandwidthUsageDetailed = (http4, params) => {
+    return get(http4, `/organizations/${params.organizationId}/usages-detailed/asset_bandwidth`, {
+        params: params.query
+    });
+};
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/user.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/user.mjs
 var user_exports = {};
 __export(user_exports, {
     getCurrent: () => getCurrent,
     getForOrganization: () => getForOrganization4,
     getForSpace: () => getForSpace,
-    getManyForOrganization: () => getManyForOrganization8,
+    getManyForOrganization: () => getManyForOrganization9,
     getManyForSpace: () => getManyForSpace3
 });
 var getForSpace = (http4, params) => {
@@ -22730,24 +23455,24 @@ var getManyForSpace3 = (http4, params) => {
 var getForOrganization4 = (http4, params) => {
     return get(http4, `/organizations/${params.organizationId}/users/${params.userId}`);
 };
-var getManyForOrganization8 = (http4, params) => {
+var getManyForOrganization9 = (http4, params) => {
     return get(http4, `/organizations/${params.organizationId}/users`, {
         params: params.query
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/user-ui-config.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/user-ui-config.mjs
 var user_ui_config_exports = {};
 __export(user_ui_config_exports, {
-    get: () => get66,
-    update: () => update33
+    get: () => get77,
+    update: () => update34
 });
 var getUrl2 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/ui_config/me`;
-var get66 = (http4, params) => {
+var get77 = (http4, params) => {
     return get(http4, getUrl2(params));
 };
-var update33 = (http4, params, rawData) => {
-    const data = index(rawData);
+var update34 = (http4, params, rawData) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getUrl2(params), data, {
         headers: {
@@ -22756,35 +23481,35 @@ var update33 = (http4, params, rawData) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/webhook.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/webhook.mjs
 var webhook_exports = {};
 __export(webhook_exports, {
-    create: () => create42,
+    create: () => create51,
     createWithId: () => createWithId15,
-    del: () => del42,
+    del: () => del53,
     deleteRetryPolicy: () => deleteRetryPolicy,
     deleteSigningSecret: () => deleteSigningSecret,
-    get: () => get67,
+    get: () => get78,
     getCallDetails: () => getCallDetails2,
     getHealthStatus: () => getHealthStatus,
-    getMany: () => getMany51,
+    getMany: () => getMany61,
     getManyCallDetails: () => getManyCallDetails,
     getRetryPolicy: () => getRetryPolicy,
     getSigningSecret: () => getSigningSecret,
-    update: () => update34,
+    update: () => update35,
     upsertRetryPolicy: () => upsertRetryPolicy,
     upsertSigningSecret: () => upsertSigningSecret
 });
-var getBaseUrl27 = params => `/spaces/${params.spaceId}/webhook_definitions`;
+var getBaseUrl37 = params => `/spaces/${params.spaceId}/webhook_definitions`;
 var getWebhookCallBaseUrl = params => `/spaces/${params.spaceId}/webhooks`;
-var getWebhookUrl = params => `${getBaseUrl27(params)}/${params.webhookDefinitionId}`;
+var getWebhookUrl = params => `${getBaseUrl37(params)}/${params.webhookDefinitionId}`;
 var getWebhookCallUrl = params => `${getWebhookCallBaseUrl(params)}/${params.webhookDefinitionId}/calls`;
 var getWebhookCallDetailsUrl = params => `${getWebhookCallBaseUrl(params)}/${params.webhookDefinitionId}/calls/${params.callId}`;
 var getWebhookHealthUrl = params => `${getWebhookCallBaseUrl(params)}/${params.webhookDefinitionId}/health`;
 var getWebhookSettingsUrl = params => `/spaces/${params.spaceId}/webhook_settings`;
 var getWebhookSigningSecretUrl = params => `${getWebhookSettingsUrl(params)}/signing_secret`;
 var getWebhookRetryPolicyUrl = params => `${getWebhookSettingsUrl(params)}/retry_policy`;
-var get67 = (http4, params) => {
+var get78 = (http4, params) => {
     return get(http4, getWebhookUrl(params));
 };
 var getManyCallDetails = (http4, params) => {
@@ -22798,8 +23523,8 @@ var getCallDetails2 = (http4, params) => {
 var getHealthStatus = (http4, params) => {
     return get(http4, getWebhookHealthUrl(params));
 };
-var getMany51 = (http4, params) => {
-    return get(http4, getBaseUrl27(params), {
+var getMany61 = (http4, params) => {
+    return get(http4, getBaseUrl37(params), {
         params: normalizeSelect(params.query)
     });
 };
@@ -22809,16 +23534,16 @@ var getSigningSecret = (http4, params) => {
 var getRetryPolicy = (http4, params) => {
     return get(http4, getWebhookRetryPolicyUrl(params));
 };
-var create42 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
-    return post(http4, getBaseUrl27(params), data, { headers });
+var create51 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl37(params), data, { headers });
 };
 var createWithId15 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     return put(http4, getWebhookUrl(params), data, { headers });
 };
-var update34 = async (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update35 = async (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getWebhookUrl(params), data, {
         headers: {
@@ -22828,14 +23553,14 @@ var update34 = async (http4, params, rawData, headers) => {
     });
 };
 var upsertSigningSecret = async (http4, params, rawData) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     return put(http4, getWebhookSigningSecretUrl(params), data);
 };
 var upsertRetryPolicy = async (http4, params, rawData) => {
-    const data = index(rawData);
+    const data = copy(rawData);
     return put(http4, getWebhookRetryPolicyUrl(params), data);
 };
-var del42 = (http4, params) => {
+var del53 = (http4, params) => {
     return del(http4, getWebhookUrl(params));
 };
 var deleteSigningSecret = async (http4, params) => {
@@ -22845,36 +23570,36 @@ var deleteRetryPolicy = async (http4, params) => {
     return del(http4, getWebhookRetryPolicyUrl(params));
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/workflow.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/workflow.mjs
 var workflow_exports = {};
 __export(workflow_exports, {
     complete: () => complete,
-    create: () => create43,
-    del: () => del43,
-    get: () => get68,
-    getMany: () => getMany52,
-    update: () => update35
+    create: () => create52,
+    del: () => del54,
+    get: () => get79,
+    getMany: () => getMany62,
+    update: () => update36
 });
-var getBaseUrl28 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/workflows`;
-var getWorkflowUrl = params => `${getBaseUrl28(params)}/${params.workflowId}`;
+var getBaseUrl38 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/workflows`;
+var getWorkflowUrl = params => `${getBaseUrl38(params)}/${params.workflowId}`;
 var completeWorkflowUrl = params => `${getWorkflowUrl(params)}/complete`;
-var getMany52 = (http4, params, headers) =>
-    get(http4, getBaseUrl28(params), {
+var getMany62 = (http4, params, headers) =>
+    get(http4, getBaseUrl38(params), {
         headers,
         params: params.query
     });
-var get68 = (http4, params, headers) =>
+var get79 = (http4, params, headers) =>
     get(http4, getWorkflowUrl(params), {
         headers
     });
-var create43 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
-    return post(http4, getBaseUrl28(params), data, {
+var create52 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl38(params), data, {
         headers
     });
 };
-var update35 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update36 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getWorkflowUrl(params), data, {
         headers: {
@@ -22883,7 +23608,7 @@ var update35 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del43 = (http4, { version, ...params }, headers) => {
+var del54 = (http4, { version, ...params }, headers) => {
     return del(http4, getWorkflowUrl(params), {
         headers: { "X-Contentful-Version": version, ...headers }
     });
@@ -22894,34 +23619,34 @@ var complete = (http4, { version, ...params }, headers) => {
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/workflow-definition.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/workflow-definition.mjs
 var workflow_definition_exports = {};
 __export(workflow_definition_exports, {
-    create: () => create44,
-    del: () => del44,
-    get: () => get69,
-    getMany: () => getMany53,
-    update: () => update36
+    create: () => create53,
+    del: () => del55,
+    get: () => get80,
+    getMany: () => getMany63,
+    update: () => update37
 });
-var getBaseUrl29 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/workflow_definitions`;
-var getWorkflowDefinitionUrl = params => `${getBaseUrl29(params)}/${params.workflowDefinitionId}`;
-var get69 = (http4, params, headers) =>
+var getBaseUrl39 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/workflow_definitions`;
+var getWorkflowDefinitionUrl = params => `${getBaseUrl39(params)}/${params.workflowDefinitionId}`;
+var get80 = (http4, params, headers) =>
     get(http4, getWorkflowDefinitionUrl(params), {
         headers
     });
-var getMany53 = (http4, params, headers) =>
-    get(http4, getBaseUrl29(params), {
+var getMany63 = (http4, params, headers) =>
+    get(http4, getBaseUrl39(params), {
         headers,
         params: params.query
     });
-var create44 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
-    return post(http4, getBaseUrl29(params), data, {
+var create53 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
+    return post(http4, getBaseUrl39(params), data, {
         headers
     });
 };
-var update36 = (http4, params, rawData, headers) => {
-    const data = index(rawData);
+var update37 = (http4, params, rawData, headers) => {
+    const data = copy(rawData);
     delete data.sys;
     return put(http4, getWorkflowDefinitionUrl(params), data, {
         headers: {
@@ -22930,25 +23655,25 @@ var update36 = (http4, params, rawData, headers) => {
         }
     });
 };
-var del44 = (http4, { version, ...params }, headers) => {
+var del55 = (http4, { version, ...params }, headers) => {
     return del(http4, getWorkflowDefinitionUrl(params), {
         headers: { "X-Contentful-Version": version, ...headers }
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/workflows-changelog.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/workflows-changelog.mjs
 var workflows_changelog_exports = {};
 __export(workflows_changelog_exports, {
-    getMany: () => getMany54
+    getMany: () => getMany64
 });
-var getBaseUrl30 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/workflows_changelog`;
-var getMany54 = (http4, params, headers) =>
-    get(http4, getBaseUrl30(params), {
+var getBaseUrl40 = params => `/spaces/${params.spaceId}/environments/${params.environmentId}/workflows_changelog`;
+var getMany64 = (http4, params, headers) =>
+    get(http4, getBaseUrl40(params), {
         headers,
         params: params.query
     });
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/index.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/endpoints/index.mjs
 var endpoints = {
     AiAction: ai_action_exports,
     AiActionInvocation: ai_action_invocation_exports,
@@ -22974,10 +23699,13 @@ var endpoints = {
     AvailableLicense: available_license_exports,
     BulkAction: bulk_action_exports,
     Comment: comment_exports,
+    Component: component_exports,
     ComponentType: component_type_exports,
     Concept: concept_exports,
     ConceptScheme: concept_scheme_exports,
     ContentType: content_type_exports,
+    DataAssembly: data_assembly_exports,
+    DesignToken: design_token_exports,
     EditorInterface: editor_interface_exports,
     EligibleLicense: eligible_license_exports,
     Entry: entry_exports,
@@ -22986,6 +23714,7 @@ var endpoints = {
     EnvironmentTemplate: environment_template_exports,
     EnvironmentTemplateInstallation: environment_template_installation_exports,
     Extension: extension_exports,
+    Fragment: fragment_exports,
     Function: function_exports,
     FunctionLog: function_log_exports,
     Http: http_exports,
@@ -23022,9 +23751,15 @@ var endpoints = {
     Team: team_exports,
     TeamMembership: team_membership_exports,
     TeamSpaceMembership: team_space_membership_exports,
+    Template: template_exports,
     UIConfig: ui_config_exports,
     Upload: upload_exports,
     UploadCredential: upload_credentials_exports,
+    Experience: experience_exports,
+    ExperienceVariant: experience_variant_exports,
+    ExperienceFragment: experience_fragment_exports,
+    ExperienceTemplate: experience_template_exports,
+    ExperienceFragmentVariant: experience_fragment_variant_exports,
     Usage: usage_exports,
     User: user_exports,
     UserUIConfig: user_ui_config_exports,
@@ -23034,7 +23769,7 @@ var endpoints = {
     WorkflowsChangelog: workflows_changelog_exports
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/make-request.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/make-request.mjs
 var makeRequest = async ({ axiosInstance, entityType, action: actionInput, params, payload, headers, userAgent }) => {
     const action = actionInput === "delete" ? "del" : actionInput;
     const endpoint =
@@ -23051,7 +23786,7 @@ var makeRequest = async ({ axiosInstance, entityType, action: actionInput, param
     });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/adapters/REST/rest-adapter.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/adapters/REST/rest-adapter.mjs
 var defaultHostParameters = {
     defaultHostname: "api.contentful.com",
     defaultHostnameUpload: "upload.contentful.com"
@@ -23061,7 +23796,7 @@ var RestAdapter = class {
         if (!params.accessToken) {
             throw new TypeError("Expected parameter accessToken");
         }
-        const copiedParams = index(params);
+        const copiedParams = copy(params);
         copiedParams.httpAgent = params.httpAgent;
         copiedParams.httpsAgent = params.httpsAgent;
         this.params = {
@@ -23083,7 +23818,7 @@ var RestAdapter = class {
     }
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-adapter.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-adapter.mjs
 function createAdapter(params) {
     if ("apiAdapter" in params) {
         return params.apiAdapter;
@@ -23092,26 +23827,26 @@ function createAdapter(params) {
     }
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-contentful-api.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-contentful-api.mjs
 var import_contentful_sdk_core80 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/space.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/space.mjs
 var import_contentful_sdk_core57 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-space-api.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-space-api.mjs
 var import_contentful_sdk_core56 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/eligible-license.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/eligible-license.mjs
 var import_contentful_sdk_core6 = __toESM(require_cjs2(), 1);
 function wrapEligibleLicense(makeRequest2, data) {
-    return (0, import_contentful_sdk_core6.toPlainObject)(index(data));
+    return (0, import_contentful_sdk_core6.toPlainObject)(copy(data));
 }
 var wrapEligibleLicenseCollection = wrapCollection(wrapEligibleLicense);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/environment.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/environment.mjs
 var import_contentful_sdk_core42 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/enhance-with-methods.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/enhance-with-methods.mjs
 function enhanceWithMethods(baseObject, methodsObject) {
     return Object.keys(methodsObject).reduce((enhancedObject, methodName) => {
         Object.defineProperty(enhancedObject, methodName, {
@@ -23124,18 +23859,18 @@ function enhanceWithMethods(baseObject, methodsObject) {
     }, baseObject);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-environment-api.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-environment-api.mjs
 var import_contentful_sdk_core41 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/release-action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/release-action.mjs
 var import_contentful_sdk_core7 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/methods/utils.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/methods/utils.mjs
 function sleep(durationMs) {
     return new Promise(resolve => setTimeout(resolve, durationMs));
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/methods/action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/methods/action.mjs
 var DEFAULT_MAX_RETRIES = 30;
 var DEFAULT_INITIAL_DELAY_MS = 1e3;
 var DEFAULT_RETRY_INTERVAL_MS = 2e3;
@@ -23149,17 +23884,15 @@ var AsyncActionProcessingError = class extends Error {
 var AsyncActionFailedError = class extends AsyncActionProcessingError {};
 async function pollAsyncActionStatus(actionFunction, options) {
     let retryCount = 0;
-    let done = false;
     let action;
     const maxRetries = options?.retryCount ?? DEFAULT_MAX_RETRIES;
     const retryIntervalMs = options?.retryIntervalMs ?? DEFAULT_RETRY_INTERVAL_MS;
     const initialDelayMs = options?.initialDelayMs ?? DEFAULT_INITIAL_DELAY_MS;
     const throwOnFailedExecution = options?.throwOnFailedExecution ?? true;
     await sleep(initialDelayMs);
-    while (retryCount < maxRetries && !done) {
+    while (retryCount < maxRetries) {
         action = await actionFunction();
         if (action && ["succeeded", "failed"].includes(action.sys.status)) {
-            done = true;
             if (action.sys.status === "failed" && throwOnFailedExecution) {
                 throw new AsyncActionFailedError(`${action.sys.type} failed to execute.`, action);
             }
@@ -23171,7 +23904,7 @@ async function pollAsyncActionStatus(actionFunction, options) {
     throw new AsyncActionProcessingError(`${action?.sys.type} didn't finish processing within the expected timeframe.`, action);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/release-action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/release-action.mjs
 function createReleaseActionApi(makeRequest2) {
     const getParams3 = self2 => {
         const action = self2.toPlainObject();
@@ -23198,22 +23931,22 @@ function createReleaseActionApi(makeRequest2) {
     };
 }
 function wrapReleaseAction(makeRequest2, data) {
-    const releaseAction = (0, import_contentful_sdk_core7.toPlainObject)(index(data));
+    const releaseAction = (0, import_contentful_sdk_core7.toPlainObject)(copy(data));
     const releaseActionWithApiMethods = enhanceWithMethods(releaseAction, createReleaseActionApi(makeRequest2));
     return (0, import_contentful_sdk_core7.freezeSys)(releaseActionWithApiMethods);
 }
 var wrapReleaseActionCollection = wrapCollection(wrapReleaseAction);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/release.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/release.mjs
 var import_contentful_sdk_core8 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/common-types.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/common-types.mjs
 var ScheduledActionReferenceFilters;
 (function (ScheduledActionReferenceFilters2) {
     ScheduledActionReferenceFilters2["contentTypeAnnotationNotIn"] = "sys.contentType.metadata.annotations.ContentType[nin]";
 })(ScheduledActionReferenceFilters || (ScheduledActionReferenceFilters = {}));
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/release.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/release.mjs
 function createReleaseApi(makeRequest2) {
     const getParams3 = self2 => {
         const release = self2.toPlainObject();
@@ -23292,13 +24025,13 @@ function createReleaseApi(makeRequest2) {
     };
 }
 function wrapRelease(makeRequest2, data) {
-    const release = (0, import_contentful_sdk_core8.toPlainObject)(index(data));
+    const release = (0, import_contentful_sdk_core8.toPlainObject)(copy(data));
     const releaseWithApiMethods = enhanceWithMethods(release, createReleaseApi(makeRequest2));
     return (0, import_contentful_sdk_core8.freezeSys)(releaseWithApiMethods);
 }
 var wrapReleaseCollection = wrapCursorPaginatedCollection(wrapRelease);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/tag.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/tag.mjs
 var import_contentful_sdk_core9 = __toESM(require_cjs2(), 1);
 function createTagApi(makeRequest2) {
     const getParams3 = tag => ({
@@ -23330,16 +24063,16 @@ function createTagApi(makeRequest2) {
     };
 }
 function wrapTag(makeRequest2, data) {
-    const tag = (0, import_contentful_sdk_core9.toPlainObject)(index(data));
+    const tag = (0, import_contentful_sdk_core9.toPlainObject)(copy(data));
     const tagWithMethods = enhanceWithMethods(tag, createTagApi(makeRequest2));
     return (0, import_contentful_sdk_core9.freezeSys)(tagWithMethods);
 }
 var wrapTagCollection = wrapCollection(wrapTag);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/ui-config.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/ui-config.mjs
 var import_contentful_sdk_core10 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-ui-config-api.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-ui-config-api.mjs
 function createUIConfigApi(makeRequest2) {
     const getParams3 = self2 => {
         const uiConfig = self2.toPlainObject();
@@ -23373,7 +24106,7 @@ function createUIConfigApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        update: async function update37() {
+        update: async function update38() {
             const { raw, params } = getParams3(this);
             const data = await makeRequest2({
                 entityType: "UIConfig",
@@ -23386,17 +24119,17 @@ function createUIConfigApi(makeRequest2) {
     };
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/ui-config.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/ui-config.mjs
 function wrapUIConfig(makeRequest2, data) {
-    const user = (0, import_contentful_sdk_core10.toPlainObject)(index(data));
+    const user = (0, import_contentful_sdk_core10.toPlainObject)(copy(data));
     const userWithMethods = enhanceWithMethods(user, createUIConfigApi(makeRequest2));
     return (0, import_contentful_sdk_core10.freezeSys)(userWithMethods);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/user-ui-config.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/user-ui-config.mjs
 var import_contentful_sdk_core11 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-user-ui-config-api.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-user-ui-config-api.mjs
 function createUserUIConfigApi(makeRequest2) {
     const getParams3 = self2 => {
         const userUIConfig = self2.toPlainObject();
@@ -23430,7 +24163,7 @@ function createUserUIConfigApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        update: async function update37() {
+        update: async function update38() {
             const { raw, params } = getParams3(this);
             const data = await makeRequest2({
                 entityType: "UserUIConfig",
@@ -23443,14 +24176,14 @@ function createUserUIConfigApi(makeRequest2) {
     };
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/user-ui-config.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/user-ui-config.mjs
 function wrapUserUIConfig(makeRequest2, data) {
-    const user = (0, import_contentful_sdk_core11.toPlainObject)(index(data));
+    const user = (0, import_contentful_sdk_core11.toPlainObject)(copy(data));
     const userWithMethods = enhanceWithMethods(user, createUserUIConfigApi(makeRequest2));
     return (0, import_contentful_sdk_core11.freezeSys)(userWithMethods);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/environment-template-installation.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/environment-template-installation.mjs
 var import_contentful_sdk_core12 = __toESM(require_cjs2(), 1);
 var EnvironmentTemplateInstallationStatuses;
 (function (EnvironmentTemplateInstallationStatuses2) {
@@ -23462,12 +24195,12 @@ var EnvironmentTemplateInstallationStatuses;
     EnvironmentTemplateInstallationStatuses2["inRetry"] = "inRetry";
 })(EnvironmentTemplateInstallationStatuses || (EnvironmentTemplateInstallationStatuses = {}));
 function wrapEnvironmentTemplateInstallation(makeRequest2, data) {
-    const environmentTemplate = (0, import_contentful_sdk_core12.toPlainObject)(index(data));
+    const environmentTemplate = (0, import_contentful_sdk_core12.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core12.freezeSys)(environmentTemplate);
 }
 var wrapEnvironmentTemplateInstallationCollection = wrapCursorPaginatedCollection(wrapEnvironmentTemplateInstallation);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/function.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/function.mjs
 var import_contentful_sdk_core13 = __toESM(require_cjs2(), 1);
 function createFunctionApi(makeRequest2) {
     return {
@@ -23508,24 +24241,24 @@ function createFunctionApi(makeRequest2) {
     };
 }
 function wrapFunction(makeRequest2, data) {
-    const func = (0, import_contentful_sdk_core13.toPlainObject)(index(data));
+    const func = (0, import_contentful_sdk_core13.toPlainObject)(copy(data));
     const funcWithMethods = enhanceWithMethods(func, createFunctionApi(makeRequest2));
     return (0, import_contentful_sdk_core13.freezeSys)(funcWithMethods);
 }
 var wrapFunctionCollection = wrapCollection(wrapFunction);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/function-log.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/function-log.mjs
 var import_contentful_sdk_core14 = __toESM(require_cjs2(), 1);
 function wrapFunctionLog(makeRequest2, data) {
-    const functionLog = (0, import_contentful_sdk_core14.toPlainObject)(index(data));
+    const functionLog = (0, import_contentful_sdk_core14.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core14.freezeSys)(functionLog);
 }
 var wrapFunctionLogCollection = wrapCollection(wrapFunctionLog);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/content-type.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/content-type.mjs
 var import_contentful_sdk_core17 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/plain/checks.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/plain/checks.mjs
 var isPublished = data => !!data.sys.publishedVersion;
 var isUpdated = data => {
     return !!(data.sys.publishedVersion && data.sys.version > data.sys.publishedVersion + 1);
@@ -23533,7 +24266,7 @@ var isUpdated = data => {
 var isDraft = data => !data.sys.publishedVersion;
 var isArchived = data => !!data.sys.archivedVersion;
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/editor-interface.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/editor-interface.mjs
 var import_contentful_sdk_core15 = __toESM(require_cjs2(), 1);
 function createEditorInterfaceApi(makeRequest2) {
     return {
@@ -23561,25 +24294,25 @@ function createEditorInterfaceApi(makeRequest2) {
     };
 }
 function wrapEditorInterface(makeRequest2, data) {
-    const editorInterface = (0, import_contentful_sdk_core15.toPlainObject)(index(data));
+    const editorInterface = (0, import_contentful_sdk_core15.toPlainObject)(copy(data));
     const editorInterfaceWithMethods = enhanceWithMethods(editorInterface, createEditorInterfaceApi(makeRequest2));
     return (0, import_contentful_sdk_core15.freezeSys)(editorInterfaceWithMethods);
 }
 var wrapEditorInterfaceCollection = wrapCollection(wrapEditorInterface);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/snapshot.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/snapshot.mjs
 var import_contentful_sdk_core16 = __toESM(require_cjs2(), 1);
 function createSnapshotApi() {
     return {/* In case the snapshot object evolve later */};
 }
 function wrapSnapshot(_makeRequest, data) {
-    const snapshot = (0, import_contentful_sdk_core16.toPlainObject)(index(data));
+    const snapshot = (0, import_contentful_sdk_core16.toPlainObject)(copy(data));
     const snapshotWithMethods = enhanceWithMethods(snapshot, createSnapshotApi());
     return (0, import_contentful_sdk_core16.freezeSys)(snapshotWithMethods);
 }
 var wrapSnapshotCollection = wrapCollection(wrapSnapshot);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/methods/content-type.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/methods/content-type.mjs
 var findAndUpdateField = function (contentType, fieldId, omitOrDelete) {
     const field = contentType.fields.find(field2 => field2.id === fieldId);
     if (!field) {
@@ -23619,7 +24352,7 @@ var omitAndDeleteField = (makeRequest2, { fieldId, ...params }, contentType) => 
         });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/content-type.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/content-type.mjs
 function createContentTypeApi(makeRequest2) {
     const getParams3 = self2 => {
         const contentType = self2.toPlainObject();
@@ -23707,17 +24440,17 @@ function createContentTypeApi(makeRequest2) {
     };
 }
 function wrapContentType(makeRequest2, data) {
-    const contentType = (0, import_contentful_sdk_core17.toPlainObject)(index(data));
+    const contentType = (0, import_contentful_sdk_core17.toPlainObject)(copy(data));
     const contentTypeWithMethods = enhanceWithMethods(contentType, createContentTypeApi(makeRequest2));
     return (0, import_contentful_sdk_core17.freezeSys)(contentTypeWithMethods);
 }
 var wrapContentTypeCollection = wrapCollection(wrapContentType);
 var wrapContentTypeCursorPaginatedCollection = wrapCursorPaginatedCollection(wrapContentType);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/entry.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/entry.mjs
 var import_contentful_sdk_core20 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/task.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/task.mjs
 var import_contentful_sdk_core18 = __toESM(require_cjs2(), 1);
 function createTaskApi(makeRequest2) {
     const getParams3 = task => {
@@ -23754,13 +24487,13 @@ function createTaskApi(makeRequest2) {
     };
 }
 function wrapTask(makeRequest2, data) {
-    const task = (0, import_contentful_sdk_core18.toPlainObject)(index(data));
+    const task = (0, import_contentful_sdk_core18.toPlainObject)(copy(data));
     const taskWithMethods = enhanceWithMethods(task, createTaskApi(makeRequest2));
     return (0, import_contentful_sdk_core18.freezeSys)(taskWithMethods);
 }
 var wrapTaskCollection = wrapCollection(wrapTask);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/comment.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/comment.mjs
 var import_contentful_sdk_core19 = __toESM(require_cjs2(), 1);
 var CommentNode;
 (function (CommentNode2) {
@@ -23804,13 +24537,13 @@ function createCommentApi(makeRequest2) {
     };
 }
 function wrapComment(makeRequest2, data) {
-    const comment = (0, import_contentful_sdk_core19.toPlainObject)(index(data));
+    const comment = (0, import_contentful_sdk_core19.toPlainObject)(copy(data));
     const commentWithMethods = enhanceWithMethods(comment, createCommentApi(makeRequest2));
     return (0, import_contentful_sdk_core19.freezeSys)(commentWithMethods);
 }
 var wrapCommentCollection = wrapCollection(wrapComment);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-entry-api.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-entry-api.mjs
 function createEntryApi(makeRequest2) {
     const getParams3 = self2 => {
         const entry = self2.toPlainObject();
@@ -23845,7 +24578,7 @@ function createEntryApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        update: function update37() {
+        update: function update38() {
             const { raw, params } = getParams3(this);
             return makeRequest2({
                 entityType: "Entry",
@@ -23908,7 +24641,7 @@ function createEntryApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        delete: function del45() {
+        delete: function del56() {
             const { params } = getParams3(this);
             return makeRequest2({ entityType: "Entry", action: "delete", params });
         },
@@ -23930,7 +24663,7 @@ function createEntryApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        publish: function publish7() {
+        publish: function publish17() {
             const { raw, params } = getParams3(this);
             return makeRequest2({
                 entityType: "Entry",
@@ -23957,7 +24690,7 @@ function createEntryApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        unpublish: function unpublish7() {
+        unpublish: function unpublish17() {
             const { params } = getParams3(this);
             return makeRequest2({
                 entityType: "Entry",
@@ -23983,7 +24716,7 @@ function createEntryApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        archive: function archive4() {
+        archive: function archive6() {
             const { params } = getParams3(this);
             return makeRequest2({
                 entityType: "Entry",
@@ -24009,7 +24742,7 @@ function createEntryApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        unarchive: function unarchive5() {
+        unarchive: function unarchive7() {
             const { params } = getParams3(this);
             return makeRequest2({
                 entityType: "Entry",
@@ -24288,16 +25021,16 @@ function createEntryApi(makeRequest2) {
     };
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/entry.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/entry.mjs
 function wrapEntry(makeRequest2, data) {
-    const entry = (0, import_contentful_sdk_core20.toPlainObject)(index(data));
+    const entry = (0, import_contentful_sdk_core20.toPlainObject)(copy(data));
     const entryWithMethods = enhanceWithMethods(entry, createEntryApi(makeRequest2));
     return (0, import_contentful_sdk_core20.freezeSys)(entryWithMethods);
 }
 var wrapEntryCollection = wrapCollection(wrapEntry);
 var wrapEntryTypeCursorPaginatedCollection = wrapCursorPaginatedCollection(wrapEntry);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/asset.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/asset.mjs
 var import_contentful_sdk_core21 = __toESM(require_cjs2(), 1);
 function createAssetApi(makeRequest2) {
     const getParams3 = raw => {
@@ -24333,7 +25066,7 @@ function createAssetApi(makeRequest2) {
                 }
             }).then(data => wrapAsset(makeRequest2, data));
         },
-        update: function update37() {
+        update: function update38() {
             const raw = this.toPlainObject();
             return makeRequest2({
                 entityType: "Asset",
@@ -24343,7 +25076,7 @@ function createAssetApi(makeRequest2) {
                 headers: {}
             }).then(data => wrapAsset(makeRequest2, data));
         },
-        delete: function del45() {
+        delete: function del56() {
             const raw = this.toPlainObject();
             return makeRequest2({
                 entityType: "Asset",
@@ -24351,7 +25084,7 @@ function createAssetApi(makeRequest2) {
                 params: getParams3(raw)
             });
         },
-        publish: function publish7() {
+        publish: function publish17() {
             const raw = this.toPlainObject();
             return makeRequest2({
                 entityType: "Asset",
@@ -24360,7 +25093,7 @@ function createAssetApi(makeRequest2) {
                 payload: raw
             }).then(data => wrapAsset(makeRequest2, data));
         },
-        unpublish: function unpublish7() {
+        unpublish: function unpublish17() {
             const raw = this.toPlainObject();
             return makeRequest2({
                 entityType: "Asset",
@@ -24368,7 +25101,7 @@ function createAssetApi(makeRequest2) {
                 params: getParams3(raw)
             }).then(data => wrapAsset(makeRequest2, data));
         },
-        archive: function archive4() {
+        archive: function archive6() {
             const raw = this.toPlainObject();
             return makeRequest2({
                 entityType: "Asset",
@@ -24376,7 +25109,7 @@ function createAssetApi(makeRequest2) {
                 params: getParams3(raw)
             }).then(data => wrapAsset(makeRequest2, data));
         },
-        unarchive: function unarchive5() {
+        unarchive: function unarchive7() {
             const raw = this.toPlainObject();
             return makeRequest2({
                 entityType: "Asset",
@@ -24403,21 +25136,21 @@ function createAssetApi(makeRequest2) {
     };
 }
 function wrapAsset(makeRequest2, data) {
-    const asset = (0, import_contentful_sdk_core21.toPlainObject)(index(data));
+    const asset = (0, import_contentful_sdk_core21.toPlainObject)(copy(data));
     const assetWithMethods = enhanceWithMethods(asset, createAssetApi(makeRequest2));
     return (0, import_contentful_sdk_core21.freezeSys)(assetWithMethods);
 }
 var wrapAssetCollection = wrapCollection(wrapAsset);
 var wrapAssetTypeCursorPaginatedCollection = wrapCursorPaginatedCollection(wrapAsset);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/asset-key.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/asset-key.mjs
 var import_contentful_sdk_core22 = __toESM(require_cjs2(), 1);
 function wrapAssetKey(_makeRequest, data) {
-    const assetKey = (0, import_contentful_sdk_core22.toPlainObject)(index(data));
+    const assetKey = (0, import_contentful_sdk_core22.toPlainObject)(copy(data));
     return assetKey;
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/locale.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/locale.mjs
 var import_contentful_sdk_core23 = __toESM(require_cjs2(), 1);
 function createLocaleApi(makeRequest2) {
     const getParams3 = locale => ({
@@ -24447,17 +25180,17 @@ function createLocaleApi(makeRequest2) {
 }
 function wrapLocale(makeRequest2, data) {
     delete data.internal_code;
-    const locale = (0, import_contentful_sdk_core23.toPlainObject)(index(data));
+    const locale = (0, import_contentful_sdk_core23.toPlainObject)(copy(data));
     const localeWithMethods = enhanceWithMethods(locale, createLocaleApi(makeRequest2));
     return (0, import_contentful_sdk_core23.freezeSys)(localeWithMethods);
 }
 var wrapLocaleCollection = wrapCollection(wrapLocale);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/upload.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/upload.mjs
 var import_contentful_sdk_core24 = __toESM(require_cjs2(), 1);
 function createUploadApi(makeRequest2) {
     return {
-        delete: async function del45() {
+        delete: async function del56() {
             const raw = this.toPlainObject();
             await makeRequest2({
                 entityType: "Upload",
@@ -24472,12 +25205,12 @@ function createUploadApi(makeRequest2) {
     };
 }
 function wrapUpload(makeRequest2, data) {
-    const upload = (0, import_contentful_sdk_core24.toPlainObject)(index(data));
+    const upload = (0, import_contentful_sdk_core24.toPlainObject)(copy(data));
     const uploadWithMethods = enhanceWithMethods(upload, createUploadApi(makeRequest2));
     return (0, import_contentful_sdk_core24.freezeSys)(uploadWithMethods);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/extension.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/extension.mjs
 var import_contentful_sdk_core25 = __toESM(require_cjs2(), 1);
 function createExtensionApi(makeRequest2) {
     const getParams3 = data => ({
@@ -24486,7 +25219,7 @@ function createExtensionApi(makeRequest2) {
         extensionId: data.sys.id
     });
     return {
-        update: function update37() {
+        update: function update38() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "Extension",
@@ -24495,7 +25228,7 @@ function createExtensionApi(makeRequest2) {
                 payload: data
             }).then(response => wrapExtension(makeRequest2, response));
         },
-        delete: function del45() {
+        delete: function del56() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "Extension",
@@ -24506,13 +25239,13 @@ function createExtensionApi(makeRequest2) {
     };
 }
 function wrapExtension(makeRequest2, data) {
-    const extension = (0, import_contentful_sdk_core25.toPlainObject)(index(data));
+    const extension = (0, import_contentful_sdk_core25.toPlainObject)(copy(data));
     const extensionWithMethods = enhanceWithMethods(extension, createExtensionApi(makeRequest2));
     return (0, import_contentful_sdk_core25.freezeSys)(extensionWithMethods);
 }
 var wrapExtensionCollection = wrapCollection(wrapExtension);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/app-installation.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/app-installation.mjs
 var import_contentful_sdk_core26 = __toESM(require_cjs2(), 1);
 function createAppInstallationApi(makeRequest2) {
     const getParams3 = data => ({
@@ -24521,7 +25254,7 @@ function createAppInstallationApi(makeRequest2) {
         appDefinitionId: data.sys.appDefinition.sys.id
     });
     return {
-        update: function update37() {
+        update: function update38() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "AppInstallation",
@@ -24531,7 +25264,7 @@ function createAppInstallationApi(makeRequest2) {
                 payload: data
             }).then(data2 => wrapAppInstallation(makeRequest2, data2));
         },
-        delete: function del45() {
+        delete: function del56() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "AppInstallation",
@@ -24542,20 +25275,20 @@ function createAppInstallationApi(makeRequest2) {
     };
 }
 function wrapAppInstallation(makeRequest2, data) {
-    const appInstallation = (0, import_contentful_sdk_core26.toPlainObject)(index(data));
+    const appInstallation = (0, import_contentful_sdk_core26.toPlainObject)(copy(data));
     const appInstallationWithMethods = enhanceWithMethods(appInstallation, createAppInstallationApi(makeRequest2));
     return (0, import_contentful_sdk_core26.freezeSys)(appInstallationWithMethods);
 }
 var wrapAppInstallationCollection = wrapCollection(wrapAppInstallation);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/app-signed-request.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/app-signed-request.mjs
 var import_contentful_sdk_core27 = __toESM(require_cjs2(), 1);
 function wrapAppSignedRequest(_makeRequest, data) {
-    const signedRequest = (0, import_contentful_sdk_core27.toPlainObject)(index(data));
+    const signedRequest = (0, import_contentful_sdk_core27.toPlainObject)(copy(data));
     return signedRequest;
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/app-action-call.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/app-action-call.mjs
 var import_contentful_sdk_core28 = __toESM(require_cjs2(), 1);
 function createAppActionCallApi(makeRequest2, retryOptions) {
     return {
@@ -24574,7 +25307,7 @@ function createAppActionCallApi(makeRequest2, retryOptions) {
                 params
             }).then(data => wrapAppActionCallResponse(makeRequest2, data));
         },
-        get: function get70(params) {
+        get: function get81(params) {
             return makeRequest2({
                 entityType: "AppActionCall",
                 action: "get",
@@ -24592,17 +25325,17 @@ function createAppActionCallApi(makeRequest2, retryOptions) {
     };
 }
 function wrapAppActionCall(makeRequest2, data) {
-    const signedRequest = (0, import_contentful_sdk_core28.toPlainObject)(index(data));
+    const signedRequest = (0, import_contentful_sdk_core28.toPlainObject)(copy(data));
     const signedRequestWithMethods = enhanceWithMethods(signedRequest, createAppActionCallApi(makeRequest2));
     return signedRequestWithMethods;
 }
 function wrapAppActionCallResponse(makeRequest2, data, retryOptions) {
-    const appActionCallResponse = (0, import_contentful_sdk_core28.toPlainObject)(index(data));
+    const appActionCallResponse = (0, import_contentful_sdk_core28.toPlainObject)(copy(data));
     const appActionCallResponseWithMethods = enhanceWithMethods(appActionCallResponse, createAppActionCallApi(makeRequest2, retryOptions));
     return appActionCallResponseWithMethods;
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/bulk-action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/bulk-action.mjs
 var import_contentful_sdk_core29 = __toESM(require_cjs2(), 1);
 var BulkActionStatus;
 (function (BulkActionStatus2) {
@@ -24636,19 +25369,19 @@ function createBulkActionApi(makeRequest2) {
     };
 }
 function wrapBulkAction(makeRequest2, data) {
-    const bulkAction = (0, import_contentful_sdk_core29.toPlainObject)(index(data));
+    const bulkAction = (0, import_contentful_sdk_core29.toPlainObject)(copy(data));
     const bulkActionWithApiMethods = enhanceWithMethods(bulkAction, createBulkActionApi(makeRequest2));
     return (0, import_contentful_sdk_core29.freezeSys)(bulkActionWithApiMethods);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/app-access-token.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/app-access-token.mjs
 var import_contentful_sdk_core30 = __toESM(require_cjs2(), 1);
 function wrapAppAccessToken(_makeRequest, data) {
-    const appAccessToken = (0, import_contentful_sdk_core30.toPlainObject)(index(data));
+    const appAccessToken = (0, import_contentful_sdk_core30.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core30.freezeSys)(appAccessToken);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/resource-type.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/resource-type.mjs
 var import_contentful_sdk_core31 = __toESM(require_cjs2(), 1);
 function createResourceTypeApi(makeRequest2) {
     return {
@@ -24672,7 +25405,7 @@ function createResourceTypeApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        upsert: function upsert7() {
+        upsert: function upsert17() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "ResourceType",
@@ -24699,7 +25432,7 @@ function createResourceTypeApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        delete: function del45() {
+        delete: function del56() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "ResourceType",
@@ -24719,7 +25452,7 @@ var getUpsertParams = data => ({
     defaultFieldMapping: data.defaultFieldMapping
 });
 function wrapResourceType(makeRequest2, data) {
-    const resourceType = (0, import_contentful_sdk_core31.toPlainObject)(index(data));
+    const resourceType = (0, import_contentful_sdk_core31.toPlainObject)(copy(data));
     const ResourceTypeWithMethods = enhanceWithMethods(resourceType, createResourceTypeApi(makeRequest2));
     return (0, import_contentful_sdk_core31.freezeSys)(ResourceTypeWithMethods);
 }
@@ -24729,7 +25462,7 @@ function wrapResourceTypeforEnvironment(makeRequest2, data) {
 }
 var wrapResourceTypesForEnvironmentCollection = wrapCursorPaginatedCollection(wrapResourceTypeforEnvironment);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/resource.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/resource.mjs
 var import_contentful_sdk_core32 = __toESM(require_cjs2(), 1);
 function wrapResource(makeRequest2, data) {
     const resource = (0, import_contentful_sdk_core32.toPlainObject)(data);
@@ -24737,29 +25470,29 @@ function wrapResource(makeRequest2, data) {
 }
 var wrapResourceCollection = wrapCursorPaginatedCollection(wrapResource);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/ai-action-invocation.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/ai-action-invocation.mjs
 var import_contentful_sdk_core33 = __toESM(require_cjs2(), 1);
 function wrapAiActionInvocation(makeRequest2, data) {
-    const invocation = (0, import_contentful_sdk_core33.toPlainObject)(index(data));
+    const invocation = (0, import_contentful_sdk_core33.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core33.freezeSys)(invocation);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/agent.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/agent.mjs
 var import_contentful_sdk_core35 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/agent-run.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/agent-run.mjs
 var import_contentful_sdk_core34 = __toESM(require_cjs2(), 1);
 function wrapAgentRun(_makeRequest, data) {
-    const agentRun = (0, import_contentful_sdk_core34.toPlainObject)(index(data));
+    const agentRun = (0, import_contentful_sdk_core34.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core34.freezeSys)(agentRun);
 }
 function wrapAgentGenerateResponse(_makeRequest, data) {
-    const response = (0, import_contentful_sdk_core34.toPlainObject)(index(data));
+    const response = (0, import_contentful_sdk_core34.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core34.freezeSys)(response);
 }
 var wrapAgentRunCollection = wrapCollection(wrapAgentRun);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/agent.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/agent.mjs
 function createAgentApi(makeRequest2) {
     const getParams3 = data => ({
         spaceId: data.sys.space.sys.id,
@@ -24779,52 +25512,52 @@ function createAgentApi(makeRequest2) {
     };
 }
 function wrapAgent(makeRequest2, data) {
-    const agent = (0, import_contentful_sdk_core35.toPlainObject)(index(data));
+    const agent = (0, import_contentful_sdk_core35.toPlainObject)(copy(data));
     const agentWithMethods = enhanceWithMethods(agent, createAgentApi(makeRequest2));
     return (0, import_contentful_sdk_core35.freezeSys)(agentWithMethods);
 }
 var wrapAgentCollection = wrapCollection(wrapAgent);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/semantic-duplicates.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/semantic-duplicates.mjs
 var import_contentful_sdk_core36 = __toESM(require_cjs2(), 1);
 function wrapSemanticDuplicates(_makeRequest, data) {
-    const result = (0, import_contentful_sdk_core36.toPlainObject)(index(data));
+    const result = (0, import_contentful_sdk_core36.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core36.freezeSys)(result);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/semantic-recommendations.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/semantic-recommendations.mjs
 var import_contentful_sdk_core37 = __toESM(require_cjs2(), 1);
 function wrapSemanticRecommendations(_makeRequest, data) {
-    const result = (0, import_contentful_sdk_core37.toPlainObject)(index(data));
+    const result = (0, import_contentful_sdk_core37.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core37.freezeSys)(result);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/semantic-reference-suggestions.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/semantic-reference-suggestions.mjs
 var import_contentful_sdk_core38 = __toESM(require_cjs2(), 1);
 function wrapSemanticReferenceSuggestions(_makeRequest, data) {
-    const result = (0, import_contentful_sdk_core38.toPlainObject)(index(data));
+    const result = (0, import_contentful_sdk_core38.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core38.freezeSys)(result);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/semantic-search.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/semantic-search.mjs
 var import_contentful_sdk_core39 = __toESM(require_cjs2(), 1);
 function wrapSemanticSearch(_makeRequest, data) {
-    const result = (0, import_contentful_sdk_core39.toPlainObject)(index(data));
+    const result = (0, import_contentful_sdk_core39.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core39.freezeSys)(result);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/content-semantics-index.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/content-semantics-index.mjs
 var import_contentful_sdk_core40 = __toESM(require_cjs2(), 1);
 function wrapContentSemanticsIndex(_makeRequest, data) {
-    const result = (0, import_contentful_sdk_core40.toPlainObject)(index(data));
+    const result = (0, import_contentful_sdk_core40.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core40.freezeSys)(result);
 }
 function wrapContentSemanticsIndexCollection(_makeRequest, data) {
-    const result = (0, import_contentful_sdk_core40.toPlainObject)(index(data));
+    const result = (0, import_contentful_sdk_core40.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core40.freezeSys)(result);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-environment-api.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-environment-api.mjs
 function createEnvironmentApi(makeRequest2) {
     return {
         /**
@@ -27677,16 +28410,16 @@ function createEnvironmentApi(makeRequest2) {
     };
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/environment.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/environment.mjs
 function wrapEnvironment(makeRequest2, data) {
-    const environment = (0, import_contentful_sdk_core42.toPlainObject)(index(data));
+    const environment = (0, import_contentful_sdk_core42.toPlainObject)(copy(data));
     const environmentApi = createEnvironmentApi(makeRequest2);
     const enhancedEnvironment = enhanceWithMethods(environment, environmentApi);
     return (0, import_contentful_sdk_core42.freezeSys)(enhancedEnvironment);
 }
 var wrapEnvironmentCollection = wrapCollection(wrapEnvironment);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/webhook.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/webhook.mjs
 var import_contentful_sdk_core43 = __toESM(require_cjs2(), 1);
 function createWebhookApi(makeRequest2) {
     const getParams3 = data => ({
@@ -27694,7 +28427,7 @@ function createWebhookApi(makeRequest2) {
         webhookDefinitionId: data.sys.id
     });
     return {
-        update: function update37() {
+        update: function update38() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "Webhook",
@@ -27703,7 +28436,7 @@ function createWebhookApi(makeRequest2) {
                 payload: data
             }).then(data2 => wrapWebhook(makeRequest2, data2));
         },
-        delete: function del45() {
+        delete: function del56() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "Webhook",
@@ -27738,13 +28471,13 @@ function createWebhookApi(makeRequest2) {
     };
 }
 function wrapWebhook(makeRequest2, data) {
-    const webhook = (0, import_contentful_sdk_core43.toPlainObject)(index(data));
+    const webhook = (0, import_contentful_sdk_core43.toPlainObject)(copy(data));
     const webhookWithMethods = enhanceWithMethods(webhook, createWebhookApi(makeRequest2));
     return (0, import_contentful_sdk_core43.freezeSys)(webhookWithMethods);
 }
 var wrapWebhookCollection = wrapCollection(wrapWebhook);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/role.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/role.mjs
 var import_contentful_sdk_core44 = __toESM(require_cjs2(), 1);
 function createRoleApi(makeRequest2) {
     const getParams3 = data => ({
@@ -27752,7 +28485,7 @@ function createRoleApi(makeRequest2) {
         roleId: data.sys.id
     });
     return {
-        update: function update37() {
+        update: function update38() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "Role",
@@ -27761,7 +28494,7 @@ function createRoleApi(makeRequest2) {
                 payload: data
             }).then(data2 => wrapRole(makeRequest2, data2));
         },
-        delete: function del45() {
+        delete: function del56() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "Role",
@@ -27772,39 +28505,45 @@ function createRoleApi(makeRequest2) {
     };
 }
 function wrapRole(makeRequest2, data) {
-    const role = (0, import_contentful_sdk_core44.toPlainObject)(index(data));
+    const role = (0, import_contentful_sdk_core44.toPlainObject)(copy(data));
     const roleWithMethods = enhanceWithMethods(role, createRoleApi(makeRequest2));
     return (0, import_contentful_sdk_core44.freezeSys)(roleWithMethods);
 }
 var wrapRoleCollection = wrapCollection(wrapRole);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/user.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/user.mjs
 var import_contentful_sdk_core45 = __toESM(require_cjs2(), 1);
 function wrapUser(_makeRequest, data) {
-    const user = (0, import_contentful_sdk_core45.toPlainObject)(index(data));
+    const user = (0, import_contentful_sdk_core45.toPlainObject)(copy(data));
     const userWithMethods = enhanceWithMethods(user, {});
     return (0, import_contentful_sdk_core45.freezeSys)(userWithMethods);
 }
 var wrapUserCollection = wrapCollection(wrapUser);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/space-add-on.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/space-add-on.mjs
 var import_contentful_sdk_core46 = __toESM(require_cjs2(), 1);
 function wrapSpaceAddOn(makeRequest2, data) {
-    const spaceAddOn = (0, import_contentful_sdk_core46.toPlainObject)(index(data));
+    const spaceAddOn = (0, import_contentful_sdk_core46.toPlainObject)(copy(data));
     const spaceAddOnWithMethods = enhanceWithMethods(spaceAddOn, {});
     return (0, import_contentful_sdk_core46.freezeSys)(spaceAddOnWithMethods);
 }
 var wrapSpaceAddOnCollection = wrapCollection(wrapSpaceAddOn);
+function wrapSpaceAddOnOrganization(makeRequest2, data) {
+    const orgAddOn = (0, import_contentful_sdk_core46.toPlainObject)(copy(data));
+    const orgAddOnWithMethods = enhanceWithMethods(orgAddOn, {});
+    return (0, import_contentful_sdk_core46.freezeSys)(orgAddOnWithMethods);
+}
+var wrapSpaceAddOnOrganizationCollection = wrapCollection(wrapSpaceAddOnOrganization);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/space-member.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/space-member.mjs
 var import_contentful_sdk_core47 = __toESM(require_cjs2(), 1);
 function wrapSpaceMember(_makeRequest, data) {
-    const spaceMember = (0, import_contentful_sdk_core47.toPlainObject)(index(data));
+    const spaceMember = (0, import_contentful_sdk_core47.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core47.freezeSys)(spaceMember);
 }
 var wrapSpaceMemberCollection = wrapCollection(wrapSpaceMember);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/space-membership.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/space-membership.mjs
 var import_contentful_sdk_core48 = __toESM(require_cjs2(), 1);
 function createSpaceMembershipApi(makeRequest2) {
     const getParams3 = data => ({
@@ -27812,7 +28551,7 @@ function createSpaceMembershipApi(makeRequest2) {
         spaceMembershipId: data.sys.id
     });
     return {
-        update: function update37() {
+        update: function update38() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "SpaceMembership",
@@ -27821,7 +28560,7 @@ function createSpaceMembershipApi(makeRequest2) {
                 payload: data
             }).then(data2 => wrapSpaceMembership(makeRequest2, data2));
         },
-        delete: function del45() {
+        delete: function del56() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "SpaceMembership",
@@ -27832,13 +28571,13 @@ function createSpaceMembershipApi(makeRequest2) {
     };
 }
 function wrapSpaceMembership(makeRequest2, data) {
-    const spaceMembership = (0, import_contentful_sdk_core48.toPlainObject)(index(data));
+    const spaceMembership = (0, import_contentful_sdk_core48.toPlainObject)(copy(data));
     const spaceMembershipWithMethods = enhanceWithMethods(spaceMembership, createSpaceMembershipApi(makeRequest2));
     return (0, import_contentful_sdk_core48.freezeSys)(spaceMembershipWithMethods);
 }
 var wrapSpaceMembershipCollection = wrapCollection(wrapSpaceMembership);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/team-space-membership.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/team-space-membership.mjs
 var import_contentful_sdk_core49 = __toESM(require_cjs2(), 1);
 function createTeamSpaceMembershipApi(makeRequest2) {
     const getParams3 = data => ({
@@ -27855,7 +28594,7 @@ function createTeamSpaceMembershipApi(makeRequest2) {
                 payload: raw
             }).then(data => wrapTeamSpaceMembership(makeRequest2, data));
         },
-        delete: function del45() {
+        delete: function del56() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "TeamSpaceMembership",
@@ -27866,13 +28605,13 @@ function createTeamSpaceMembershipApi(makeRequest2) {
     };
 }
 function wrapTeamSpaceMembership(makeRequest2, data) {
-    const teamSpaceMembership = (0, import_contentful_sdk_core49.toPlainObject)(index(data));
+    const teamSpaceMembership = (0, import_contentful_sdk_core49.toPlainObject)(copy(data));
     const teamSpaceMembershipWithMethods = enhanceWithMethods(teamSpaceMembership, createTeamSpaceMembershipApi(makeRequest2));
     return (0, import_contentful_sdk_core49.freezeSys)(teamSpaceMembershipWithMethods);
 }
 var wrapTeamSpaceMembershipCollection = wrapCollection(wrapTeamSpaceMembership);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/team.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/team.mjs
 var import_contentful_sdk_core50 = __toESM(require_cjs2(), 1);
 function createTeamApi(makeRequest2) {
     const getParams3 = data => ({
@@ -27880,7 +28619,7 @@ function createTeamApi(makeRequest2) {
         organizationId: data.sys.organization.sys.id
     });
     return {
-        update: function update37() {
+        update: function update38() {
             const raw = this.toPlainObject();
             return makeRequest2({
                 entityType: "Team",
@@ -27889,7 +28628,7 @@ function createTeamApi(makeRequest2) {
                 payload: raw
             }).then(data => wrapTeam(makeRequest2, data));
         },
-        delete: function del45() {
+        delete: function del56() {
             const raw = this.toPlainObject();
             return makeRequest2({
                 entityType: "Team",
@@ -27900,13 +28639,13 @@ function createTeamApi(makeRequest2) {
     };
 }
 function wrapTeam(makeRequest2, data) {
-    const team = (0, import_contentful_sdk_core50.toPlainObject)(index(data));
+    const team = (0, import_contentful_sdk_core50.toPlainObject)(copy(data));
     const teamWithMethods = enhanceWithMethods(team, createTeamApi(makeRequest2));
     return (0, import_contentful_sdk_core50.freezeSys)(teamWithMethods);
 }
 var wrapTeamCollection = wrapCollection(wrapTeam);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/api-key.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/api-key.mjs
 var import_contentful_sdk_core51 = __toESM(require_cjs2(), 1);
 function createApiKeyApi(makeRequest2) {
     const getParams3 = data => ({
@@ -27914,7 +28653,7 @@ function createApiKeyApi(makeRequest2) {
         apiKeyId: data.sys.id
     });
     return {
-        update: function update37() {
+        update: function update38() {
             const self2 = this;
             return makeRequest2({
                 entityType: "ApiKey",
@@ -27924,7 +28663,7 @@ function createApiKeyApi(makeRequest2) {
                 headers: {}
             }).then(data => wrapApiKey(makeRequest2, data));
         },
-        delete: function del45() {
+        delete: function del56() {
             const self2 = this;
             return makeRequest2({
                 entityType: "ApiKey",
@@ -27935,13 +28674,13 @@ function createApiKeyApi(makeRequest2) {
     };
 }
 function wrapApiKey(makeRequest2, data) {
-    const apiKey = (0, import_contentful_sdk_core51.toPlainObject)(index(data));
+    const apiKey = (0, import_contentful_sdk_core51.toPlainObject)(copy(data));
     const apiKeyWithMethods = enhanceWithMethods(apiKey, createApiKeyApi(makeRequest2));
     return (0, import_contentful_sdk_core51.freezeSys)(apiKeyWithMethods);
 }
 var wrapApiKeyCollection = wrapCollection(wrapApiKey);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/environment-alias.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/environment-alias.mjs
 var import_contentful_sdk_core52 = __toESM(require_cjs2(), 1);
 function createEnvironmentAliasApi(makeRequest2) {
     const getParams3 = alias => ({
@@ -27969,25 +28708,25 @@ function createEnvironmentAliasApi(makeRequest2) {
     };
 }
 function wrapEnvironmentAlias(makeRequest2, data) {
-    const alias = (0, import_contentful_sdk_core52.toPlainObject)(index(data));
+    const alias = (0, import_contentful_sdk_core52.toPlainObject)(copy(data));
     const enhancedAlias = enhanceWithMethods(alias, createEnvironmentAliasApi(makeRequest2));
     return (0, import_contentful_sdk_core52.freezeSys)(enhancedAlias);
 }
 var wrapEnvironmentAliasCollection = wrapCollection(wrapEnvironmentAlias);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/preview-api-key.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/preview-api-key.mjs
 var import_contentful_sdk_core53 = __toESM(require_cjs2(), 1);
 function createPreviewApiKeyApi() {
     return {};
 }
 function wrapPreviewApiKey(_makeRequest, data) {
-    const previewApiKey = (0, import_contentful_sdk_core53.toPlainObject)(index(data));
+    const previewApiKey = (0, import_contentful_sdk_core53.toPlainObject)(copy(data));
     const previewApiKeyWithMethods = enhanceWithMethods(previewApiKey, createPreviewApiKeyApi());
     return (0, import_contentful_sdk_core53.freezeSys)(previewApiKeyWithMethods);
 }
 var wrapPreviewApiKeyCollection = wrapCollection(wrapPreviewApiKey);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/scheduled-action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/scheduled-action.mjs
 var import_contentful_sdk_core54 = __toESM(require_cjs2(), 1);
 var ScheduledActionStatus;
 (function (ScheduledActionStatus2) {
@@ -28108,13 +28847,13 @@ function getInstanceMethods(makeRequest2) {
     };
 }
 function wrapScheduledAction(makeRequest2, data) {
-    const scheduledAction = (0, import_contentful_sdk_core54.toPlainObject)(index(data));
+    const scheduledAction = (0, import_contentful_sdk_core54.toPlainObject)(copy(data));
     const scheduledActionWithMethods = enhanceWithMethods(scheduledAction, getInstanceMethods(makeRequest2));
     return (0, import_contentful_sdk_core54.freezeSys)(scheduledActionWithMethods);
 }
 var wrapScheduledActionCollection = wrapCollection(wrapScheduledAction);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/ai-action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/ai-action.mjs
 var import_contentful_sdk_core55 = __toESM(require_cjs2(), 1);
 function createAiActionApi(makeRequest2) {
     const getParams3 = data => ({
@@ -28122,7 +28861,7 @@ function createAiActionApi(makeRequest2) {
         aiActionId: data.sys.id
     });
     return {
-        update: function update37() {
+        update: function update38() {
             const self2 = this;
             return makeRequest2({
                 entityType: "AiAction",
@@ -28131,7 +28870,7 @@ function createAiActionApi(makeRequest2) {
                 payload: self2
             }).then(data => wrapAiAction(makeRequest2, data));
         },
-        delete: function del45() {
+        delete: function del56() {
             const self2 = this;
             return makeRequest2({
                 entityType: "AiAction",
@@ -28139,7 +28878,7 @@ function createAiActionApi(makeRequest2) {
                 params: getParams3(self2)
             });
         },
-        publish: function publish7() {
+        publish: function publish17() {
             const self2 = this;
             return makeRequest2({
                 entityType: "AiAction",
@@ -28151,7 +28890,7 @@ function createAiActionApi(makeRequest2) {
                 }
             }).then(data => wrapAiAction(makeRequest2, data));
         },
-        unpublish: function unpublish7() {
+        unpublish: function unpublish17() {
             const self2 = this;
             return makeRequest2({
                 entityType: "AiAction",
@@ -28175,13 +28914,13 @@ function createAiActionApi(makeRequest2) {
     };
 }
 function wrapAiAction(makeRequest2, data) {
-    const aiAction = (0, import_contentful_sdk_core55.toPlainObject)(index(data));
+    const aiAction = (0, import_contentful_sdk_core55.toPlainObject)(copy(data));
     const aiActionWithMethods = enhanceWithMethods(aiAction, createAiActionApi(makeRequest2));
     return (0, import_contentful_sdk_core55.freezeSys)(aiActionWithMethods);
 }
 var wrapAiActionCollection = wrapCollection(wrapAiAction);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-space-api.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-space-api.mjs
 function createSpaceApi(makeRequest2) {
     return {
         /**
@@ -29852,9 +30591,9 @@ function createSpaceApi(makeRequest2) {
     };
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/space.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/space.mjs
 function wrapSpace(makeRequest2, data) {
-    const space = (0, import_contentful_sdk_core57.toPlainObject)(index(data));
+    const space = (0, import_contentful_sdk_core57.toPlainObject)(copy(data));
     const spaceApi = createSpaceApi(makeRequest2);
     const enhancedSpace = enhanceWithMethods(space, spaceApi);
     return (0, import_contentful_sdk_core57.freezeSys)(enhancedSpace);
@@ -29862,10 +30601,10 @@ function wrapSpace(makeRequest2, data) {
 var wrapSpaceCollection = wrapCollection(wrapSpace);
 var wrapSpaceCursorPaginatedCollection = wrapCursorPaginatedCollection(wrapSpace);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/personal-access-token.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/personal-access-token.mjs
 var import_contentful_sdk_core58 = __toESM(require_cjs2(), 1);
 function wrapPersonalAccessToken(makeRequest2, data) {
-    const personalAccessToken = (0, import_contentful_sdk_core58.toPlainObject)(index(data));
+    const personalAccessToken = (0, import_contentful_sdk_core58.toPlainObject)(copy(data));
     const personalAccessTokenWithMethods = enhanceWithMethods(personalAccessToken, {
         revoke: function () {
             return makeRequest2({
@@ -29879,10 +30618,10 @@ function wrapPersonalAccessToken(makeRequest2, data) {
 }
 var wrapPersonalAccessTokenCollection = wrapCollection(wrapPersonalAccessToken);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/access-token.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/access-token.mjs
 var import_contentful_sdk_core59 = __toESM(require_cjs2(), 1);
 function wrapAccessToken(makeRequest2, data) {
-    const AccessToken = (0, import_contentful_sdk_core59.toPlainObject)(index(data));
+    const AccessToken = (0, import_contentful_sdk_core59.toPlainObject)(copy(data));
     const accessTokenWithMethods = enhanceWithMethods(AccessToken, {
         revoke: function () {
             return makeRequest2({
@@ -29896,16 +30635,16 @@ function wrapAccessToken(makeRequest2, data) {
 }
 var wrapAccessTokenCollection = wrapCollection(wrapAccessToken);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/organization.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/organization.mjs
 var import_contentful_sdk_core75 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-organization-api.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-organization-api.mjs
 var import_contentful_sdk_core74 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/app-definition.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/app-definition.mjs
 var import_contentful_sdk_core62 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/app-bundle.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/app-bundle.mjs
 var import_contentful_sdk_core60 = __toESM(require_cjs2(), 1);
 function createAppBundleApi(makeRequest2) {
     const getParams3 = data => ({
@@ -29914,7 +30653,7 @@ function createAppBundleApi(makeRequest2) {
         appBundleId: data.sys.id
     });
     return {
-        delete: function del45() {
+        delete: function del56() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "AppBundle",
@@ -29925,13 +30664,13 @@ function createAppBundleApi(makeRequest2) {
     };
 }
 function wrapAppBundle(makeRequest2, data) {
-    const appBundle = (0, import_contentful_sdk_core60.toPlainObject)(index(data));
+    const appBundle = (0, import_contentful_sdk_core60.toPlainObject)(copy(data));
     const appBundleWithMethods = enhanceWithMethods(appBundle, createAppBundleApi(makeRequest2));
     return (0, import_contentful_sdk_core60.freezeSys)(appBundleWithMethods);
 }
 var wrapAppBundleCollection = wrapCollection(wrapAppBundle);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/resource-provider.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/resource-provider.mjs
 var import_contentful_sdk_core61 = __toESM(require_cjs2(), 1);
 function createResourceProviderApi(makeRequest2) {
     return {
@@ -29955,7 +30694,7 @@ function createResourceProviderApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        upsert: function upsert7() {
+        upsert: function upsert17() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "ResourceProvider",
@@ -29982,7 +30721,7 @@ function createResourceProviderApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        delete: function del45() {
+        delete: function del56() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "ResourceProvider",
@@ -30039,12 +30778,12 @@ var getUpsertParams2 = data => ({
     function: data.function
 });
 function wrapResourceProvider(makeRequest2, data) {
-    const resourceProvider = (0, import_contentful_sdk_core61.toPlainObject)(index(data));
+    const resourceProvider = (0, import_contentful_sdk_core61.toPlainObject)(copy(data));
     const ResourceProviderWithMethods = enhanceWithMethods(resourceProvider, createResourceProviderApi(makeRequest2));
     return (0, import_contentful_sdk_core61.freezeSys)(ResourceProviderWithMethods);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-app-definition-api.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-app-definition-api.mjs
 function createAppDefinitionApi(makeRequest2) {
     const getParams3 = data => ({
         appDefinitionId: data.sys.id,
@@ -30071,7 +30810,7 @@ function createAppDefinitionApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        update: function update37() {
+        update: function update38() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "AppDefinition",
@@ -30098,7 +30837,7 @@ function createAppDefinitionApi(makeRequest2) {
          * .catch(console.error)
          * ```
          */
-        delete: function del45() {
+        delete: function del56() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "AppDefinition",
@@ -30288,15 +31027,15 @@ function createAppDefinitionApi(makeRequest2) {
     };
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/app-definition.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/app-definition.mjs
 function wrapAppDefinition(makeRequest2, data) {
-    const appDefinition = (0, import_contentful_sdk_core62.toPlainObject)(index(data));
+    const appDefinition = (0, import_contentful_sdk_core62.toPlainObject)(copy(data));
     const appDefinitionWithMethods = enhanceWithMethods(appDefinition, createAppDefinitionApi(makeRequest2));
     return (0, import_contentful_sdk_core62.freezeSys)(appDefinitionWithMethods);
 }
 var wrapAppDefinitionCollection = wrapCollection(wrapAppDefinition);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/organization-membership.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/organization-membership.mjs
 var import_contentful_sdk_core63 = __toESM(require_cjs2(), 1);
 function createOrganizationMembershipApi(makeRequest2, organizationId) {
     const getParams3 = data => ({
@@ -30313,7 +31052,7 @@ function createOrganizationMembershipApi(makeRequest2, organizationId) {
                 payload: raw
             }).then(data => wrapOrganizationMembership(makeRequest2, data, organizationId));
         },
-        delete: function del45() {
+        delete: function del56() {
             const raw = this.toPlainObject();
             return makeRequest2({
                 entityType: "OrganizationMembership",
@@ -30324,13 +31063,13 @@ function createOrganizationMembershipApi(makeRequest2, organizationId) {
     };
 }
 function wrapOrganizationMembership(makeRequest2, data, organizationId) {
-    const organizationMembership = (0, import_contentful_sdk_core63.toPlainObject)(index(data));
+    const organizationMembership = (0, import_contentful_sdk_core63.toPlainObject)(copy(data));
     const organizationMembershipWithMethods = enhanceWithMethods(organizationMembership, createOrganizationMembershipApi(makeRequest2, organizationId));
     return (0, import_contentful_sdk_core63.freezeSys)(organizationMembershipWithMethods);
 }
 var wrapOrganizationMembershipCollection = wrapCollection(wrapOrganizationMembership);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/team-membership.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/team-membership.mjs
 var import_contentful_sdk_core64 = __toESM(require_cjs2(), 1);
 function createTeamMembershipApi(makeRequest2) {
     const getParams3 = data => ({
@@ -30348,7 +31087,7 @@ function createTeamMembershipApi(makeRequest2) {
                 payload: raw
             }).then(data => wrapTeamMembership(makeRequest2, data));
         },
-        delete: function del45() {
+        delete: function del56() {
             const raw = this.toPlainObject();
             return makeRequest2({
                 entityType: "TeamMembership",
@@ -30359,20 +31098,20 @@ function createTeamMembershipApi(makeRequest2) {
     };
 }
 function wrapTeamMembership(makeRequest2, data) {
-    const teamMembership = (0, import_contentful_sdk_core64.toPlainObject)(index(data));
+    const teamMembership = (0, import_contentful_sdk_core64.toPlainObject)(copy(data));
     const teamMembershipWithMethods = enhanceWithMethods(teamMembership, createTeamMembershipApi(makeRequest2));
     return (0, import_contentful_sdk_core64.freezeSys)(teamMembershipWithMethods);
 }
 var wrapTeamMembershipCollection = wrapCollection(wrapTeamMembership);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/organization-invitation.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/organization-invitation.mjs
 var import_contentful_sdk_core65 = __toESM(require_cjs2(), 1);
 function wrapOrganizationInvitation(_makeRequest, data) {
-    const invitation = (0, import_contentful_sdk_core65.toPlainObject)(index(data));
+    const invitation = (0, import_contentful_sdk_core65.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core65.freezeSys)(invitation);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/app-upload.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/app-upload.mjs
 var import_contentful_sdk_core66 = __toESM(require_cjs2(), 1);
 function createAppUploadApi(makeRequest2) {
     const getParams3 = data => ({
@@ -30380,7 +31119,7 @@ function createAppUploadApi(makeRequest2) {
         appUploadId: data.sys.id
     });
     return {
-        delete: function del45() {
+        delete: function del56() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "AppUpload",
@@ -30391,12 +31130,12 @@ function createAppUploadApi(makeRequest2) {
     };
 }
 function wrapAppUpload(makeRequest2, data) {
-    const appUpload = (0, import_contentful_sdk_core66.toPlainObject)(index(data));
+    const appUpload = (0, import_contentful_sdk_core66.toPlainObject)(copy(data));
     const appUploadWithMethods = enhanceWithMethods(appUpload, createAppUploadApi(makeRequest2));
     return (0, import_contentful_sdk_core66.freezeSys)(appUploadWithMethods);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/app-signing-secret.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/app-signing-secret.mjs
 var import_contentful_sdk_core67 = __toESM(require_cjs2(), 1);
 function createSigningSecretApi(makeRequest2) {
     const getParams3 = data => ({
@@ -30404,7 +31143,7 @@ function createSigningSecretApi(makeRequest2) {
         appDefinitionId: data.sys.appDefinition.sys.id
     });
     return {
-        delete: function del45() {
+        delete: function del56() {
             const self2 = this;
             return makeRequest2({
                 entityType: "AppSigningSecret",
@@ -30415,11 +31154,11 @@ function createSigningSecretApi(makeRequest2) {
     };
 }
 function wrapAppSigningSecret(makeRequest2, data) {
-    const signingSecret = (0, import_contentful_sdk_core67.toPlainObject)(index(data));
+    const signingSecret = (0, import_contentful_sdk_core67.toPlainObject)(copy(data));
     return enhanceWithMethods(signingSecret, createSigningSecretApi(makeRequest2));
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/app-event-subscription.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/app-event-subscription.mjs
 var import_contentful_sdk_core68 = __toESM(require_cjs2(), 1);
 function createEventSubscriptionApi(makeRequest2) {
     const getParams3 = data => ({
@@ -30427,7 +31166,7 @@ function createEventSubscriptionApi(makeRequest2) {
         appDefinitionId: data.sys.appDefinition.sys.id
     });
     return {
-        delete: function del45() {
+        delete: function del56() {
             const self2 = this;
             return makeRequest2({
                 entityType: "AppEventSubscription",
@@ -30438,11 +31177,11 @@ function createEventSubscriptionApi(makeRequest2) {
     };
 }
 function wrapAppEventSubscription(makeRequest2, data) {
-    const eventSubscription = (0, import_contentful_sdk_core68.toPlainObject)(index(data));
+    const eventSubscription = (0, import_contentful_sdk_core68.toPlainObject)(copy(data));
     return enhanceWithMethods(eventSubscription, createEventSubscriptionApi(makeRequest2));
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/app-key.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/app-key.mjs
 var import_contentful_sdk_core69 = __toESM(require_cjs2(), 1);
 function createKeyApi(makeRequest2) {
     const getParams3 = data => ({
@@ -30451,7 +31190,7 @@ function createKeyApi(makeRequest2) {
         fingerprint: data.sys.id
     });
     return {
-        delete: function del45() {
+        delete: function del56() {
             const self2 = this;
             return makeRequest2({
                 entityType: "AppKey",
@@ -30462,12 +31201,12 @@ function createKeyApi(makeRequest2) {
     };
 }
 function wrapAppKey(makeRequest2, data) {
-    const key = (0, import_contentful_sdk_core69.toPlainObject)(index(data));
+    const key = (0, import_contentful_sdk_core69.toPlainObject)(copy(data));
     return enhanceWithMethods(key, createKeyApi(makeRequest2));
 }
 var wrapAppKeyCollection = wrapCollection(wrapAppKey);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/app-details.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/app-details.mjs
 var import_contentful_sdk_core70 = __toESM(require_cjs2(), 1);
 function createAppDetailsApi(makeRequest2) {
     const getParams3 = data => ({
@@ -30475,7 +31214,7 @@ function createAppDetailsApi(makeRequest2) {
         appDefinitionId: data.sys.appDefinition.sys.id
     });
     return {
-        delete: function del45() {
+        delete: function del56() {
             const self2 = this;
             return makeRequest2({
                 entityType: "AppDetails",
@@ -30486,11 +31225,11 @@ function createAppDetailsApi(makeRequest2) {
     };
 }
 function wrapAppDetails(makeRequest2, data) {
-    const appDetails = (0, import_contentful_sdk_core70.toPlainObject)(index(data));
+    const appDetails = (0, import_contentful_sdk_core70.toPlainObject)(copy(data));
     return enhanceWithMethods(appDetails, createAppDetailsApi(makeRequest2));
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/app-action.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/app-action.mjs
 var import_contentful_sdk_core71 = __toESM(require_cjs2(), 1);
 function createAppActionApi(makeRequest2) {
     const getParams3 = data => ({
@@ -30499,7 +31238,7 @@ function createAppActionApi(makeRequest2) {
         appActionId: data.sys.id
     });
     return {
-        delete: function del45() {
+        delete: function del56() {
             const data = this.toPlainObject();
             return makeRequest2({
                 entityType: "AppAction",
@@ -30510,27 +31249,27 @@ function createAppActionApi(makeRequest2) {
     };
 }
 function wrapAppAction(makeRequest2, data) {
-    const appAction = (0, import_contentful_sdk_core71.toPlainObject)(index(data));
+    const appAction = (0, import_contentful_sdk_core71.toPlainObject)(copy(data));
     const appActionWithMethods = enhanceWithMethods(appAction, createAppActionApi(makeRequest2));
     return (0, import_contentful_sdk_core71.freezeSys)(appActionWithMethods);
 }
 var wrapAppActionCollection = wrapCollection(wrapAppAction);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/available-license.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/available-license.mjs
 var import_contentful_sdk_core72 = __toESM(require_cjs2(), 1);
 function wrapAvailableLicense(makeRequest2, data) {
-    return (0, import_contentful_sdk_core72.toPlainObject)(index(data));
+    return (0, import_contentful_sdk_core72.toPlainObject)(copy(data));
 }
 var wrapAvailableLicenseCollection = wrapCollection(wrapAvailableLicense);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/semantic-settings.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/semantic-settings.mjs
 var import_contentful_sdk_core73 = __toESM(require_cjs2(), 1);
 function wrapContentSemanticsSettings(_makeRequest, data) {
-    const result = (0, import_contentful_sdk_core73.toPlainObject)(index(data));
+    const result = (0, import_contentful_sdk_core73.toPlainObject)(copy(data));
     return (0, import_contentful_sdk_core73.freezeSys)(result);
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-organization-api.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-organization-api.mjs
 function createOrganizationApi(makeRequest2) {
     return {
         /**
@@ -30962,6 +31701,33 @@ function createOrganizationApi(makeRequest2) {
                     query: (0, import_contentful_sdk_core74.createRequestConfig)({ query: query2 }).params
                 }
             }).then(data => wrapAvailableLicenseCollection(makeRequest2, data));
+        },
+        /**
+         * Gets a collection of space add-ons across all spaces in the organization
+         * @param query - Object with search parameters
+         * @returns Promise for a collection of SpaceAddOnsOrganization
+         * @example ```javascript
+         * const contentful = require('contentful-management')
+         * const client = contentful.createClient({
+         *   accessToken: '<content_management_api_key>'
+         * })
+         *
+         * client.getOrganization('<organization_id>')
+         * .then((organization) => organization.getSpaceAddOns())
+         * .then((addOns) => console.log(addOns))
+         * .catch(console.error)
+         * ```
+         */
+        getSpaceAddOns(query2 = {}) {
+            const raw = this.toPlainObject();
+            return makeRequest2({
+                entityType: "SpaceAddOn",
+                action: "getManyForOrganization",
+                params: {
+                    organizationId: raw.sys.id,
+                    query: (0, import_contentful_sdk_core74.createRequestConfig)({ query: query2 }).params
+                }
+            }).then(data => wrapSpaceAddOnOrganizationCollection(makeRequest2, data));
         },
         /**
          * Gets an Invitation in Organization
@@ -31757,28 +32523,42 @@ function createOrganizationApi(makeRequest2) {
     };
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/organization.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/organization.mjs
 function wrapOrganization(makeRequest2, data) {
-    const org = (0, import_contentful_sdk_core75.toPlainObject)(index(data));
+    const org = (0, import_contentful_sdk_core75.toPlainObject)(copy(data));
     const orgApi = createOrganizationApi(makeRequest2);
     const enhancedOrganization = enhanceWithMethods(org, orgApi);
     return (0, import_contentful_sdk_core75.freezeSys)(enhancedOrganization);
 }
 var wrapOrganizationCollection = wrapCollection(wrapOrganization);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/usage.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/usage.mjs
 var import_contentful_sdk_core76 = __toESM(require_cjs2(), 1);
 function wrapUsage(_makeRequest, data) {
-    const usage = (0, import_contentful_sdk_core76.toPlainObject)(index(data));
+    const usage = (0, import_contentful_sdk_core76.toPlainObject)(copy(data));
     const usageWithMethods = enhanceWithMethods(usage, {});
     return (0, import_contentful_sdk_core76.freezeSys)(usageWithMethods);
 }
 var wrapUsageCollection = wrapCollection(wrapUsage);
+function wrapAggregatedUsage(_makeRequest, data) {
+    const item = (0, import_contentful_sdk_core76.toPlainObject)(copy(data));
+    return (0, import_contentful_sdk_core76.freezeSys)(enhanceWithMethods(item, {}));
+}
+var wrapAggregatedUsageCollection = wrapCollection(wrapAggregatedUsage);
+function wrapAssetBandwidthUsage(_makeRequest, data) {
+    const item = (0, import_contentful_sdk_core76.toPlainObject)(copy(data));
+    return (0, import_contentful_sdk_core76.freezeSys)(enhanceWithMethods(item, {}));
+}
+function wrapAssetBandwidthUsageDetailedCollection(makeRequest2, data) {
+    const collectionData = (0, import_contentful_sdk_core76.toPlainObject)(copy(data));
+    collectionData.items = collectionData.items.map(item => wrapAssetBandwidthUsage(makeRequest2, item));
+    return collectionData;
+}
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/environment-template.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/environment-template.mjs
 var import_contentful_sdk_core78 = __toESM(require_cjs2(), 1);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-environment-template-api.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-environment-template-api.mjs
 var import_contentful_sdk_core77 = __toESM(require_cjs2(), 1);
 function createEnvironmentTemplateApi(makeRequest2, organizationId) {
     return {
@@ -32045,16 +32825,16 @@ function createEnvironmentTemplateApi(makeRequest2, organizationId) {
     };
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/environment-template.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/environment-template.mjs
 function wrapEnvironmentTemplate(makeRequest2, data, organizationId) {
-    const environmentTemplate = (0, import_contentful_sdk_core78.toPlainObject)(index(data));
+    const environmentTemplate = (0, import_contentful_sdk_core78.toPlainObject)(copy(data));
     const environmentTemplateApi = createEnvironmentTemplateApi(makeRequest2, organizationId);
     const enhancedEnvironmentTemplate = enhanceWithMethods(environmentTemplate, environmentTemplateApi);
     return (0, import_contentful_sdk_core78.freezeSys)(enhancedEnvironmentTemplate);
 }
 var wrapEnvironmentTemplateCollection = wrapCursorPaginatedCollection(wrapEnvironmentTemplate);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/oauth-application.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/oauth-application.mjs
 var import_contentful_sdk_core79 = __toESM(require_cjs2(), 1);
 var ScopeValues;
 (function (ScopeValues2) {
@@ -32095,13 +32875,13 @@ function createOAuthApplicationApi(makeRequest2, userId) {
     };
 }
 function wrapOAuthApplication(makeRequest2, data, userId) {
-    const oauthApplication = (0, import_contentful_sdk_core79.toPlainObject)(index(data));
+    const oauthApplication = (0, import_contentful_sdk_core79.toPlainObject)(copy(data));
     const oauthApplicationWithMethods = enhanceWithMethods(oauthApplication, createOAuthApplicationApi(makeRequest2, userId));
     return (0, import_contentful_sdk_core79.freezeSys)(oauthApplicationWithMethods);
 }
 var wrapOAuthApplicationCollection = wrapCursorPaginatedCollection(wrapOAuthApplication);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/create-contentful-api.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/create-contentful-api.mjs
 function createClientApi(makeRequest2) {
     return {
         /**
@@ -32593,6 +33373,9 @@ function createClientApi(makeRequest2) {
          * @param organizationId - Id of an organization
          * @param query - Query parameters
          * @returns Promise of a collection of usages
+         * @deprecated Use {@link getUsageAggregated} instead, calling it once per metric key
+         * (this method accepted multiple metrics per call via `metric[in]`; {@link getUsageAggregated}
+         * is scoped to a single `metricKey` per request). Sunset: 2027-02-28.
          * @example ```javascript
          *
          * const contentful = require('contentful-management')
@@ -32624,6 +33407,8 @@ function createClientApi(makeRequest2) {
          * @param organizationId - Id of an organization
          * @param query - Query parameters
          * @returns Promise of a collection of usages
+         * @deprecated Use {@link getUsageAggregated} instead, calling it once per metric key and
+         * filtering by `filter[sys.dimensions.space.sys.id]` to scope to a space. Sunset: 2027-02-28.
          * ```javascript
          * const contentful = require('contentful-management')
          *
@@ -32654,6 +33439,64 @@ function createClientApi(makeRequest2) {
             }).then(data => wrapUsageCollection(makeRequest2, data));
         },
         /**
+         * Get aggregated usage for an organization metric.
+         *
+         * @param organizationId - Id of the organization
+         * @param metricKey - Key of the metric, e.g. `"functions_invocations"`, `"asset_bandwidth"`, `"api_call_cma"`, `"api_call_cpa"`, `"api_call_cda"`, `"api_call_graphql"`, `"ai_action_invocation"`, `"ai_action_word_count"`, `"ai_consumption_unit"`, `"monthly_active_profiles"`
+         * @param query - Query parameters (date range, granularity, grouping, pagination)
+         * @returns Promise of an aggregated usage collection
+         * @example ```javascript
+         * const contentful = require('contentful-management')
+         *
+         * const client = contentful.createClient({
+         *   accessToken: '<content_management_api_key>'
+         * })
+         *
+         * client.getUsageAggregated('<organizationId>', 'functions_invocations', {
+         *   'date[gte]': '2025-01-01',
+         *   'date[lte]': '2025-01-31',
+         *   granularity: 'P1D',
+         * })
+         * .then(result => console.log(result.items))
+         * .catch(console.error)
+         * ```
+         */
+        getUsageAggregated: function getUsageAggregated(organizationId, metricKey, query2) {
+            return makeRequest2({
+                entityType: "Usage",
+                action: "getAggregated",
+                params: { organizationId, metricKey, query: query2 }
+            }).then(data => wrapAggregatedUsageCollection(makeRequest2, data));
+        },
+        /**
+         * Get detailed asset-bandwidth usage for an organization.
+         *
+         * @param organizationId - Id of the organization
+         * @param query - Query parameters (date range only)
+         * @returns Promise of a detailed asset-bandwidth usage collection
+         * @example ```javascript
+         * const contentful = require('contentful-management')
+         *
+         * const client = contentful.createClient({
+         *   accessToken: '<content_management_api_key>'
+         * })
+         *
+         * client.getUsageAssetBandwidthDetailed('<organizationId>', {
+         *   'date[gte]': '2025-01-01',
+         *   'date[lte]': '2025-01-31',
+         * })
+         * .then(result => console.log(result.items))
+         * .catch(console.error)
+         * ```
+         */
+        getUsageAssetBandwidthDetailed: function getUsageAssetBandwidthDetailed(organizationId, query2) {
+            return makeRequest2({
+                entityType: "Usage",
+                action: "getAssetBandwidthUsageDetailed",
+                params: { organizationId, query: query2 }
+            }).then(data => wrapAssetBandwidthUsageDetailedCollection(makeRequest2, data));
+        },
+        /**
          * Make a custom request to the Contentful management API's /spaces endpoint
          * @param opts - axios request options (https://github.com/mzabriskie/axios)
          * @returns Promise for the response data
@@ -32682,7 +33525,7 @@ function createClientApi(makeRequest2) {
     };
 }
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/plain/wrappers/wrap.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/plain/wrappers/wrap.mjs
 var wrap = ({ makeRequest: makeRequest2, defaults: defaults2 }, entityType, action) => {
     return (params, payload, headers) =>
         // @ts-expect-error see above
@@ -32696,7 +33539,7 @@ var wrap = ({ makeRequest: makeRequest2, defaults: defaults2 }, entityType, acti
         });
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/plain/plain-client.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/plain/plain-client.mjs
 var createPlainClient = (makeRequest2, defaults2) => {
     const wrapParams = { makeRequest: makeRequest2, defaults: defaults2 };
     return {
@@ -32919,7 +33762,22 @@ var createPlainClient = (makeRequest2, defaults2) => {
             delete: wrap(wrapParams, "Comment", "delete")
         },
         componentType: {
-            getMany: wrap(wrapParams, "ComponentType", "getMany")
+            getMany: wrap(wrapParams, "ComponentType", "getMany"),
+            get: wrap(wrapParams, "ComponentType", "get"),
+            create: wrap(wrapParams, "ComponentType", "create"),
+            upsert: wrap(wrapParams, "ComponentType", "upsert"),
+            delete: wrap(wrapParams, "ComponentType", "delete"),
+            publish: wrap(wrapParams, "ComponentType", "publish"),
+            unpublish: wrap(wrapParams, "ComponentType", "unpublish")
+        },
+        component: {
+            getMany: wrap(wrapParams, "Component", "getMany"),
+            get: wrap(wrapParams, "Component", "get"),
+            create: wrap(wrapParams, "Component", "create"),
+            upsert: wrap(wrapParams, "Component", "upsert"),
+            delete: wrap(wrapParams, "Component", "delete"),
+            publish: wrap(wrapParams, "Component", "publish"),
+            unpublish: wrap(wrapParams, "Component", "unpublish")
         },
         contentType: {
             get: wrap(wrapParams, "ContentType", "get"),
@@ -32932,6 +33790,23 @@ var createPlainClient = (makeRequest2, defaults2) => {
             create: wrap(wrapParams, "ContentType", "create"),
             createWithId: wrap(wrapParams, "ContentType", "createWithId"),
             omitAndDeleteField: (params, contentType, fieldId) => omitAndDeleteField(makeRequest2, { ...{ ...defaults2, ...params }, fieldId }, contentType)
+        },
+        dataAssembly: {
+            getMany: wrap(wrapParams, "DataAssembly", "getMany"),
+            getManyPublished: wrap(wrapParams, "DataAssembly", "getManyPublished"),
+            getPublished: wrap(wrapParams, "DataAssembly", "getPublished"),
+            get: wrap(wrapParams, "DataAssembly", "get"),
+            create: wrap(wrapParams, "DataAssembly", "create"),
+            update: wrap(wrapParams, "DataAssembly", "update"),
+            delete: wrap(wrapParams, "DataAssembly", "delete"),
+            publish: wrap(wrapParams, "DataAssembly", "publish"),
+            unpublish: wrap(wrapParams, "DataAssembly", "unpublish")
+        },
+        designToken: {
+            getMany: wrap(wrapParams, "DesignToken", "getMany"),
+            get: wrap(wrapParams, "DesignToken", "get"),
+            upsert: wrap(wrapParams, "DesignToken", "upsert"),
+            delete: wrap(wrapParams, "DesignToken", "delete")
         },
         user: {
             getManyForSpace: wrap(wrapParams, "User", "getManyForSpace"),
@@ -33053,7 +33928,9 @@ var createPlainClient = (makeRequest2, defaults2) => {
         },
         usage: {
             getManyForSpace: wrap(wrapParams, "Usage", "getManyForSpace"),
-            getManyForOrganization: wrap(wrapParams, "Usage", "getManyForOrganization")
+            getManyForOrganization: wrap(wrapParams, "Usage", "getManyForOrganization"),
+            getAggregated: wrap(wrapParams, "Usage", "getAggregated"),
+            getAssetBandwidthUsageDetailed: wrap(wrapParams, "Usage", "getAssetBandwidthUsageDetailed")
         },
         release: {
             asset: {
@@ -33286,6 +34163,24 @@ var createPlainClient = (makeRequest2, defaults2) => {
             update: wrap(wrapParams, "TeamSpaceMembership", "update"),
             delete: wrap(wrapParams, "TeamSpaceMembership", "delete")
         },
+        fragment: {
+            getMany: wrap(wrapParams, "Fragment", "getMany"),
+            get: wrap(wrapParams, "Fragment", "get"),
+            create: wrap(wrapParams, "Fragment", "create"),
+            upsert: wrap(wrapParams, "Fragment", "upsert"),
+            delete: wrap(wrapParams, "Fragment", "delete"),
+            publish: wrap(wrapParams, "Fragment", "publish"),
+            unpublish: wrap(wrapParams, "Fragment", "unpublish")
+        },
+        template: {
+            getMany: wrap(wrapParams, "Template", "getMany"),
+            get: wrap(wrapParams, "Template", "get"),
+            create: wrap(wrapParams, "Template", "create"),
+            upsert: wrap(wrapParams, "Template", "upsert"),
+            delete: wrap(wrapParams, "Template", "delete"),
+            publish: wrap(wrapParams, "Template", "publish"),
+            unpublish: wrap(wrapParams, "Template", "unpublish")
+        },
         uiConfig: {
             get: wrap(wrapParams, "UIConfig", "get"),
             update: wrap(wrapParams, "UIConfig", "update")
@@ -33293,6 +34188,55 @@ var createPlainClient = (makeRequest2, defaults2) => {
         userUIConfig: {
             get: wrap(wrapParams, "UserUIConfig", "get"),
             update: wrap(wrapParams, "UserUIConfig", "update")
+        },
+        experience: {
+            getMany: wrap(wrapParams, "Experience", "getMany"),
+            get: wrap(wrapParams, "Experience", "get"),
+            create: wrap(wrapParams, "Experience", "create"),
+            upsert: wrap(wrapParams, "Experience", "upsert"),
+            delete: wrap(wrapParams, "Experience", "delete"),
+            publish: wrap(wrapParams, "Experience", "publish"),
+            unpublish: wrap(wrapParams, "Experience", "unpublish")
+        },
+        experienceVariant: {
+            getMany: wrap(wrapParams, "ExperienceVariant", "getMany"),
+            get: wrap(wrapParams, "ExperienceVariant", "get"),
+            create: wrap(wrapParams, "ExperienceVariant", "create"),
+            upsert: wrap(wrapParams, "ExperienceVariant", "upsert"),
+            delete: wrap(wrapParams, "ExperienceVariant", "delete"),
+            publish: wrap(wrapParams, "ExperienceVariant", "publish"),
+            unpublish: wrap(wrapParams, "ExperienceVariant", "unpublish"),
+            archive: wrap(wrapParams, "ExperienceVariant", "archive"),
+            unarchive: wrap(wrapParams, "ExperienceVariant", "unarchive")
+        },
+        experienceFragment: {
+            getMany: wrap(wrapParams, "ExperienceFragment", "getMany"),
+            get: wrap(wrapParams, "ExperienceFragment", "get"),
+            create: wrap(wrapParams, "ExperienceFragment", "create"),
+            upsert: wrap(wrapParams, "ExperienceFragment", "upsert"),
+            delete: wrap(wrapParams, "ExperienceFragment", "delete"),
+            publish: wrap(wrapParams, "ExperienceFragment", "publish"),
+            unpublish: wrap(wrapParams, "ExperienceFragment", "unpublish")
+        },
+        experienceTemplate: {
+            getMany: wrap(wrapParams, "ExperienceTemplate", "getMany"),
+            get: wrap(wrapParams, "ExperienceTemplate", "get"),
+            create: wrap(wrapParams, "ExperienceTemplate", "create"),
+            upsert: wrap(wrapParams, "ExperienceTemplate", "upsert"),
+            delete: wrap(wrapParams, "ExperienceTemplate", "delete"),
+            publish: wrap(wrapParams, "ExperienceTemplate", "publish"),
+            unpublish: wrap(wrapParams, "ExperienceTemplate", "unpublish")
+        },
+        experienceFragmentVariant: {
+            getMany: wrap(wrapParams, "ExperienceFragmentVariant", "getMany"),
+            get: wrap(wrapParams, "ExperienceFragmentVariant", "get"),
+            create: wrap(wrapParams, "ExperienceFragmentVariant", "create"),
+            upsert: wrap(wrapParams, "ExperienceFragmentVariant", "upsert"),
+            delete: wrap(wrapParams, "ExperienceFragmentVariant", "delete"),
+            publish: wrap(wrapParams, "ExperienceFragmentVariant", "publish"),
+            unpublish: wrap(wrapParams, "ExperienceFragmentVariant", "unpublish"),
+            archive: wrap(wrapParams, "ExperienceFragmentVariant", "archive"),
+            unarchive: wrap(wrapParams, "ExperienceFragmentVariant", "unarchive")
         },
         workflowDefinition: {
             get: wrap(wrapParams, "WorkflowDefinition", "get"),
@@ -33315,7 +34259,7 @@ var createPlainClient = (makeRequest2, defaults2) => {
     };
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/constants/editor-interface-defaults/types.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/constants/editor-interface-defaults/types.mjs
 var WidgetNamespace;
 (function (WidgetNamespace2) {
     WidgetNamespace2["BUILTIN"] = "builtin";
@@ -33326,7 +34270,7 @@ var WidgetNamespace;
 })(WidgetNamespace || (WidgetNamespace = {}));
 var DEFAULT_EDITOR_ID = "default-editor";
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/constants/editor-interface-defaults/sidebar-defaults.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/constants/editor-interface-defaults/sidebar-defaults.mjs
 var SidebarWidgetTypes = {
     USERS: "users-widget",
     CONTENT_PREVIEW: "content-preview-widget",
@@ -33379,7 +34323,7 @@ var Users = {
     description: "Built-in - Displays users on the same entry."
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/constants/editor-interface-defaults/editors-defaults.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/constants/editor-interface-defaults/editors-defaults.mjs
 var EntryEditorWidgetTypes = {
     DEFAULT_EDITOR: {
         name: "Editor",
@@ -33410,7 +34354,7 @@ var TagsEditor = {
     name: EntryEditorWidgetTypes.TAGS_EDITOR.name
 };
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/constants/editor-interface-defaults/controls-defaults.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/constants/editor-interface-defaults/controls-defaults.mjs
 var INTERNAL_TO_API = {
     Symbol: { type: "Symbol" },
     Text: { type: "Text" },
@@ -33432,7 +34376,7 @@ var INTERNAL_TO_API = {
 };
 var FIELD_TYPES = Object.keys(INTERNAL_TO_API);
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/entities/workflow-definition.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/entities/workflow-definition.mjs
 var import_contentful_sdk_core81 = __toESM(require_cjs2(), 1);
 var WorkflowStepPermissionType;
 (function (WorkflowStepPermissionType2) {
@@ -33457,7 +34401,7 @@ var WorkflowStepActionType;
     WorkflowStepActionType2["Task"] = "task";
 })(WorkflowStepActionType || (WorkflowStepActionType = {}));
 
-// node_modules/.pnpm/contentful-management@12.8.0/node_modules/contentful-management/dist/esm/index.mjs
+// node_modules/.pnpm/contentful-management@12.21.0/node_modules/contentful-management/dist/esm/index.mjs
 function createClient(clientOptions, opts = {}) {
     const sdkMain = opts.type === "legacy" ? "contentful-management.js" : "contentful-management-plain.js";
     const userAgent = (0, import_contentful_sdk_core82.getUserAgentHeader)(
@@ -33674,12 +34618,12 @@ async function mapWithConcurrency(items, concurrency, fn) {
     let nextIndex = 0;
     async function worker() {
         while (true) {
-            const index2 = nextIndex;
+            const index = nextIndex;
             nextIndex += 1;
-            if (index2 >= items.length) {
+            if (index >= items.length) {
                 return;
             }
-            results[index2] = await fn(items[index2], index2);
+            results[index] = await fn(items[index], index);
         }
     }
     await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, () => worker()));
@@ -33839,7 +34783,7 @@ async function publishEntries(client, config, entries, action, concurrency, verb
     if (concurrency > 1 && batches.length > 1) {
         emitLog(hooks, "error", `Running up to ${concurrency} bulk actions in parallel (Contentful allows ${MAX_BULK_ACTION_CONCURRENCY} active per space)...`);
     }
-    const batchResults = await mapWithConcurrency(batches, concurrency, (batch, index2) => publishBatch(client, config, batch, action, index2 + 1, batches.length, concurrency, verbose, hooks));
+    const batchResults = await mapWithConcurrency(batches, concurrency, (batch, index) => publishBatch(client, config, batch, action, index + 1, batches.length, concurrency, verbose, hooks));
     return batchResults.flat();
 }
 function logEntry(entry, verbose, hooks) {
